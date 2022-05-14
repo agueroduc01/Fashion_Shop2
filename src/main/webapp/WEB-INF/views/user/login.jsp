@@ -97,7 +97,7 @@ img.img-responsive {
 					</div>
 
 					<div class="flex-col-c p-t-155">
-						<a href="user/register.htm" class="txt2"> Sign Up </a>
+						<a href="user/register.htm" class="txt2"> Sign Upp </a>
 					</div>
 				</form:form>
 			</div>
