@@ -20,10 +20,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import fashion_shop.entity.Customer;
+import fashion_shop.entity.Account;
+import fashion_shop.entity.Role;
 
 @Transactional
 @Controller
@@ -33,70 +35,30 @@ public class UserController {
 	SessionFactory factory;
 
 	@ModelAttribute("listUser")
-	public List<Customer> getLUser() {
+	public List<Account> getLUser() {
 		Session session = factory.getCurrentSession();
-		String hql = "From Customer";
+		String hql = "From Account";
 		Query query = session.createQuery(hql);
-		List<Customer> listUser = query.list();
+		List<Account> listUser = query.list();
 		return listUser;
 	}
 
-	// Dang nhap
-	@RequestMapping(value = "login", method = RequestMethod.GET)
-	public String login(ModelMap model) {
-		model.addAttribute("user", new Customer());
-		return "user/login";
-	}
-
-	@RequestMapping(value = "login", method = RequestMethod.POST)
-	public String login(ModelMap model, HttpSession httpSession, @ModelAttribute("user") Customer user,
-			BindingResult errors) throws InterruptedException {
-		Session session = factory.getCurrentSession();
-		Customer acc = null;
-		List<Customer> listUser = getLUser();
-		for (Customer Customer : listUser) {
-			if (Customer.getUser_name().equals(user.getUser_name())) {
-				acc = Customer;
-				break;
-			}
-		}
-
-		if (user.getUser_name().trim().length() == 0) {
-			errors.rejectValue("user_name", "user", "Yêu cầu nhập đúng tài khoản");
-		}
-
-		if (user.getPassword().trim().length() == 0) {
-			errors.rejectValue("password", "user", "Yêu cầu nhập đúng mật khẩu");
-		}
-		if (acc == null) {
-			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
-		} else if (user.getPassword().equals(acc.getPassword())) {
-			Thread.sleep(1000);
-			httpSession.setAttribute("user", acc);
-			return "redirect:/";
-		} else
-			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
-
-		return "user/login";
-
-	}
-
-	// Tao tai khoan
+	// Đăng Ký
 	@RequestMapping(value = "register", method = RequestMethod.GET)
 	public String register(ModelMap model) {
-		model.addAttribute("user", new Customer());
+		model.addAttribute("user", new Account());
 		return "user/register";
 	}
 
 	@RequestMapping(value = "register", method = RequestMethod.POST)
-	public String register(ModelMap model, @ModelAttribute("user") Customer user, BindingResult errors) {
+	public String register(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
-		List<Customer> l = getLUser();
+		List<Account> l = getLUser();
 		if (user.getUser_name().trim().length() == 0) {
 			errors.rejectValue("user_name", "user", "Yêu cầu nhập đúng tài khoản");
 		} else {
-			for (Customer a : l) {
+			for (Account a : l) {
 				if (a.getUser_name().equalsIgnoreCase(user.getUser_name())) {
 					errors.rejectValue("user_name", "user", "Tên tài khoản đã tồn tại!");
 				}
@@ -113,7 +75,7 @@ public class UserController {
 		}
 
 		if (user.getFullname().trim().length() == 0) {
-			errors.rejectValue("fullname", "user", "Yêu cầu nhập đúng fullname");
+			errors.rejectValue("fullname", "user", "Yêu cầu không để trống tên tài khoản");
 		}
 
 		String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
@@ -125,7 +87,7 @@ public class UserController {
 			if (!matcher.matches()) {
 				errors.rejectValue("email", "user", "Email không đúng định dạng");
 			} else {
-				for (Customer a : l) {
+				for (Account a : l) {
 					if (a.getEmail().equalsIgnoreCase(user.getEmail())) {
 						errors.rejectValue("email", "user", "Tên email đã tồn tại");
 					}
@@ -148,22 +110,76 @@ public class UserController {
 		if (user.getGender() == false) {
 			errors.rejectValue("gender", "user", "Yêu cầu nhập đúng giới tính");
 		}
-		
+		Role r = (Role) session.get(Role.class, 2);
+		user.setRoles(r);
+
+		try {
+			if (errors.hasErrors()) {
+				model.addAttribute("messageRegister", "Đăng ký thất bại");
+			} else {
+				session.save(user);
+				t.commit();
+				model.addAttribute("messageRegister", "Đăng ký thành công!");
+			}
+		} catch (Exception e) {
+			t.rollback();
+			model.addAttribute("messageRegister", "Đăng ký thất bại!");
+		} finally {
+			session.close();
+		}
 		return "user/register";
 	}
 
+	// Đăng Nhập
+	@RequestMapping(value = "login", method = RequestMethod.GET)
+	public String login(ModelMap model) {
+		model.addAttribute("user", new Account());
+		return "user/login";
+	}
+
+	@RequestMapping(value = "login", method = RequestMethod.POST)
+	public String login(ModelMap model, HttpSession httpSession, @ModelAttribute("user") Account user,
+			BindingResult errors) throws InterruptedException {
+		Account acc = null;
+		List<Account> listUser = getLUser();
+		for (Account Account : listUser) {
+			if (Account.getUser_name().equals(user.getUser_name())) {
+				acc = Account;
+				break;
+			}
+		}
+
+		if (user.getUser_name().trim().length() == 0) {
+			errors.rejectValue("user_name", "user", "Yêu cầu không để trống tài khoản");
+		}
+
+		if (user.getPassword().trim().length() == 0) {
+			errors.rejectValue("password", "user", "Yêu cầu không để trống mật khẩu");
+		}
+		if (acc == null) {
+			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
+		} else if (user.getPassword().equals(acc.getPassword())) {
+			Thread.sleep(1000);
+			httpSession.setAttribute("user", acc);
+			return "redirect:/home/index.htm";
+		} else
+			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
+		return "user/login";
+	}
+
+	// Quên mật khẩu
 	@RequestMapping(value = "forgotpassword", method = RequestMethod.GET)
 	public String forgotpassword(ModelMap model) {
-		model.addAttribute("user", new Customer());
+		model.addAttribute("user", new Account());
 		return "user/forgotPassword";
 	}
 
 	@Autowired
 	JavaMailSender mailer;
 
-	// send mail get password
+	// Gửi mail để lấy lại mật khẩu
 	@RequestMapping(value = "forgotpassword", method = RequestMethod.POST)
-	public String forgotpassword(ModelMap model, @ModelAttribute("user") Customer user, BindingResult errors) {
+	public String forgotpassword(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors) {
 		String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 		Pattern pattern = Pattern.compile(regex);
 		if (user.getEmail().trim().length() == 0) {
@@ -179,7 +195,7 @@ public class UserController {
 
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
-		Customer acc = (Customer) session.get(Customer.class, user.getEmail());
+		Account acc = (Account) session.get(Account.class, user.getEmail());
 		Random rand = new Random();
 		int rand_int1 = rand.nextInt(100000);
 
@@ -211,4 +227,62 @@ public class UserController {
 		return "user/forgotPassword";
 	}
 
+	// Đổi mật khẩu
+	@RequestMapping(value = "changepassword/{username}", method = RequestMethod.GET)
+	public String changepassword(ModelMap model, @PathVariable("username") String username, HttpSession httpSession) {
+		Session session = factory.getCurrentSession();
+		Account user = (Account) session.get(Account.class, username);
+		model.addAttribute("user", user);
+		httpSession.setAttribute("user", user);
+		return "user/changePassword";
+	}
+
+	@RequestMapping(value = "changepassword/{username}", method = RequestMethod.POST)
+	public String changepassword(ModelMap model, @ModelAttribute("user") Account user, HttpSession httpSession,
+			BindingResult errors) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+
+		Account acc = null;
+		List<Account> listUser = getLUser();
+		for (Account Account : listUser) {
+			if (Account.getUser_name().equals(user.getUser_name())) {
+				acc = Account;
+				break;
+			}
+		}
+
+		if (user.getUser_name().trim().length() == 0) {
+			errors.rejectValue("user_name", "user", "Yêu cầu không để trống tên tài khoản");
+		}
+		if (user.getPassword().trim().length() == 0) {
+			errors.rejectValue("password", "user", "Yêu cầu không để trống mật khẩu");
+		}
+		if (acc == null) {
+			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
+		} else if (user.getPassword().equals(acc.getPassword())) {
+			if (!user.getPassword().matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$")) {
+				errors.rejectValue("password", "user",
+						"Nhập trên 8 kí tự trong đó có chữ hoa thường và kí tự đặc biệt.");
+			}
+		} else
+			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
+
+		try {
+			session.update(acc);
+			t.commit();
+			model.addAttribute("message", "Chỉnh sửa thành công");
+			return "redirect:/user/dashboard.htm";
+
+		} catch (Exception e) {
+			model.addAttribute("message", "Chỉnh sửa thất bại !");
+			t.rollback();
+		} finally {
+			session.close();
+		}
+		Account user1 = (Account) httpSession.getAttribute("admin");
+		if (user1.getUser_name().equals(user.getUser_name()))
+			httpSession.setAttribute("user", user);
+		return "user/changePassword";
+	}
 }

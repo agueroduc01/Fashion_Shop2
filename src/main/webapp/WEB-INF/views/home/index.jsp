@@ -612,6 +612,6 @@
 	<%@include file="/WEB-INF/views/home/footer.jsp"%>
 </body>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
-    <script src="/dist/js/owl.carousel.js"></script>
-    <script src="/dist/js/home.js"></script>
+    <script src="<c:url value='/resources/home/dist/js/owl.carousel.js' />"></script>
+    <script src="<c:url value='/resources/home/dist/js/home.js' />"></script>
 </html>

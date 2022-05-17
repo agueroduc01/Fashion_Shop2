@@ -41,3 +41,40 @@ $(window).scroll(function () {
 
     }
 });
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////
+$('button.quantity-minus').click(function (e) { 
+    let value = $('.form-control input').val();
+    if(value > 1) {
+        $('.form-control input').val(value - 1);
+    }
+
+});
+
+$('button.quantity-plus').click(function (e) { 
+    let value = $('.form-control input').val();
+    if(value < 100) {
+        $('.form-control input').val(value*1 + 1);
+    }
+
+});
+
+
+
+
+///////////////////////////////////////
+// $(document).ready(function () {
+//     let headerH = $('.header').height();
+//     let sreenH = $(window).height();
+
+//     $('.login-container .container').height(sreenH - headerH);
+// });

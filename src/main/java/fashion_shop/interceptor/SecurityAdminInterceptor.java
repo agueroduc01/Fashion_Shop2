@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import fashion_shop.entity.Employee;
+import fashion_shop.entity.Account;
 
 public class SecurityAdminInterceptor extends HandlerInterceptorAdapter{
 	@Override

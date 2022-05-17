@@ -7,108 +7,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Login</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riode -  Login</title>
 
-<style type="text/css">
-*[id$=errors] {
-	color: red;
-	font-style: italic;
-	display: block;
-	margin: 5px;
-	font-size: 12px;
-	flex: 1;
-	text-align: center;
-}
-span#message.errors {
-	
-}
-a.logoHome {
-    max-width: 100px;
-    height: 100px;
-    display: block;
-    margin: auto;
-}
-img.img-responsive {
-    width: 100%;
-    height: auto;
-}
-.iconLogo {
-    border-radius: 100%;
-    width: 100%!important;
-    height: 100%!important;
-}
-</style>
+    <link rel="stylesheet" href="./dist/css/reset.css">
+    <link rel="stylesheet" href="./dist/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <link rel="stylesheet" href="./dist/css/owl.carousel.css">
+    <link rel="stylesheet" href="./dist/css/owl.theme.default.css">
 </head>
 <body>
-	<%@include file="/WEB-INF/views/user/header.jsp"%>
+     
+    <!-- Header -->
+    <header class="header">
+        <section class="header-top">
+            <div class="container d-flex jc-space-between ai-center">
+                <div class="header-left">
+                    <p>Welcome to Riode store message or remove it!</p>
+                </div>
+    
+                <div class="header-right">
+                    <a class="hover-p-color" href="">
+                        <i class="fa-solid fa-location-dot"></i>Contact Us
+                    </a>
+                    <a class="hover-p-color" href="">
+                        <i class="fa-solid fa-circle-info"></i>Need help
+                    </a>
+                </div>
+            </div>
+        </section>
 
-	<div class="limiter">
-		<div class="container-login100"
-			style="background-image: url('resources/login/images/bg-01.jpg');">
-			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
-				<form:form class="login100-form validate-form" action="user/login.htm" modelAttribute="user">
-					<a href="page/home.htm" class="logoHome"><img alt="resources/page/images/logo1.PNG" src="resources/page/image/logo1.PNG" class="img-responsive iconLogo" ></a>
-					<span class="login100-form-title p-b-49 p-t-15"> Login </span>
+        <section class="header-middle">
+            <div class="container d-flex jc-space-between ai-center">
+                <div class="header-left  d-flex jc-space-between ai-center">
+                    <div class="logo">
+                        <a href=""><img src="https://d-themes.com/html/riode/images/demos/demo4/logo.png" alt=""></a>
+                    </div>
 
-					<div class="wrap-input100  m-b-23"
-						data-validate="Username is reauired">
-						<span class="label-input100">Username</span>
-						<form:input path="user_name" class="input100" type="text"
-							name="username" placeholder="Type your username" />
-						<span class="focus-input100" data-symbol="&#xf206;"></span>
-					</div>
-					<form:errors path="user_name"></form:errors>
-					<div class="wrap-input100 " data-validate="Password is required">
-						<span class="label-input100">Password</span>
-						<form:input path="password" class="input100" type="password"
-							name="pass" placeholder="Type your password" />
-						<span class="focus-input100" data-symbol="&#xf190;"></span>
-					</div>
-					<form:errors path="password"></form:errors>
+                    <ul class="menu  d-flex jc-space-between ai-center">
+                        <li><a href="">Home</a></li>
+                        <li><a href="">Products</a></li>
+                        <li><a href="">Sale</a></li>
+                        <li><a href="">About</a></li>
+                        <li class="search d-flex ai-center">
+                            <form:input type="text" path="" placeholder="Search..."/>
+                            <a href="">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+    
+                <ul class="header-right  d-flex jc-space-between ai-center">
+                   
+                    <li><a href=""><i class="fa-solid fa-user"></i></a></li>
+                    <li><a href=""><i class="fa-solid fa-bag-shopping"></i></a></li>
+                </ul>
+            </div>
+        </section>
 
-					<div class="text-right p-t-8 p-b-31">
-						<a href="user/forgotpassword.htm"> Forgot password? </a>
-					</div>
+        <div class="header-support"></div>
 
-					<div class="container-login100-form-btn">
-						<div class="wrap-login100-form-btn">
-							<div class="login100-form-bgbtn"></div>
-							<form:button class="login100-form-btn">
-								Login
-							</form:button>
-						</div>
-					</div>
-					<span id="message.errors">${message}</span>
-					<div class="txt1 text-center p-t-54 p-b-20">
-						<span> Or Sign Up Using </span>
-					</div>
+    </header>
 
-					<div class="flex-c-m">
-						<a href="#" class="login100-social-item bg1"> <i
-							class="fa fa-facebook"></i>
-						</a> <a href="#" class="login100-social-item bg2"> <i
-							class="fa fa-twitter"></i>
-						</a> <a href="#" class="login100-social-item bg3"> <i
-							class="fa fa-google"></i>
-						</a>
-					</div>
+    <main class="main login-container">
+        <div class="container">
+            
+            <form:form class="login-form:form" action="">
+                <h2>Login</h2>
 
-					<div class="flex-col-c p-t-155">
-						<a href="user/register.htm" class="txt2"> Sign Upp </a>
-					</div>
-				</form:form>
-			</div>
-		</div>
-	</div>
+                <form:input type="text" path="" placeholder="Username"/>
+                <!-- <span class="errors">Have to type account</span> -->
+                <form:input type="password" path="" placeholder="Password"/>
+                <!-- <span class="errors">Wrong password</span> -->
 
-
-	<div id="dropDownSelect1"></div>
-
-	<!--===============================================================================================-->
-
-
+                <div class="link">
+                    <a href="">I don't have account</a>
+                    <a href="">Lost your password?</a>
+                </div>
+                <!-- <br> -->
+                <form:button>Login</form:button>
+            </form:form>
+        </div>
+    </main>
 </body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+    <script src="./dist/js/owl.carousel.js"></script>
+    <script src="./dist/js/home.js"></script>
 </html>

@@ -13,6 +13,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import fashion_shop.entity.Product;
+
 @Transactional
 public class GlobalInterceptor extends HandlerInterceptorAdapter {
 	@Autowired
@@ -24,14 +26,14 @@ public class GlobalInterceptor extends HandlerInterceptorAdapter {
 		Session session = factory.getCurrentSession();
 		String hql = "FROM Product";
 		Query query = session.createQuery(hql);
-//		List<Product> list = query.list();
-//		List<Product> newList = new ArrayList<>();
-//		int countProduct = (list.size() < 28) ? list.size() : 28;
-//		for (int i = 0; i < countProduct; i++) {
-//			newList.add(list.get(i));
-//		}
-//		request.setAttribute("pros", newList);
-//		request.setAttribute("totalProd", newList.size());
+		List<Product> list = query.list();
+		List<Product> newList = new ArrayList<>();
+		int countProduct = (list.size() < 28) ? list.size() : 28;
+		for (int i = 0; i < countProduct; i++) {
+			newList.add(list.get(i));
+		}
+		request.setAttribute("pros", newList);
+		request.setAttribute("totalProd", newList.size());
 		return true;
 	}
 }

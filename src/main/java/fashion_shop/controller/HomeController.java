@@ -6,7 +6,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import fashion_shop.entity.Customer;
+import fashion_shop.entity.Account;
 
 @Controller
 @RequestMapping("/home/")
@@ -16,10 +16,10 @@ public class HomeController {
 		return "home/index";
 	}
 	
-//	@Autowired
-//	Customer user;
-//	@ModelAttribute("user")
-//	public Customer getUser() {
-//		return user;
-//	}
+	@Autowired
+	Account user;
+	@ModelAttribute("user")
+	public Account getUser() {
+		return user;
+	}
 }
