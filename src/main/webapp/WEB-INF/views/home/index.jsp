@@ -30,7 +30,9 @@
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-	<%@include file="/WEB-INF/views/home/header.jsp"%>
+	<%@include file="/WEB-INF/views/header.jsp"%>
+	
+	
 	<!-- Main -->
 	<main class="main">
       
@@ -335,7 +337,7 @@
 		</section>
 	</main>
 
-	<%@include file="/WEB-INF/views/home/footer.jsp"%>
+	<%@include file="/WEB-INF/views/footer.jsp"%>
 
 </body>
 <script
