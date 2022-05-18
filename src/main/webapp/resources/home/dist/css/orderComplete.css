@@ -701,159 +701,222 @@ header .header-support.active {
   color: #666;
 }
 
-.header {
-  position: fixed;
-  left: 0;
-  right: 0;
-}
-
-.main {
-  background-color: #ecf0f1;
-  height: 100vh;
-}
-
-.main .container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  height: 100%;
-}
-
-.main .container form {
-  margin-top: 200px;
-  border-radius: 4px;
-  padding: 40px;
+body {
   background-color: white;
 }
 
-.main .container form h2 {
-  font-size: 30px;
-  font-weight: 700;
+.main .page-content {
+  padding: 35px 0 50px;
+}
+
+.main .page-content .step-by {
+  padding: 9px 20px;
   text-align: center;
-  line-height: 1;
-  margin-bottom: 40px;
-  color: #222;
-}
-
-.main .container form input {
-  display: block;
-  width: 100%;
-  padding: 12px 15px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  margin-top: 20px;
-  font-size: 13px;
-  line-height: 20px;
-  color: #666;
-}
-
-.main .container form .errors {
-  display: block;
-  margin-bottom: 10px;
-  margin-left: 12px;
-  font-size: 13px;
-  color: #c0392b;
-}
-
-.main .container form .link {
-  margin-top: 20px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
-.main .container form .link a {
-  text-align: end;
-  font-size: 13px;
-  color: #666;
-  -webkit-transition: 0.3s;
-  transition: 0.3s;
-}
-
-.main .container form .link a:hover {
-  color: #1e90ff;
-}
-
-.main .container form button {
-  margin-top: 20px;
-  width: 100%;
-  cursor: pointer;
-  height: 45px;
-  background-color: #1e90ff;
-  font-size: 13px;
+.main .page-content .step-by .title-step {
+  font-size: 20px;
   font-weight: 700;
-  text-transform: uppercase;
-  color: white;
-  border-radius: 4px;
-  -webkit-transition: 0.3s;
-  transition: 0.3s;
+  letter-spacing: -0.5px;
+  line-height: 1;
+  padding: 4px 0;
+  color: #666;
 }
 
-.main .container form button:hover {
-  opacity: 0.9;
+.main .page-content .step-by .title-step.active {
+  color: #26c;
 }
 
-.main .container form.login-form {
-  width: 500px;
+.main .page-content .step-by i {
+  margin: 0 20px;
+  font-size: 20px;
+  color: #ccc;
 }
 
-.main .container form.register-form {
-  width: 900px;
-  font-size: 12px;
+.main .page-content .container {
+  margin: 35px auto 10px;
 }
 
-.main .container form.register-form h2 {
-  margin-bottom: 20px;
+.main .page-content .container .order-message {
+  margin: 0 auto;
+  padding: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 360px;
+  -webkit-box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
+          box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 
-.main .container form.register-form .input-group {
-  margin-top: 20px;
-  height: 46px;
-  overflow: hidden;
+.main .page-content .container .order-message .icon {
+  font-size: 60px;
+  color: #26c;
+  margin-right: 30px;
 }
 
-.main .container form.register-form .input-group label {
-  font-size: 12px;
+.main .page-content .container .order-message .message {
+  font-size: 14px;
 }
 
-.main .container form.register-form .input-group input {
-  margin: 0;
-  border: none;
-  padding: 0;
+.main .page-content .container .order-message .message h4 {
+  font-size: 20px;
+  color: #26c;
 }
 
-.main .container form.register-form .input-group select {
-  height: 40px;
+.main .page-content .container .order-results {
+  margin: 48px auto 19px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.main .page-content .container .order-results .overview-item {
+  margin-bottom: 30px;
+  padding-right: 20px;
+  border-right: 1px solid #ccc;
+  margin: 0 30px 30px 0;
+}
+
+.main .page-content .container .order-results .overview-item:last-child {
+  border: 0;
+  margin-right: 0;
+}
+
+.main .page-content .container .order-results .overview-item .overview-name {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22.4px;
+  color: #666;
+}
+
+.main .page-content .container .order-results .overview-item .overview-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.main .page-content .container .title {
+  padding-top: 20px;
+  margin-bottom: 26px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.25px;
+  line-height: 1;
+}
+
+.main .page-content .container .order-details {
   border: 1px solid #ccc;
-  border-radius: 3px;
-  width: 120px;
-  padding: 0 12px;
-  margin-left: 12px;
+  border-radius: 4px;
+  padding: 4px 30px;
+}
+
+.main .page-content .container .order-details table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.main .page-content .container .order-details table tr.table-cat:not(:last-child) {
+  border-bottom: 1px solid #ccc;
+}
+
+.main .page-content .container .order-details table tr .table-title {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.18px;
+  line-height: 25.2px;
+  padding: 20px 0;
+  text-align: left;
+}
+
+.main .page-content .container .order-details table tr td {
+  text-align: right;
+}
+
+.main .page-content .container .order-details table tr td:first-child {
+  text-align: left;
+}
+
+.main .page-content .container .order-details table tr.prod td {
+  padding: 20px 0 10px;
+  font-size: 14px;
+}
+
+.main .page-content .container .order-details table tr.prod td .quantity {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.main .page-content .container .order-details table tr .table-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+}
+
+.main .page-content .container .order-details table tr .bold {
+  font-size: 20px !important;
+  color: #333;
+  font-weight: 700;
+}
+
+.main .page-content .container .order-info {
+  padding-bottom: 40px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 30px;
+}
+
+.main .page-content .container .order-info li {
+  padding: 10px 0;
   font-size: 14px;
   color: #666;
 }
 
-.main .container form p {
-  margin-top: 30px;
-}
-
-.main .container form p a {
-  color: #666;
-}
-
-.main .container form p a:hover {
+.main .page-content .container .btn-back-home {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 15px 30px;
+  height: 45px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   color: #1e90ff;
+  background-color: rgba(30, 144, 255, 0.2);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 4px;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
 }
-/*# sourceMappingURL=login.css.map */
+
+.main .page-content .container .btn-back-home i {
+  margin-right: 12px;
+}
+
+.main .page-content .container .btn-back-home:hover {
+  background-color: #1e90ff;
+  color: white;
+}
+/*# sourceMappingURL=orderComplete.css.map */

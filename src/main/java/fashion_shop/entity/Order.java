@@ -19,7 +19,7 @@ public class Order {
 	@Id
 	@GeneratedValue
 	@Column(name = "ID")
-	private int id_order;
+	private Integer id_order;
 	
 	@Column(name = "Date")
 	private Date order_date;
@@ -39,11 +39,11 @@ public class Order {
 		this.emails = emails;
 	}
 
-	public int getId_order() {
+	public Integer getId_order() {
 		return id_order;
 	}
 
-	public void setId_order(int id_order) {
+	public void setId_order(Integer id_order) {
 		this.id_order = id_order;
 	}
 

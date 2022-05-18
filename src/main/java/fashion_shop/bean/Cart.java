@@ -4,7 +4,7 @@ public class Cart {
 	private int idItem;
 	private String nameItem;
 	private float priceItem;
-	private int quality;
+	private int Quantity;
 	private String image;
 
 	public int getIdItem() {
@@ -31,12 +31,12 @@ public class Cart {
 		this.priceItem = priceItem;
 	}
 
-	public int getQuality() {
-		return quality;
+	public int getQuantity() {
+		return Quantity;
 	}
 
-	public void setQuality(int quality) {
-		this.quality = quality;
+	public void setQuantity(int Quantity) {
+		this.Quantity = Quantity;
 	}
 
 	public String getImage() {

@@ -8,21 +8,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-//import fashion_shop.entity;
-
 @Entity
 @Table(name = "OrderDetail")
 public class OrderDetail {
 	@Id
 	@GeneratedValue
 	@Column(name = "ID")
-	private int id_detail;
+	private Integer id_detail;
 	
 	@Column(name = "Price")
 	private float price;
 	
 	@Column(name = "Quantity")
-	private int quantity;
+	private Integer quantity;
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_order")
@@ -32,11 +30,11 @@ public class OrderDetail {
 	@JoinColumn(name = "ID_product")
 	private Product product;
 	
-	public int getId_detail() {
+	public Integer getId_detail() {
 		return id_detail;
 	}
 
-	public void setId_detail(int id_detail) {
+	public void setId_detail(Integer id_detail) {
 		this.id_detail = id_detail;
 	}
 
@@ -48,11 +46,11 @@ public class OrderDetail {
 		this.price = price;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
 
@@ -64,11 +62,11 @@ public class OrderDetail {
 		this.order = order;
 	}
 
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
+//	public Product getProduct() {
+//		return product;
+//	}
+//
+//	public void setProduct(Product product) {
+//		this.product = product;
+//	}
 }

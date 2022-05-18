@@ -42,6 +42,15 @@ public class UserController {
 		List<Account> listUser = query.list();
 		return listUser;
 	}
+	
+	@ModelAttribute("listCus")
+	public List<Account> getLcus() {
+		Session session = factory.getCurrentSession();
+		String hql = "from Account where Role = 2";
+		Query query = session.createQuery(hql);
+		List<Account> listcus = query.list();
+		return listcus;
+	}
 
 	// Đăng Ký
 	@RequestMapping(value = "register", method = RequestMethod.GET)
@@ -156,12 +165,19 @@ public class UserController {
 		if (user.getPassword().trim().length() == 0) {
 			errors.rejectValue("password", "user", "Yêu cầu không để trống mật khẩu");
 		}
+		
 		if (acc == null) {
 			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
 		} else if (user.getPassword().equals(acc.getPassword())) {
 			Thread.sleep(1000);
 			httpSession.setAttribute("user", acc);
-			return "redirect:/home/index.htm";
+			boolean isAdmin = (boolean)acc.getRoles().equals((Object)1);
+			if(isAdmin == true) {
+				return "redirect:/admin/adminHome.html";
+			} else {
+				model.addAttribute("session", 1);
+				return "redirect:/home/temp.htm";
+			}
 		} else
 			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
 		return "user/login";
@@ -244,8 +260,8 @@ public class UserController {
 		Transaction t = session.beginTransaction();
 
 		Account acc = null;
-		List<Account> listUser = getLUser();
-		for (Account Account : listUser) {
+		List<Account> listCus = getLcus();
+		for (Account Account : listCus) {
 			if (Account.getUser_name().equals(user.getUser_name())) {
 				acc = Account;
 				break;

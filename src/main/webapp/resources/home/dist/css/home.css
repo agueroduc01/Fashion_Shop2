@@ -232,7 +232,7 @@ header .header-middle .header-left .menu li {
   margin-right: 30px;
 }
 
-header .header-middle .header-left .menu li:first-child a {
+header .header-middle .header-left .menu li:active a {
   color: #1e90ff;
 }
 
@@ -299,6 +299,235 @@ header .header-middle .header-right li i:hover {
   color: #1e90ff;
   -webkit-transition: 0.2s;
   transition: 0.2s;
+}
+
+header .header-middle .header-right .cart-group {
+  position: relative;
+}
+
+header .header-middle .header-right .cart-group::before {
+  content: '';
+  position: absolute;
+  width: 250%;
+  height: 200%;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+header .header-middle .header-right .cart-group .prod-quantity {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 15px;
+  height: 15px;
+  background-color: #1e90ff;
+  color: white;
+  border-radius: 50%;
+  font-size: 11px;
+  line-height: 0.8;
+}
+
+header .header-middle .header-right .cart-group .cart {
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transform: translateY(8px);
+          transform: translateY(8px);
+  border-radius: 4px;
+  position: absolute;
+  top: 120%;
+  right: 0;
+  z-index: 200;
+  padding: 30px;
+  background-color: white;
+  -webkit-box-shadow: 0 5px 30px 2px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 5px 30px 2px rgba(0, 0, 0, 0.2);
+}
+
+header .header-middle .header-right .cart-group .cart .show-prods {
+  overflow: auto;
+  height: 200px;
+}
+
+header .header-middle .header-right .cart-group .cart .show-prods .prod {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 270px;
+}
+
+header .header-middle .header-right .cart-group .cart .show-prods .prod-image {
+  padding: 0;
+  width: 80px;
+  height: 90px;
+  margin-right: 25px;
+}
+
+header .header-middle .header-right .cart-group .cart .show-prods .prod-info {
+  padding: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+header .header-middle .header-right .cart-group .cart .show-prods .prod-name {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.35px;
+  line-height: 18.76px;
+  margin-bottom: 16px;
+  margin-right: 10px;
+  color: #666;
+}
+
+header .header-middle .header-right .cart-group .cart .show-prods .prod p {
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: -0.35px;
+  line-height: 1;
+  margin-right: 10px;
+  color: #666;
+}
+
+header .header-middle .header-right .cart-group .cart .show-prods .prod p .price {
+  font-weight: 600;
+  color: #222;
+  margin-left: 10px;
+}
+
+header .header-middle .header-right .cart-group .cart .show-prods .prod p .quantity {
+  margin-right: 10px;
+}
+
+header .header-middle .header-right .cart-group .cart .show-prods .prod .btn-remove {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  width: 21px;
+  height: 21px;
+  background-color: white;
+  border: 1px solid #ccc;
+  color: #222;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  cursor: pointer;
+}
+
+header .header-middle .header-right .cart-group .cart .show-prods .prod .btn-remove i {
+  font-size: 13px;
+  -webkit-transform: translateY(-1px);
+          transform: translateY(-1px);
+}
+
+header .header-middle .header-right .cart-group .cart .show-prods .prod:not(:first-child) {
+  margin-top: 20px;
+}
+
+header .header-middle .header-right .cart-group .cart .subtotal {
+  margin: 20px 0;
+  border-top: 1px solid #edeef0;
+  border-bottom: 1px solid #edeef0;
+  padding: 17px 0 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+header .header-middle .header-right .cart-group .cart .subtotal .total-price {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+header .header-middle .header-right .cart-group .cart .subtotal label {
+  margin-left: 4px;
+  color: #666;
+}
+
+header .header-middle .header-right .cart-group .cart .action {
+  text-align: center;
+}
+
+header .header-middle .header-right .cart-group .cart .btn-view-cart {
+  display: inline-block;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #1e90ff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.14px;
+  line-height: 18px;
+  color: #222;
+  text-transform: capitalize;
+}
+
+header .header-middle .header-right .cart-group .cart .btn-view-cart:hover {
+  color: #1e90ff;
+}
+
+header .header-middle .header-right .cart-group .cart .btn-check-out {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  height: 50px;
+  border-radius: 4px;
+  background-color: #222;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+header .header-middle .header-right .cart-group .cart .btn-check-out:hover {
+  opacity: 0.9;
+}
+
+header .header-middle .header-right .cart-group:hover .cart {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
 }
 
 header .header-middle.fixed {

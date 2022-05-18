@@ -86,135 +86,10 @@ public class AdminController {
 		return listOrder;
 	}
 
-	@ModelAttribute("sizes")
-	public List<Float> getSize() {
-		List<Float> lSizes = new ArrayList<Float>();
-		lSizes.add((float) 19);
-		lSizes.add((float) 21);
-		lSizes.add((float) 23);
-		return lSizes;
-	}
-
-	@ModelAttribute("colors")
-	public List<String> getColors() {
-		List<String> l = new ArrayList<String>();
-		l.add("Yellow");
-		l.add("Gray");
-		l.add("Black");
-		l.add("White");
-		l.add("Blue");
-		return l;
-	}
-
-	@ModelAttribute("categories")
-	public List<String> getCategories() {
-		List<String> l = new ArrayList<String>();
-		l.add("Pant");
-		l.add("T-Shirt");
-		l.add("Shirt");
-		l.add("Bag");
-		return l;
-	}
-
-	@RequestMapping(value = { "genders" })
-	public List<String> genders() {
-		List<String> l = new ArrayList<String>();
-		l.add("Nam");
-		l.add("Nữ");
-		return l;
-	}
-
 	@RequestMapping(value = { "logoff" })
 	public String logoff(HttpSession httpSession) {
 		httpSession.removeAttribute("admin");
 		return "redirect:/admin/login.htm";
-	}
-
-	@RequestMapping(value = { "login" }, method = RequestMethod.GET)
-	public String login(ModelMap model) {
-		model.addAttribute("admin", new Account());
-		return "admin/login";
-	}
-
-	@RequestMapping(value = { "forgotPassword" }, method = RequestMethod.GET)
-	public String forgotPassword(ModelMap model) {
-		model.addAttribute("admin", new Account());
-		return "admin/forgotPassword";
-	}
-
-	@RequestMapping(value = { "forgotPassword" }, method = RequestMethod.POST)
-	public String forgotPassword(ModelMap model, @ModelAttribute("admin") Account admin, BindingResult errors) {
-		List<Account> listAdmin = getLAdmin();
-		for (Account account : listAdmin) {
-			if (account.getEmail().equals(admin.getEmail())) {
-				Session session = factory.openSession();
-				Transaction t = session.beginTransaction();
-				Account acc = (Account) session.get(Account.class, admin.getEmail());
-				Random rand = new Random();
-				int rand_int1 = rand.nextInt(99999999);
-				String newPassword = Integer.toString(rand_int1);
-				try {
-					acc.setPassword(newPassword);
-					String from = "n17dccn157@student.ptithcm.edu.vn";
-					String to = acc.getEmail();
-					String body = "Đây là mật khẩu mới của bạn: " + newPassword;
-					String subject = "Quên mật khẩu";
-					MimeMessage mail = mailer.createMimeMessage();
-					MimeMessageHelper helper = new MimeMessageHelper(mail);
-					helper.setFrom(from, from);
-					helper.setTo(to);
-					helper.setReplyTo(from, from);
-					helper.setSubject(subject);
-					helper.setText(body, true);
-					mailer.send(mail);
-					session.update(acc);
-					t.commit();
-					model.addAttribute("message", "Mật khẩu mới sẽ được gửi về email của bạn. !");
-
-				} catch (Exception e) {
-					model.addAttribute("message", "Không tìm thấy tài khoản nào với email này.!");
-					t.rollback();
-				} finally {
-					session.close();
-				}
-				return "admin/forgotPassword";
-			}
-		}
-		if (admin.getEmail().trim().length() == 0) {
-			errors.rejectValue("email", "admin", "Please fill correct email");
-		} else
-			errors.rejectValue("email", "admin", "Email không hợp lệ");
-		return "admin/forgotPassword";
-	}
-
-	@RequestMapping(value = { "login" }, method = RequestMethod.POST)
-	public String login(HttpServletRequest request, HttpSession httpSession, @ModelAttribute("admin") Account admin,
-			BindingResult errors, ModelMap model) {
-
-		Account acc = null;
-		List<Account> listAdmin = getLAdmin();
-		for (Account account : listAdmin) {
-			if (account.getUser_name().equals(admin.getUser_name())) {
-				acc = account;
-				break;
-			}
-		}
-		if (admin.getUser_name().trim().length() == 0) {
-			errors.rejectValue("cus_name", "admin", "Please fill correct cus_name");
-		}
-
-		if (admin.getPassword().trim().length() == 0) {
-			errors.rejectValue("password", "admin", "Please fill correct Password");
-		}
-		if (acc == null) {
-			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
-		} else if (admin.getPassword().equals(acc.getPassword())) {
-			httpSession.setAttribute("admin", acc);
-			return "redirect:/admin/dashboard.htm";
-		} else
-			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
-
-		return "admin/login";
 	}
 
 	@RequestMapping(value = { "dashboard" })
@@ -277,7 +152,7 @@ public class AdminController {
 
 	@RequestMapping(value = { "insert_product" }, method = RequestMethod.GET)
 	public String insert_product(ModelMap model, HttpSession httpSession) {
-		model.addAttribute("sizes", getSize());
+//		model.addAttribute("sizes", getSize());
 		httpSession.removeAttribute("p");
 		model.addAttribute("p", new Product());
 		return "admin/insert_product";
@@ -494,7 +369,7 @@ public class AdminController {
 	public String insert_customer(ModelMap model, HttpSession httpSession) {
 		httpSession.removeAttribute("cus");
 		model.addAttribute("cus", new Account());
-		model.addAttribute("genders", genders());
+//		model.addAttribute("genders", genders());
 		return "admin/insert_customer";
 	}
 
@@ -671,7 +546,7 @@ public class AdminController {
 		Session session = factory.getCurrentSession();
 		Account cus = (Account) session.get(Account.class, email);
 		model.addAttribute("cus", cus);
-		model.addAttribute("genders", genders());
+//		model.addAttribute("genders", genders());
 		httpSession.setAttribute("cus", cus);
 		return "admin/edit_cus";
 	}
@@ -792,14 +667,14 @@ public class AdminController {
 		for (OrderDetail o : list) {
 			Session session1 = factory.openSession();
 			Transaction t1 = session1.beginTransaction();
-			prod = (Product) session1.get(Product.class, o.getProduct().getId_product());
-			try {
-				prod.setQuantity(prod.getQuantity() + o.getQuantity());
-				session1.update(prod);
-				t1.commit();
-			} catch (Exception e) {
-				t.rollback();
-			}
+//			prod = (Product) session1.get(Product.class, o.getProduct().getidProduct());
+//			try {
+//				prod.setQuantity(prod.getQuantity() + o.getQuantity());
+//				session1.update(prod);
+//				t1.commit();
+//			} catch (Exception e) {
+//				t.rollback();
+//			}
 		}
 		session.close();
 	}
@@ -839,7 +714,7 @@ public class AdminController {
 		String sp = "";
 		for (OrderDetail o : listOrder) {
 			sum += (o.getPrice() * o.getQuantity());
-			sp += o.getProduct().getName() + ", ";
+//			sp += o.getProduct().getName() + ", ";
 		}
 
 		try {
@@ -998,7 +873,7 @@ public class AdminController {
 	public String insert_admin(ModelMap model, HttpSession httpSession) {
 		httpSession.removeAttribute("newAdmin");
 		model.addAttribute("newAdmin", new Account());
-		model.addAttribute("genders", genders());
+//		model.addAttribute("genders", genders());
 		return "admin/insert_admin";
 	}
 
@@ -1180,7 +1055,7 @@ public class AdminController {
 		Session session = factory.getCurrentSession();
 		Account newAdmin = (Account) session.get(Account.class, email);
 		model.addAttribute("newAdmin", newAdmin);
-		model.addAttribute("genders", genders());
+//		model.addAttribute("genders", genders());
 		httpSession.setAttribute("newAdmin", newAdmin);
 		return "admin/edit_admin";
 	}

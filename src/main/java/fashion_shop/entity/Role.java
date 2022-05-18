@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class Role {
 	@Id
 	@Column(name = "ID")
-	private int IdRole;
+	private Integer IdRole;
 	
 	@Column(name = "Name")
 	private String nameRole;
@@ -22,11 +22,11 @@ public class Role {
 	@OneToMany(mappedBy = "roles", fetch = FetchType.EAGER)
 	private Collection<Account> accounts;
 
-	public int getIdRole() {
+	public Integer getIdRole() {
 		return IdRole;
 	}
 
-	public void setIdRole(int idRole) {
+	public void setIdRole(Integer idRole) {
 		IdRole = idRole;
 	}
 

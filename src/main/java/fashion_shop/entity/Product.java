@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -14,43 +16,45 @@ import javax.persistence.Table;
 public class Product {
 	@Id
 	@Column(name = "ID")
-	private int id_product;
+	private String idProduct;
 
 	@Column(name = "Name")
 	private String name;
 	
-	private String IDCategory;
+	@Column(name = "Color")
 	private String Color;
 
 	@Column(name = "Size")
-	private float size;
+	private String size;
 
 	@Column(name = "Price")
 	private float price;
 	
 	@Column(name = "Quantity")
-	private int quantity;
+	private Integer quantity;
 
 	@Column(name = "Image")
 	private String image;
 
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
-	private Collection<OrderDetail> details;
+	private Collection<OrderDetail> orderDetails;
+	
+	@OneToMany(mappedBy = "idProd", fetch = FetchType.EAGER)
+	private Collection<Size> sizes;
+	
+	@OneToMany(mappedBy = "idProduct", fetch = FetchType.EAGER)
+	private Collection<Color> colors;
+	
+	@ManyToOne 
+	@JoinColumn(name = "IDCategory")
+	private ProductCategory ProdCategory;
 
-	public int getId_product() {
-		return id_product;
+	public String getIdProduct() {
+		return idProduct;
 	}
 
-	public void setId_product(int id_product) {
-		this.id_product = id_product;
-	}
-
-	public Collection<OrderDetail> getDetail() {
-		return details;
-	}
-
-	public void setDetail(Collection<OrderDetail> details) {
-		this.details = details;
+	public void setIdProduct(String idProduct) {
+		this.idProduct = idProduct;
 	}
 
 	public String getName() {
@@ -61,11 +65,19 @@ public class Product {
 		this.name = name;
 	}
 
-	public float getSize() {
+	public String getColor() {
+		return Color;
+	}
+
+	public void setColor(String color) {
+		Color = color;
+	}
+
+	public String getSize() {
 		return size;
 	}
 
-	public void setSize(float size) {
+	public void setSize(String size) {
 		this.size = size;
 	}
 
@@ -77,6 +89,14 @@ public class Product {
 		this.price = price;
 	}
 
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
 	public String getImage() {
 		return image;
 	}
@@ -85,37 +105,27 @@ public class Product {
 		this.image = image;
 	}
 
-	public String getIDCategory() {
-		return IDCategory;
+	public Collection<Size> getSizes() {
+		return sizes;
 	}
 
-	public void setIDCategory(String IDCategory) {
-		this.IDCategory = IDCategory;
+	public void setSizes(Collection<Size> sizes) {
+		this.sizes = sizes;
 	}
 
-	public String getColor() {
-		return Color;
+	public Collection<Color> getColors() {
+		return colors;
 	}
 
-	public void setColor(String color) {
-		this.Color = color;
+	public void setColors(Collection<Color> colors) {
+		this.colors = colors;
 	}
 
-	public Collection<OrderDetail> getDetails() {
-		return details;
+	public ProductCategory getProductCategory() {
+		return ProdCategory;
 	}
 
-	public void setDetails(Collection<OrderDetail> details) {
-		this.details = details;
+	public void setProductCategory(ProductCategory productCategory) {
+		ProdCategory = productCategory;
 	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-	
-
 }

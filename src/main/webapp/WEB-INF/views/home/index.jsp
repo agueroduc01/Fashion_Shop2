@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,10 +15,15 @@
 <title>Riode</title>
 <base href="${pageContext.servletContext.contextPath}/">
 
-<link href="<c:url value='/resources/home/dist/css/reset.css' />" rel="stylesheet">
-<link href="<c:url value='/resources/home/dist/css/home.css' />" rel="stylesheet">
-<link href="<c:url value='/resources/home/dist/css/owl.carousel.css' />" rel="stylesheet">
-<link href="<c:url value='/resources/home/dist/css/owl.theme.default.css' />" rel="stylesheet">
+<link href="<c:url value='/resources/home/dist/css/reset.css' />"
+	rel="stylesheet">
+<link href="<c:url value='/resources/home/dist/css/home.css' />"
+	rel="stylesheet">
+<link href="<c:url value='/resources/home/dist/css/owl.carousel.css' />"
+	rel="stylesheet">
+<link
+	href="<c:url value='/resources/home/dist/css/owl.theme.default.css' />"
+	rel="stylesheet">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
 	integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
@@ -27,7 +33,7 @@
 	<%@include file="/WEB-INF/views/home/header.jsp"%>
 	<!-- Main -->
 	<main class="main">
-
+      
 		<!-- Slider -->
 		<section class="slider">
 			<div class="container">
@@ -48,7 +54,8 @@
 								<h2>
 									Biometric<br>Fingerprints<br>Padlock
 								</h2>
-								<a href="">SHOP NOW <i class="fa-solid fa-arrow-right"></i></a>
+								<a href="home/products.htm">SHOP NOW <i
+									class="fa-solid fa-arrow-right"></i></a>
 
 							</div>
 						</div>
@@ -76,7 +83,7 @@
 					<!-- Item -->
 					<div class="col-6 h-2">
 						<div class="row">
-							<a href="" class="col-6 h-1">
+							<a href="home/products.htm" class="col-6 h-1">
 								<div class="img">
 									<img
 										src="https://d-themes.com/html/riode/images/demos/demo4/categories/1.jpg"
@@ -85,7 +92,7 @@
 								</div>
 
 								<h5 class="title">For Fitness</h5>
-							</a> <a href="" class="col-6 h-1">
+							</a> <a href="home/products.htm" class="col-6 h-1">
 								<div class="img">
 									<img
 										src="https://d-themes.com/html/riode/images/demos/demo4/categories/2.jpg"
@@ -94,7 +101,7 @@
 								</div>
 
 								<h5 class="title">Brand Sale</h5>
-							</a> <a href="" class="col-6 h-1">
+							</a> <a href="home/products.htm" class="col-6 h-1">
 								<div class="img">
 									<img
 										src="https://d-themes.com/html/riode/images/demos/demo4/categories/3.jpg"
@@ -103,7 +110,7 @@
 								</div>
 
 								<h5 class="title white">Top watches</h5>
-							</a> <a href="" class="col-6 h-1">
+							</a> <a href="home/products.htm" class="col-6 h-1">
 								<div class="img">
 									<img
 										src="https://d-themes.com/html/riode/images/demos/demo4/categories/4.jpg"
@@ -135,7 +142,7 @@
 					</div>
 
 					<!-- Item -->
-					<a href="" class="col-3 h-1">
+					<a href="home/products.htm" class="col-3 h-1">
 						<div class="img">
 							<img
 								src="	https://d-themes.com/html/riode/images/demos/demo4/categories/6.jpg"
@@ -171,217 +178,54 @@
 
 				<!-- Title  -->
 				<h4 class="title">
-					New Arrivals <a href="" class="more hover-p-color">VIEW MORE <i
-						class="fa-solid fa-arrow-right"></i></a>
+					New Arrivals <a href="home/products.htm" class="more hover-p-color">VIEW
+						MORE <i class="fa-solid fa-arrow-right"></i>
+					</a>
 				</h4>
 
 				<!-- List Product Show -->
 				<div class="owl-carousel owl-theme">
 
 					<!-- A product  -->
-					<div class="product">
-						<div class="product-image">
-							<img
-								src="https://d-themes.com/html/riode/images/demos/demo4/products/1.jpg"
-								alt="">
+					<c:forEach var="p" items="${prods}" begin="0" end="8" step="1">
+						<div class="col-4 product">
+							<div class="product-image">
+								<img
+									src="https://d-themes.com/html/riode/images/demos/demo4/products/1.jpg"
+									alt="">
 
-							<div class="new">NEW</div>
+								<div class="new">NEW</div>
 
-							<a href="" class="btn-view">VIEW DETAILS</a> <a href=""
-								class="btn-add"> <i class="fa-solid fa-bag-shopping"></i>
-							</a>
-						</div>
+								<a href="home/detail.htm" class="btn-view">VIEW DETAILS</a> <a
+									href="" class="btn-add"> <i
+									class="fa-solid fa-bag-shopping"></i>
+								</a>
+							</div>
 
-						<div class="product-content">
-							<a href="" class="product-category hover-p-color">WATCHES</a>
+							<div class="product-content">
+								<a href="home/products.htm"
+									class="product-category hover-p-color">${p.getProductCategory().nameCategory }</a>
 
-							<h2>
-								<a href="" class="product-name hover-p-color">Fashion Men’s
-									Watches</a>
-							</h2>
+								<h2>
+									<a href="home/detail.htm" class="product-name hover-p-color">${p.name }</a>
+								</h2>
 
-							<p class="product-price">$230.99</p>
+								<p class="product-price">${p.price }</p>
 
-							<div class="review">
-								<ul class="list-stars">
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-								</ul>
+								<div class="review">
+									<ul class="list-stars">
+										<li class="active"><i class="fa-solid fa-star"></i></li>
+										<li class="active"><i class="fa-solid fa-star"></i></li>
+										<li class="active"><i class="fa-solid fa-star"></i></li>
+										<li><i class="fa-solid fa-star"></i></li>
+										<li><i class="fa-solid fa-star"></i></li>
+									</ul>
 
-								( 6 Reviews )
+									( 6 Reviews )
+								</div>
 							</div>
 						</div>
-
-
-					</div>
-
-					<!-- A product  -->
-					<div class="product">
-						<div class="product-image">
-							<img
-								src="https://d-themes.com/html/riode/images/demos/demo4/products/2.jpg"
-								alt="">
-
-							<div class="new">NEW</div>
-
-							<a href="" class="btn-view">VIEW DETAILS</a> <a href=""
-								class="btn-add"> <i class="fa-solid fa-bag-shopping"></i>
-							</a>
-						</div>
-
-						<div class="product-content">
-							<a href="" class="product-category hover-p-color">WATCHES</a>
-
-							<h2>
-								<a href="" class="product-name hover-p-color">Fashion Men’s
-									Watches</a>
-							</h2>
-
-							<p class="product-price">$230.99</p>
-
-							<div class="review">
-								<ul class="list-stars">
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-								</ul>
-
-								( 6 Reviews )
-							</div>
-						</div>
-
-
-					</div>
-
-
-					<!-- A product  -->
-					<div class="product">
-						<div class="product-image">
-							<img
-								src="https://d-themes.com/html/riode/images/demos/demo4/products/3.jpg"
-								alt="">
-
-							<div class="new">NEW</div>
-
-							<a href="" class="btn-view">VIEW DETAILS</a> <a href=""
-								class="btn-add"> <i class="fa-solid fa-bag-shopping"></i>
-							</a>
-						</div>
-
-						<div class="product-content">
-							<a href="" class="product-category hover-p-color">WATCHES</a>
-
-							<h2>
-								<a href="" class="product-name hover-p-color">Fashion Men’s
-									Watches</a>
-							</h2>
-
-							<p class="product-price">$230.99</p>
-
-							<div class="review">
-								<ul class="list-stars">
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-								</ul>
-
-								( 6 Reviews )
-							</div>
-						</div>
-
-
-					</div>
-
-
-					<!-- A product  -->
-					<div class="product">
-						<div class="product-image">
-							<img
-								src="https://d-themes.com/html/riode/images/demos/demo4/products/4.jpg"
-								alt="">
-
-							<div class="new">NEW</div>
-
-							<a href="" class="btn-view">VIEW DETAILS</a> <a href=""
-								class="btn-add"> <i class="fa-solid fa-bag-shopping"></i>
-							</a>
-						</div>
-
-						<div class="product-content">
-							<a href="" class="product-category hover-p-color">WATCHES</a>
-
-							<h2>
-								<a href="" class="product-name hover-p-color">Fashion Men’s
-									Watches</a>
-							</h2>
-
-							<p class="product-price">$230.99</p>
-
-							<div class="review">
-								<ul class="list-stars">
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-								</ul>
-
-								( 6 Reviews )
-							</div>
-						</div>
-
-
-					</div>
-
-
-					<!-- A product  -->
-					<div class="product">
-						<div class="product-image">
-							<img
-								src="https://d-themes.com/html/riode/images/demos/demo4/products/5.jpg"
-								alt="">
-
-							<div class="new">NEW</div>
-
-							<a href="" class="btn-view">VIEW DETAILS</a> <a href=""
-								class="btn-add"> <i class="fa-solid fa-bag-shopping"></i>
-							</a>
-						</div>
-
-						<div class="product-content">
-							<a href="" class="product-category hover-p-color">WATCHES</a>
-
-							<h2>
-								<a href="" class="product-name hover-p-color">Fashion Men’s
-									Watches</a>
-							</h2>
-
-							<p class="product-price">$230.99</p>
-
-							<div class="review">
-								<ul class="list-stars">
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-								</ul>
-
-								( 6 Reviews )
-							</div>
-						</div>
-
-
-					</div>
-
-
+					</c:forEach>
 
 				</div>
 			</div>
@@ -391,7 +235,7 @@
 		<section class="category-section">
 			<div class="container">
 				<div class="row">
-					<a href="" class="cat-gender col-4">
+					<a href="home/products.htm" class="cat-gender col-4">
 						<div class="col-item">
 							<img
 								src="https://d-themes.com/html/riode/images/demos/demo4/categories/8.jpg"
@@ -414,12 +258,12 @@
 								<h2>Black Friday Sale</h2>
 								<h3>UP TO 70% OFF</h3>
 								<h4>EVERYTHING</h4>
-								<a href="">SHOP NOW</a>
+								<a href="home/products.htm">SHOP NOW</a>
 							</div>
 						</div>
 					</div>
 
-					<a href="" class="cat-gender col-4">
+					<a href="home/products.htm" class="cat-gender col-4">
 						<div class="col-item">
 							<img
 								src="https://d-themes.com/html/riode/images/demos/demo4/categories/10.jpg"
@@ -432,186 +276,71 @@
 			</div>
 		</section>
 
+
 		<section class="show-products" style="padding-bottom: 50px;">
 			<div class="container">
 
 				<!-- Title  -->
 				<h4 class="title">
-					Our Featured <a href="" class="more hover-p-color">VIEW MORE <i
-						class="fa-solid fa-arrow-right"></i></a>
+					Our Featured <a href="home/products.htm" class="more hover-p-color">VIEW
+						MORE <i class="fa-solid fa-arrow-right"></i>
+					</a>
 				</h4>
 
 				<!-- List Product Show -->
 				<div class="owl-carousel owl-theme">
 
 					<!-- A product  -->
-					<div class="product">
-						<div class="product-image">
-							<img
-								src="https://d-themes.com/html/riode/images/demos/demo4/products/5.jpg"
-								alt="">
+					<c:forEach var="p" items="${prods}" begin="0" end="8" step="1">
+						<div class="col-4 product">
+							<div class="product-image">
+								<img
+									src="https://d-themes.com/html/riode/images/demos/demo4/products/2.jpg"
+									alt="">
 
-							<div class="new">NEW</div>
+								<div class="new">NEW</div>
 
-							<a href="" class="btn-view">VIEW DETAILS</a> <a href=""
-								class="btn-add"> <i class="fa-solid fa-bag-shopping"></i>
-							</a>
-						</div>
+								<a href="home/detail.htm" class="btn-view">VIEW DETAILS</a> <a
+									href="" class="btn-add"> <i
+									class="fa-solid fa-bag-shopping"></i>
+								</a>
+							</div>
 
-						<div class="product-content">
-							<a href="" class="product-category hover-p-color">WATCHES</a>
+							<div class="product-content">
+								<a href="" class="product-category hover-p-color">${p.getProductCategory().nameCategory }</a>
 
-							<h2>
-								<a href="" class="product-name hover-p-color">Fashion Men’s
-									Watches</a>
-							</h2>
+								<h2>
+									<a href="home/detail.htm" class="product-name hover-p-color">${p.name }</a>
+								</h2>
 
-							<p class="product-price">$230.99</p>
+								<p class="product-price">${p.price }</p>
 
-							<div class="review">
-								<ul class="list-stars">
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-								</ul>
+								<div class="review">
+									<ul class="list-stars">
+										<li class="active"><i class="fa-solid fa-star"></i></li>
+										<li class="active"><i class="fa-solid fa-star"></i></li>
+										<li class="active"><i class="fa-solid fa-star"></i></li>
+										<li><i class="fa-solid fa-star"></i></li>
+										<li><i class="fa-solid fa-star"></i></li>
+									</ul>
 
-								( 6 Reviews )
+									( 6 Reviews )
+								</div>
 							</div>
 						</div>
-
-
-					</div>
-
-
-					<!-- A product  -->
-					<div class="product">
-						<div class="product-image">
-							<img
-								src="https://d-themes.com/html/riode/images/demos/demo4/products/6.jpg"
-								alt="">
-
-							<div class="new">NEW</div>
-
-							<a href="" class="btn-view">VIEW DETAILS</a> <a href=""
-								class="btn-add"> <i class="fa-solid fa-bag-shopping"></i>
-							</a>
-						</div>
-
-						<div class="product-content">
-							<a href="" class="product-category hover-p-color">WATCHES</a>
-
-							<h2>
-								<a href="" class="product-name hover-p-color">Fashion Men’s
-									Watches</a>
-							</h2>
-
-							<p class="product-price">$230.99</p>
-
-							<div class="review">
-								<ul class="list-stars">
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-								</ul>
-
-								( 6 Reviews )
-							</div>
-						</div>
-
-
-					</div>
-
-					<!-- A product  -->
-					<div class="product">
-						<div class="product-image">
-							<img
-								src="https://d-themes.com/html/riode/images/demos/demo4/products/7.jpg"
-								alt="">
-
-							<div class="new">NEW</div>
-
-							<a href="" class="btn-view">VIEW DETAILS</a> <a href=""
-								class="btn-add"> <i class="fa-solid fa-bag-shopping"></i>
-							</a>
-						</div>
-
-						<div class="product-content">
-							<a href="" class="product-category hover-p-color">WATCHES</a>
-
-							<h2>
-								<a href="" class="product-name hover-p-color">Fashion Men’s
-									Watches</a>
-							</h2>
-
-							<p class="product-price">$230.99</p>
-
-							<div class="review">
-								<ul class="list-stars">
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-								</ul>
-
-								( 6 Reviews )
-							</div>
-						</div>
-
-
-					</div>
-
-					<!-- A product  -->
-					<div class="product">
-						<div class="product-image">
-							<img
-								src="https://d-themes.com/html/riode/images/demos/demo4/products/8.jpg"
-								alt="">
-
-							<div class="new">NEW</div>
-
-							<a href="" class="btn-view">VIEW DETAILS</a> <a href=""
-								class="btn-add"> <i class="fa-solid fa-bag-shopping"></i>
-							</a>
-						</div>
-
-						<div class="product-content">
-							<a href="" class="product-category hover-p-color">WATCHES</a>
-
-							<h2>
-								<a href="" class="product-name hover-p-color">Fashion Men’s
-									Watches</a>
-							</h2>
-
-							<p class="product-price">$230.99</p>
-
-							<div class="review">
-								<ul class="list-stars">
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li class="active"><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-									<li><i class="fa-solid fa-star"></i></li>
-								</ul>
-
-								( 6 Reviews )
-							</div>
-						</div>
-
-
-					</div>
+					</c:forEach>
 
 				</div>
 			</div>
 		</section>
 	</main>
+
 	<%@include file="/WEB-INF/views/home/footer.jsp"%>
+
 </body>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
-    <script src="<c:url value='/resources/home/dist/js/owl.carousel.js' />"></script>
-    <script src="<c:url value='/resources/home/dist/js/home.js' />"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+	referrerpolicy="no-referrer"></script>
+<script src="<c:url value='/resources/home/dist/js/owl.carousel.js' />"></script>
+<script src="<c:url value='/resources/home/dist/js/home.js' />"></script>
 </html>
