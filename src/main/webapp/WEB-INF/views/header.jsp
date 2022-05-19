@@ -1,5 +1,6 @@
-
-<body>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%-- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> --%>
 	<!-- Header -->
 	<header class="header">
 		<section class="header-top">
@@ -41,9 +42,9 @@
 
 				<ul class="header-right  d-flex jc-space-between ai-center">
 		<!-- getSession -->
-					<c:set var="salary" scope="session" value="${2000*2}" />
+					<c:set var="salary" scope="session" value="${1000*2}" />
 					<c:if test="${salary > 2000}">
-						<li><a href="userHome.html " class="user-area"> <span
+						<li><a href="user/userHome.htm " class="user-area"> <span
 								class="user-name">Ho Duc Trung</span>
 								<div class="user-thumbnail">
 									<img src="" alt="">
@@ -63,7 +64,7 @@
 					
 					<!-- Cart-Shopping  -->
                     <li class="cart-group">
-                        <a href="">
+                        <a href="cart/checkOut.htm">
                             <i class="fa-solid fa-bag-shopping"></i>
                             <span class="prod-quantity">3</span>
                         </a>
@@ -147,4 +148,3 @@
 		<div class="header-support"></div>
 
 	</header>
-</body>

@@ -11,7 +11,7 @@ public class SecurityUserInterceptor extends HandlerInterceptorAdapter{
 //	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)throws Exception {
 //		HttpSession session = request.getSession();
 //		if(session.getAttribute("user") == null) {
-////			response.sendRedirect(request.getContextPath() + "/user/login.htm");
+//			response.sendRedirect(request.getContextPath() + "/user/login.htm");
 //			System.out.println("Do Login :)");
 //			return false;
 //		}

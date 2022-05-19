@@ -11,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="https://d-themes.com/html/riode/images/icons/favicon.png">
-    <title>Riode - Check Out</title>
+    <title>Riode - Order Complete</title>
 
     <link rel="stylesheet" href="./dist/css/reset.css">
     <link rel="stylesheet" href="./dist/css/orderComplete.css">

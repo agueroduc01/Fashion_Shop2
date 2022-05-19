@@ -57,7 +57,7 @@ public class UserController {
 		Transaction t = session.beginTransaction();
 		List<Account> l = getLUser();
 		if (user.getUser_name().trim().length() == 0) {
-			errors.rejectValue("user_name", "user", "Yêu cầu nhập đúng tài khoản");
+			errors.rejectValue("user_name", "user", "Yêu cầu nhập không để trống tài khoản");
 		} else {
 			for (Account a : l) {
 				if (a.getUser_name().equalsIgnoreCase(user.getUser_name())) {
@@ -67,7 +67,7 @@ public class UserController {
 		}
 
 		if (user.getPassword().trim().length() == 0) {
-			errors.rejectValue("password", "user", "Yêu cầu nhập đúng mật khẩu");
+			errors.rejectValue("password", "user", "Yêu cầu không để trống mật khẩu");
 		} else {
 			if (!user.getPassword().matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$")) {
 				errors.rejectValue("password", "user",
@@ -76,7 +76,7 @@ public class UserController {
 		}
 
 		if (user.getFullname().trim().length() == 0) {
-			errors.rejectValue("fullname", "user", "Yêu cầu không để trống tên tài khoản");
+			errors.rejectValue("fullname", "user", "Yêu cầu không để trống họ tên");
 		}
 
 		String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
@@ -89,6 +89,9 @@ public class UserController {
 				errors.rejectValue("email", "user", "Email không đúng định dạng");
 			} else {
 				for (Account a : l) {
+					if (a.getEmail() == null) {
+						System.out.println("null");
+					}
 					if (a.getEmail().equalsIgnoreCase(user.getEmail())) {
 						errors.rejectValue("email", "user", "Tên email đã tồn tại");
 					}
@@ -240,21 +243,6 @@ public class UserController {
 //		}
 //		return "user/forgotPassword";
 //	}
-
-	public void send(String from, String to, String subject, String body) {
-		try {
-			MimeMessage mail= mailer.createMimeMessage();
-			MimeMessageHelper heper= new MimeMessageHelper(mail,true,"utf-8");
-			heper.setFrom(from, from);
-			heper.setTo(to);
-			heper.setReplyTo(from,from);
-			heper.setSubject(subject);
-			heper.setText(body,true);
-			mailer.send(mail);
-		}catch(Exception ex) {
-			throw new RuntimeException(ex);
-		}
-	}
 	
 	@RequestMapping(value = "forgotpassword", method = RequestMethod.POST)
 	public String forgotpassword(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors) {
@@ -291,10 +279,21 @@ public class UserController {
 			String to = acc.getEmail();
 			String body = "Đây là mật khẩu mới của bạn: " + newPassword;
 			String subject = "Quên mật khẩu";
-           send(from, to, subject, body);
+			try {
+				MimeMessage mail= mailer.createMimeMessage();
+				MimeMessageHelper heper= new MimeMessageHelper(mail,true,"UTF-8");
+				heper.setFrom(from, from);
+				heper.setTo(to);
+				heper.setReplyTo(from,from);
+				heper.setSubject(subject);
+				heper.setText(body,true);
+				mailer.send(mail);
+			}catch(Exception ex) {
+				throw new RuntimeException(ex);
+			}
            model.addAttribute("message", "Gửi email thành công !");
-			session.update(acc);
-			t.commit();
+           session.update(acc);
+           t.commit();
 		} catch (Exception e) {
 			model.addAttribute("message", "Gửi email thất bại !");
 			t.rollback();

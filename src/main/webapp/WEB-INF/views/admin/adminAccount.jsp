@@ -272,7 +272,6 @@
                 <li>Phone number</li>
                 <li>Address</li>
             </ul>
-
             <ul class="list-report">
                 <li>
                     <ul class="report">
@@ -286,7 +285,6 @@
                         <li>Address</li>
                     </ul>
                 </li>
-
                 <li>
                     <ul class="report">
                         <li>hoducrtungkdsfj</li>
@@ -299,7 +297,6 @@
                         <li>Address</li>
                     </ul>
                 </li>
-
                 <li>
                     <ul class="report">
                         <li>hoducrtungkdsfj</li>
@@ -312,7 +309,6 @@
                         <li>Address</li>
                     </ul>
                 </li>
-
                 <li>
                     <ul class="report">
                         <li>hoducrtungkdsfj</li>
@@ -325,7 +321,6 @@
                         <li>Address</li>
                     </ul>
                 </li>
-
                 <li>
                     <ul class="report">
                         <li>hoducrtungkdsfj</li>
@@ -338,7 +333,6 @@
                         <li>Address</li>
                     </ul>
                 </li>
-
                 <li>
                     <ul class="report">
                         <li>hoducrtungkdsfj</li>
@@ -351,7 +345,6 @@
                         <li>Address</li>
                     </ul>
                 </li>
-
                 <li>
                     <ul class="report">
                         <li>hoducrtungkdsfj</li>
@@ -364,7 +357,6 @@
                         <li>Address</li>
                     </ul>
                 </li>
-
                 <li>
                     <ul class="report">
                         <li>hoducrtungkdsfj</li>
@@ -377,7 +369,6 @@
                         <li>Address</li>
                     </ul>
                 </li>
-
                 <li>
                     <ul class="report">
                         <li>hoducrtungkdsfj</li>
@@ -390,7 +381,6 @@
                         <li>Address</li>
                     </ul>
                 </li>
-
                 <li>
                     <ul class="report">
                         <li>hoducrtungkdsfj</li>
