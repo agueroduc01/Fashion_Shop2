@@ -24,7 +24,7 @@ public class Order {
 	@Column(name = "Date")
 	private Date order_date;
 	
-	@OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "idOrder", fetch = FetchType.EAGER)
 	private Collection<OrderDetail> details;
 	
 	@ManyToOne

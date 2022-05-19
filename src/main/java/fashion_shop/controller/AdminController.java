@@ -486,7 +486,7 @@ public class AdminController {
 		}
 
 		Role r = (Role) session.get(Role.class, 2);
-		cus.setRoles(r);
+		cus.setrole(r);
 
 		try {
 			if (errorss) {
@@ -995,7 +995,7 @@ public class AdminController {
 		}
 
 		Role r = (Role) session.get(Role.class, 1);
-		newAdmin.setRoles(r);
+		newAdmin.setrole(r);
 
 		try {
 			if (errorss) {

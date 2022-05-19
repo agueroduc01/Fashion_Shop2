@@ -19,7 +19,7 @@ public class Role {
 	@Column(name = "Name")
 	private String nameRole;
 	
-	@OneToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
 	private Collection<Account> accounts;
 
 	public Integer getIdRole() {

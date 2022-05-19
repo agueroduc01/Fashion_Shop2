@@ -46,11 +46,11 @@ public class Account {
 	@Column(name = "Phone")
 	private String phone;
 
-	private String Address;
+	private String address;
 	
 	@ManyToOne 
 	@JoinColumn(name = "Role")
-	private Role roles;
+	private Role role;
 	
 	@OneToMany(mappedBy = "emails", fetch = FetchType.EAGER)
 	private Collection<Account> emails;
@@ -63,12 +63,12 @@ public class Account {
 		this.emails = emails;
 	}
 
-	public Role getRoles() {
-		return roles;
+	public Role getrole() {
+		return role;
 	}
 
-	public void setRoles(Role roles) {
-		this.roles = roles;
+	public void setrole(Role role) {
+		this.role = role;
 	}
 
 	public String getPhone() {
@@ -80,11 +80,11 @@ public class Account {
 	}
 
 	public String getAddress() {
-		return Address;
+		return address;
 	}
 
 	public void setAddress(String address) {
-		Address = address;
+		this.address = address;
 	}
 
 	public String getImage() {

@@ -84,31 +84,38 @@
 	<main class="main login-container">
 		<div class="container">
 
-			<form class="register-form" action="">
+			<form:form class="register-form" action="user/register.htm" modelAttribute="user">
 				<h2>Register</h2>
 
 				<div class="row">
 					<div class="col-4 ">
-						<input type="text" placeholder="Full name"> <input
-							type="text" placeholder="Gmail"> <input type="number"
-							placeholder="Phone number">
+						<form:input type="text" path="fullname" placeholder="Full name"></form:input>
+						<form:errors path="fullname"></form:errors>
+						<form:input type="text" path="email" placeholder="Gmail"></form:input>
+						<form:errors path="email"></form:errors>
+						<form:input type="number" path="phone" placeholder="Phone number"></form:input>
+						<form:errors path="phone"></form:errors>
 
 						<div class="input-group">
-							<label for="">Gender</label> <select name="gender" id="gender">
-								<option value="male">Male</option>
-								<option value="female">Female</option>
-								<option value="other">Other</option>
-							</select>
+							<label for="">Gender</label>
+							<form:select path="gender" id="gender">
+								<form:option value="0">Male</form:option>
+								<form:option value="1">Female</form:option>
+<%-- 								<form:option value="other">Other</form:option> --%>
+							</form:select>
 						</div>
 					</div>
 
 					<div class="col-4 ">
-						<input type="text" placeholder="Username"> <input
-							type="password" placeholder="Password"> <input
-							type="password" placeholder="Password again">
+						<form:input type="text" path="user_name" placeholder="Username"></form:input>
+						<form:errors path="user_name"></form:errors>
+						<form:input type="password" path="password" placeholder="Password"></form:input>
+						<form:errors path="password"></form:errors>
+						<form:input type="password" path="password" placeholder="Password again"></form:input>
+						<form:errors path="password"></form:errors>
 
 						<p>
-							<a href="">You already have an account?</a>
+							<a href="user/login.htm">You already have an account?</a>
 						</p>
 					</div>
 
@@ -119,18 +126,20 @@
 						</div>
 
 						<div class="input-group">
-							<label for="">Date of birth </label> <input type="date">
-
+							<label for="">Date of birth </label>
+							<form:input type="date" path="birthday"></form:input>
+							<form:errors path="birthday"></form:errors>
 						</div>
 
-						<input type="text" placeholder="Address">
-
+						<form:input type="text" path="address" placeholder="Address"></form:input>
+						<form:errors path="address"></form:errors>
+						
 						<button>REGISTER</button>
 					</div>
 				</div>
 
 
-			</form>
+			</form:form>
 		</div>
 	</main>
 </body>

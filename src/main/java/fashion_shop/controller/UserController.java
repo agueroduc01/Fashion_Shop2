@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import fashion_shop.entity.Account;
 import fashion_shop.entity.Role;
+//import fashion_shop.mailer.Mailer;
 
 @Transactional
 @Controller
@@ -41,15 +42,6 @@ public class UserController {
 		Query query = session.createQuery(hql);
 		List<Account> listUser = query.list();
 		return listUser;
-	}
-	
-	@ModelAttribute("listCus")
-	public List<Account> getLcus() {
-		Session session = factory.getCurrentSession();
-		String hql = "from Account where Role = 2";
-		Query query = session.createQuery(hql);
-		List<Account> listcus = query.list();
-		return listcus;
 	}
 
 	// Đăng Ký
@@ -120,7 +112,7 @@ public class UserController {
 			errors.rejectValue("gender", "user", "Yêu cầu nhập đúng giới tính");
 		}
 		Role r = (Role) session.get(Role.class, 2);
-		user.setRoles(r);
+		user.setrole(r);
 
 		try {
 			if (errors.hasErrors()) {
@@ -165,23 +157,27 @@ public class UserController {
 		if (user.getPassword().trim().length() == 0) {
 			errors.rejectValue("password", "user", "Yêu cầu không để trống mật khẩu");
 		}
-		
+
 		if (acc == null) {
 			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
 		} else if (user.getPassword().equals(acc.getPassword())) {
 			Thread.sleep(1000);
 			httpSession.setAttribute("user", acc);
-			boolean isAdmin = (boolean)acc.getRoles().equals((Object)1);
-			if(isAdmin == true) {
+			boolean isAdmin = (boolean) acc.getrole().equals((Object) 1);
+			if (isAdmin == true) {
 				return "redirect:/admin/adminHome.html";
 			} else {
+//				session để lưu user là customer và quay lại home
 				model.addAttribute("session", 1);
-				return "redirect:/home/temp.htm";
+				return "redirect:/home/index.htm";
 			}
 		} else
 			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
 		return "user/login";
 	}
+
+	@Autowired
+	JavaMailSender mailer;
 
 	// Quên mật khẩu
 	@RequestMapping(value = "forgotpassword", method = RequestMethod.GET)
@@ -190,28 +186,101 @@ public class UserController {
 		return "user/forgotPassword";
 	}
 
-	@Autowired
-	JavaMailSender mailer;
-
 	// Gửi mail để lấy lại mật khẩu
+//	@RequestMapping(value = "forgotpassword", method = RequestMethod.POST)
+//	public String forgotpassword(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors) {
+//		if (user.getUser_name().trim().length() == 0) {
+//			errors.rejectValue("user_name", "user", "Yêu cầu không để trống tài khoản");
+//			return "user/forgotPassword";
+//		}
+//		
+//		Account acc = new Account();
+//		List<Account> listUser = getLUser();
+//		for (int i = 0; i < listUser.size(); i++) {
+//			if (listUser.get(i).getUser_name().equals(user.getUser_name())) {
+//				acc = listUser.get(i);
+//				break;
+//			}
+//		}
+//		
+//		if (acc.getUser_name() == null) {
+//			errors.rejectValue("user_name", "user", "Tên tài khoản không đúng!");
+//			return "user/forgotPassword";
+//		}
+//
+//		Session session = factory.openSession();
+//		Transaction t = session.beginTransaction();
+//		Random rand = new Random();
+//		int rand_int1 = rand.nextInt(100000);
+//
+//		String newPassword = Integer.toString(rand_int1);
+//		try {
+//			acc.setPassword(newPassword);
+//			String from = "n19dccn039@student.ptithcm.edu.vn";
+//			String to = acc.getEmail();
+//			String body = "Đây là mật khẩu mới của bạn: " + newPassword;
+//			String subject = "Quên mật khẩu";
+//			MimeMessage mail = mailer.createMimeMessage();
+//			MimeMessageHelper helper = new MimeMessageHelper(mail);
+//			helper.setFrom(from, from);
+//			helper.setTo(to);
+//			helper.setReplyTo(from, from);
+//			helper.setSubject(subject);
+//			helper.setText(body, true);
+//			mailer.send(mail);
+//			session.update(acc);
+//			t.commit();
+//			model.addAttribute("message", "Mật khẩu mới sẽ được gửi về mail của bạn!");
+//
+//		} catch (Exception e) {
+//			model.addAttribute("message", "Không tìm thấy tài khoản nào với email này!");
+//			t.rollback();
+//		} finally {
+//			session.close();
+//		}
+//		return "user/forgotPassword";
+//	}
+
+	public void send(String from, String to, String subject, String body) {
+		try {
+			MimeMessage mail= mailer.createMimeMessage();
+			MimeMessageHelper heper= new MimeMessageHelper(mail,true,"utf-8");
+			heper.setFrom(from, from);
+			heper.setTo(to);
+			heper.setReplyTo(from,from);
+			heper.setSubject(subject);
+			heper.setText(body,true);
+			mailer.send(mail);
+		}catch(Exception ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+	
 	@RequestMapping(value = "forgotpassword", method = RequestMethod.POST)
 	public String forgotpassword(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors) {
-		String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
-		Pattern pattern = Pattern.compile(regex);
-		if (user.getEmail().trim().length() == 0) {
-			errors.rejectValue("email", "user", "Email không được bỏ trống.");
+
+		if (user.getUser_name().trim().length() == 0) {
+			errors.rejectValue("user_name", "user", "Yêu cầu không để trống tài khoản");
 			return "user/forgotPassword";
-		} else {
-			Matcher matcher = pattern.matcher(user.getEmail().trim());
-			if (!matcher.matches()) {
-				errors.rejectValue("email", "user", "Email không đúng định dạng.");
-				return "user/forgotPassword";
+		}
+		
+		
+		Account acc = new Account();
+		List<Account> listUser = getLUser();
+		for (int i = 0; i < listUser.size(); i++) {
+			if (listUser.get(i).getUser_name().equals(user.getUser_name())) {
+				acc = listUser.get(i);
+				break;
 			}
+		}
+		
+		if (acc.getUser_name() == null) {
+			errors.rejectValue("user_name", "user", "Tên tài khoản không đúng!");
+			return "user/forgotPassword";
 		}
 
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
-		Account acc = (Account) session.get(Account.class, user.getEmail());
 		Random rand = new Random();
 		int rand_int1 = rand.nextInt(100000);
 
@@ -222,21 +291,14 @@ public class UserController {
 			String to = acc.getEmail();
 			String body = "Đây là mật khẩu mới của bạn: " + newPassword;
 			String subject = "Quên mật khẩu";
-			MimeMessage mail = mailer.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(mail);
-			helper.setFrom(from, from);
-			helper.setTo(to);
-			helper.setReplyTo(from, from);
-			helper.setSubject(subject);
-			helper.setText(body, true);
-			mailer.send(mail);
+           send(from, to, subject, body);
+           model.addAttribute("message", "Gửi email thành công !");
 			session.update(acc);
 			t.commit();
-			model.addAttribute("message", "Mật khẩu mới sẽ được gửi về mail của bạn!");
-
 		} catch (Exception e) {
-			model.addAttribute("message", "Không tìm thấy tài khoản nào với email này!");
+			model.addAttribute("message", "Gửi email thất bại !");
 			t.rollback();
+			throw new RuntimeException(e);
 		} finally {
 			session.close();
 		}
@@ -260,9 +322,9 @@ public class UserController {
 		Transaction t = session.beginTransaction();
 
 		Account acc = null;
-		List<Account> listCus = getLcus();
-		for (Account Account : listCus) {
-			if (Account.getUser_name().equals(user.getUser_name())) {
+		List<Account> listUser = getLUser();
+		for (Account Account : listUser) {
+			if (Account.getUser_name().equals(user.getUser_name()) && (Account.getrole() == user.getrole())) {
 				acc = Account;
 				break;
 			}

@@ -43,24 +43,26 @@
 
 				<ul class="header-right  d-flex jc-space-between ai-center">
 		<!-- getSession -->
-					<c:set var="salary" scope="session" value="${2000*2}" />
-					<c:if test="${salary > 2000}">
-						<li><a href="userHome.html " class="user-area"> <span
-								class="user-name">Ho Duc Trung lz</span>
-								<div class="user-thumbnail">
-									<img src="" alt="">
-								</div>
-						</a></li>
-					</c:if>
+<%-- 					<c:set var="salary" scope="session" value="${1000*2}" /> --%>
+<%-- 					<c:if test="${salary > 2000}"> --%>
+<!-- 						<li><a href="userHome.html " class="user-area"> <span -->
+<!-- 								class="user-name">Ho Duc Trung lz</span> -->
+<!-- 								<div class="user-thumbnail"> -->
+<!-- 									<img src="" alt=""> -->
+<!-- 								</div> -->
+<!-- 						</a></li> -->
+<%-- 					</c:if> --%>
 
-					<c:if test="${salary <= 2000}">
-						<p>
-							My salary is:
-							<c:out value="${salary}" />
-						<p>
-						<li><a href="user/login.htm"><i class="fa-solid fa-user"></i></a></li>
-					</c:if>
-					<li><a href=""><i class="fa-solid fa-bag-shopping"></i></a></li>
+<%-- 					<c:if test="${salary <= 2000}"> --%>
+<!-- 						<p> -->
+<!-- 							My salary is: -->
+<%-- 							<c:out value="${salary}" /> --%>
+<!-- 						<p> -->
+<!-- 						<li><a href="user/login.htm"><i class="fa-solid fa-user"></i></a></li> -->
+<%-- 					</c:if> --%>
+
+					<li><a href="user/login.htm"><i class="fa-solid fa-user"></i></a></li>
+					<li><a href="cart/checkOut.html"><i class="fa-solid fa-bag-shopping"></i></a></li>
 				</ul>
 			</div>
 		</section>

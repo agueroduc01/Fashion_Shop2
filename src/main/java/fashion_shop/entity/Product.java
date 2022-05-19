@@ -36,8 +36,8 @@ public class Product {
 	@Column(name = "Image")
 	private String image;
 
-	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
-	private Collection<OrderDetail> orderDetails;
+//	@OneToMany(mappedBy = "prod", fetch = FetchType.EAGER)
+//	private Collection<OrderDetail> orderDetails;
 	
 	@OneToMany(mappedBy = "idProd", fetch = FetchType.EAGER)
 	private Collection<Size> sizes;
@@ -128,4 +128,12 @@ public class Product {
 	public void setProductCategory(ProductCategory productCategory) {
 		ProdCategory = productCategory;
 	}
+
+//	public Collection<OrderDetail> getOrderDetails() {
+//		return orderDetails;
+//	}
+//
+//	public void setOrderDetails(Collection<OrderDetail> orderDetails) {
+//		this.orderDetails = orderDetails;
+//	}
 }

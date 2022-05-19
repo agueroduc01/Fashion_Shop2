@@ -1,5 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -79,7 +82,7 @@
             <form action="">
                 <h2>Change password</h2>
 
-                <input type="password" placeholder="Past Password">
+                <input type="password" placeholder="Old Password">
                 <input type="password" placeholder="New Password">
                 <input type="password" placeholder="New Password Again">
                 
