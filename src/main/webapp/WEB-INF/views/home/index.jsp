@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
@@ -76,7 +76,7 @@
 									style="color: #222; font-size: 40px; line-height: 36px; margin-bottom: 30px; letter-spacing: -1.12px;">
 									Fashionable<br>partner
 								</h2>
-								<a class="black" style="color: #222;" href="">SHOP NOW <i
+								<a class="black" style="color: #222;" href="home/products.htm">SHOP NOW <i
 									class="fa-solid fa-arrow-right"></i></a>
 							</div>
 						</div>

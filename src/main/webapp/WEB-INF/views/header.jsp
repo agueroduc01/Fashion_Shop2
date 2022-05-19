@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%-- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> --%>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 	<!-- Header -->
 	<header class="header">
 		<section class="header-top">
@@ -42,10 +42,10 @@
 
 				<ul class="header-right  d-flex jc-space-between ai-center">
 		<!-- getSession -->
-					<c:set var="salary" scope="session" value="${1000*2}" />
-					<c:if test="${salary > 2000}">
+<!-- 					<c:set var="session" scope="session" value="1" /> -->
+					<c:if test="${acc != null}">
 						<li><a href="user/userHome.htm " class="user-area"> <span
-								class="user-name">Ho Duc Trung</span>
+								class="user-name">${acc.getFullname() }</span>
 								<div class="user-thumbnail">
 									<img src="" alt="">
 								</div>
@@ -53,18 +53,14 @@
 						
 					</c:if>
 
-					<c:if test="${salary <= 2000}">
-						<p>
-							My salary is:
-							<c:out value="${salary}" />
-						<p>
+					<c:if test="${acc == null}">
 						<li><a href="user/login.htm"><i class="fa-solid fa-user"></i></a></li>
 					</c:if>
 					
 					
 					<!-- Cart-Shopping  -->
                     <li class="cart-group">
-                        <a href="cart/checkOut.htm">
+                        <a href="cart/checkout.htm">
                             <i class="fa-solid fa-bag-shopping"></i>
                             <span class="prod-quantity">3</span>
                         </a>
@@ -78,7 +74,7 @@
 
                                     <div class="prod-info">
                                         <div class="prod-content">
-                                            <h3 ><a href="" class="prod-name">Riode White Trends</a></h3>
+                                            <h3 ><a href="home/detail.htm" class="prod-name">Riode White Trends</a></h3>
                                             <p><span class="quantity">1</span> x <span class="price">$21.00</span></p>
                                         </div>
 
@@ -137,7 +133,7 @@
                             <div class="action">
                                 <!-- <a class="btn-view-cart" href="viewCart.html">View Cart</a> -->
 
-                                <a href="checkOut.html" class="btn-check-out">GO TO CHECK OUT</a>
+                                <a href="cart/checkout.htm" class="btn-check-out">GO TO CHECK OUT</a>
                             </div>
                         </div>
                     </li>

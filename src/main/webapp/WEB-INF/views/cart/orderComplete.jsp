@@ -12,9 +12,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="https://d-themes.com/html/riode/images/icons/favicon.png">
     <title>Riode - Order Complete</title>
+    <base href="${pageContext.servletContext.contextPath}/">
 
-    <link rel="stylesheet" href="./dist/css/reset.css">
-    <link rel="stylesheet" href="./dist/css/orderComplete.css">
+    <link href="<c:url value='/resources/home/dist/css/reset.css' />" rel="stylesheet">
+    <link href="<c:url value='/resources/home/dist/css/orderComplete.css' />" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
@@ -179,6 +180,6 @@
 </body>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
-    <script src="./dist/js/owl.carousel.js"></script>
-    <script src="./dist/js/home.js"></script>
+    <script src="<c:url value='/resources/home/dist/js/owl.carousel.js' />"></script>
+    <script src="<c:url value='/resources/home/dist/js/home.js' />"></script>
 </html>

@@ -86,13 +86,7 @@ public class AdminController {
 		return listOrder;
 	}
 
-	@RequestMapping(value = { "logoff" })
-	public String logoff(HttpSession httpSession) {
-		httpSession.removeAttribute("admin");
-		return "redirect:/admin/login.htm";
-	}
-
-	@RequestMapping(value = { "dashboard" })
+	@RequestMapping(value = { "adminHome" })
 	public String dashboard(HttpServletRequest request, ModelMap model) {
 		List<Order> listOrder = getLOrder();
 		model.addAttribute("listOrder", listOrder);
@@ -102,7 +96,7 @@ public class AdminController {
 		httpSession.setAttribute("totalCus", getLcus().size());
 		httpSession.setAttribute("totalAd", getLAdmin().size());
 		httpSession.setAttribute("totalOrder", getLOrder().size());
-		return "admin/dashboard";
+		return "admin/adminHome";
 	}
 
 	// view product

@@ -39,7 +39,7 @@ import fashion_shop.entity.OrderDetail;
 import fashion_shop.entity.Product;
 
 @Controller
-@RequestMapping("/page/")
+@RequestMapping("/cart/")
 public class CartController {
 	@Autowired
 	SessionFactory factory;
@@ -54,7 +54,7 @@ public class CartController {
 	public String index(HttpSession httpSession) {
 		httpSession.setAttribute("cartItem", cartItem);
 		httpSession.setAttribute("totalQuantity", this.totalQuantity(cartItem));
-		return "page/home";
+		return "cart/home";
 	}
 
 	@RequestMapping(value = "logoff")
@@ -105,6 +105,11 @@ public class CartController {
 		}
 		return totalQuantity;
 	}
+	
+	@RequestMapping("orderComplete")
+	public String orderComplete(Model model) {
+		return "cart/orderComplete";
+	}
 
 	// into cart
 	@RequestMapping("cart")
@@ -112,7 +117,7 @@ public class CartController {
 		httpSession.setAttribute("cartItem", cartItem);
 		httpSession.setAttribute("totalprice", this.totalPrice(cartItem));
 		httpSession.setAttribute("totalQuantity", this.totalQuantity(cartItem));
-		return "page/cart";
+		return "cart/cart";
 	}
 
 	@RequestMapping(value = "minusQuantity/{id_product}")
@@ -146,7 +151,7 @@ public class CartController {
 		httpSession.setAttribute("totalprice", this.totalPrice(cartItem));
 		httpSession.setAttribute("totalQuantity", this.totalQuantity(cartItem));
 
-		return "page/cart";
+		return "cart/cart";
 	}
 
 	@RequestMapping(value = "plusQuantity/{id_product}")
@@ -190,7 +195,7 @@ public class CartController {
 		httpSession.setAttribute("cartItem", cartItem);
 		httpSession.setAttribute("totalprice", this.totalPrice(cartItem));
 		httpSession.setAttribute("totalQuantity", this.totalQuantity(cartItem));
-		return "page/cart";
+		return "cart/cart";
 	}
 
 	@Autowired
@@ -199,8 +204,8 @@ public class CartController {
 	@RequestMapping("checkout")
 	public String checkout(ModelMap model, @ModelAttribute("user") Account user, HttpSession httpSession) {
 		if (cartItem.size() == 0) {
-			model.addAttribute("message", "KhÃ´ng cÃ³ sáº£n pháº©m nÃ o trong giá»� hÃ ng Ä‘á»ƒ thanh toÃ¡n");
-			return "page/cart";
+			model.addAttribute("message", "Không có sản phầm trong giỏ hàng để thanh toán");
+			return "cart/checkOut";
 		}
 		List<OrderDetail> listOrder = new ArrayList<OrderDetail>();
 		Long millis = System.currentTimeMillis();
@@ -246,7 +251,7 @@ public class CartController {
 				listOrder.add(detail);
 			} catch (Exception e) {
 				t1.rollback();
-				model.addAttribute("message", "Checkout that bai");
+				model.addAttribute("message", "Checkout thất bại");
 			} finally {
 				session1.close();
 			}
@@ -268,59 +273,10 @@ public class CartController {
 		Account acc = (Account) session2.get(Account.class, user.getEmail());
 		try {
 
-			String from = "n17dccn157@student.ptithcm.edu.vn";
+			String from = "n19dccn039@student.ptithcm.edu.vn";
 			String to = acc.getEmail();
-			String body = "<html>" + "<body>\r\n" + "    <style>\r\n" + "        img{\r\n"
-					+ "            max-width: 100%;\r\n" + "        }\r\n" + "        .container{\r\n"
-					+ "            font-family: Arial,Helvetica,sans-serif;\r\n" + "            display: flex;\r\n"
-					+ "            align-items: center;\r\n" + "            justify-content: center;\r\n"
-					+ "            flex-direction: column;\r\n" + "            font-size: 12px;\r\n"
-					+ "            color: #666666;\r\n" + "            font-weight: 400;\r\n"
-					+ "            width: 500px;\r\n" + "            margin: 0 auto;\r\n" + "        }\r\n"
-					+ "        \r\n" + "        .head{\r\n" + "            display: flex;\r\n"
-					+ "            align-items: center;\r\n" + "            justify-content: center;\r\n"
-					+ "            width: 100%;\r\n" + "            border-bottom: 3px solid red;\r\n" + "        }\r\n"
-					+ "        .logo_mail{\r\n" + "            width: 150px;\r\n" + "        }\r\n"
-					+ "        .notify h2{\r\n" + "            text-align: center;\r\n" + "        }\r\n"
-					+ "        .info{\r\n" + "            border: 2px solid red;\r\n" + "            padding: 10px;\r\n"
-					+ "        }\r\n" + "        .info_order{\r\n" + "            display: flex;\r\n"
-					+ "            justify-content: center;\r\n" + "        }\r\n" + "        .img_product{\r\n"
-					+ "            width: 100px;\r\n" + "            height: auto;\r\n"
-					+ "            margin-right: 20px;\r\n" + "        }\r\n" + "        .btn{\r\n"
-					+ "            text-align: center;\r\n" + "            display: block;\r\n"
-					+ "            padding: 10px;\r\n" + "            text-decoration: none;\r\n"
-					+ "            font-weight: bold;\r\n" + "            background-color: red;\r\n"
-					+ "            width: 200px;\r\n" + "            color: white;\r\n"
-					+ "            margin: 15px auto;\r\n" + "        }\r\n" + "        .foot{\r\n"
-					+ "            text-align: center;\r\n" + "        }\r\n" + "    </style>\r\n" + "\r\n"
-					+ "    <div class=\"container\">\r\n" + "        <div class=\"head\">\r\n"
-					+ "            <a href=\"#\"><img src=\"./" + "resources/page/images/logobk1.png"
-					+ "\" alt=\"\" class=\"logo_mail\"></a>\r\n" + "        </div>\r\n"
-					+ "        <div class=\"content\">\r\n" + "            <div class=\"notify\">\r\n"
-					+ "                <h2 style=\"color: red;\">THÃ”NG BÃ�O Ä�áº¶T HÃ€NG THÃ€NH CÃ”NG</h2>\r\n"
-					+ "                <p>ChÃ o " + acc.getFullname() + ",</p>\r\n"
-					+ "                <p>CÃ¡m Æ¡nu báº¡n Ä‘Ã£ mua sáº£n pháº©m táº¡i BakeryShop</p>\r\n"
-					+ "                <br>\r\n"
-					+ "                <p>Ä�Æ¡n hÃ ng cá»§a báº¡n Ä‘ang chá»� shop xÃ¡c nháº­n (trong vÃ²ng 24h)</p>\r\n"
-					+ "                <p>ChÃºng tÃ´i sáº½ thÃ´ng tin tráº¡ng thÃ¡i Ä‘Æ¡n hÃ ng trong email tiáº¿p theo.</p>\r\n"
-					+ "                <p>Báº¡n vui lÃ²ng kiá»ƒm tra email thÆ°á»�ng xuyÃªn nhÃ©.</p>\r\n"
-					+ "            </div>\r\n" + "            <div class=\"info\">\r\n"
-					+ "                <p class=\"id_order\"><strong>Ä�Æ¡n hÃ ng cá»§a báº¡n #</strong>   "
-					+ order.getId_order() + " - NgÃ y Ä‘áº·t hÃ ng: <em>" + order.getOrder_date() + "</em></p>\r\n"
-					+ "                <div class=\"info_order\">\r\n"
-					+ "                    <div class=\"img_product\"> <img src=\"./"
-					+ " resources/page/images/logobk1.png" + "\" alt=\"\"></div>\r\n"
-					+ "                    <div class=\"detail_order\">\r\n"
-					+ "                        <p><strong>Sáº£n pháº©m:</strong> " + sp + "</p>\r\n"
-					+ "                        <p><strong>Tá»•ng thanh toÃ¡n:</strong> " + sum + "Ä‘</p>\r\n"
-					+ "                        <p><strong>NgÆ°á»�i nháº­n:</strong> " + acc.getFullname() + " - "
-					+ acc.getPhone() + " <br>\r\n" + "                            " + acc.getAddress() + "</p>\r\n"
-					+ "                    </div>\r\n" + "\r\n" + "                </div>\r\n"
-					+ "            </div>\r\n" + "            <a class=\"btn\" href=\"#\" >Chi tiáº¿t Ä‘Æ¡n hÃ ng</a>\r\n"
-					+ "        </div>\r\n" + "        <div class=\"foot\">\r\n" + "            <span>\r\n"
-					+ "Náº¿u báº¡n cÃ³ báº¥t cá»© cÃ¢u há»�i nÃ o, Ä‘á»«ng ngáº§n ngáº¡i liÃªn láº¡c vá»›i chÃºng tÃ´i táº¡i: n17dccn157@student.ptithcm.edu.vn <br>\r\n"
-					+ "</body>\r\n" + "\r\n" + "</html>";
-			String subject = "ChÃ o báº¡n  " + acc.getFullname();
+			String body = "";
+			String subject = "Chào bạn " + acc.getFullname();
 			MimeMessage mail = mailer.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(mail);
 			helper.setFrom(from, from);
@@ -340,7 +296,7 @@ public class CartController {
 			session2.close();
 		}
 		model.addAttribute("invoice", order.getId_order());
-		return "redirect:/other/successful.htm";
+		return "redirect:/cart/orderComplete.htm";
 	}
 
 	// buy something
@@ -351,8 +307,8 @@ public class CartController {
 		Product prod = (Product) session.get(Product.class, idItem);
 		Account user = (Account) httpSession.getAttribute("user");
 		if (prod.getQuantity() == 0) {
-			model.addAttribute("outOfStock", "Sáº£n pháº©m Ä‘Ã£ háº¿t hÃ ng");
-			return "redirect:/page/home.htm";
+			model.addAttribute("outOfStock", "Sản phẩm đã hết hàng");
+			return "redirect:/cart/checkout.htm";
 		}
 		boolean isExist = false;
 		for (Cart item : cartItem) {
@@ -390,7 +346,7 @@ public class CartController {
 		Account cus = (Account) session.get(Account.class, user.getEmail());
 		httpSession.setAttribute("user", cus);
 		session.close();
-		return "redirect:/page/home.htm";
+		return "redirect:/cart/home.htm";
 	}
 
 	// delete product
@@ -420,7 +376,7 @@ public class CartController {
 		httpSession.setAttribute("totalQuantity", this.totalQuantity(cartItem));
 		httpSession.setAttribute("cartItem", cartItem);
 
-		return "page/cart";
+		return "cart/cart";
 	}
 
 	@Autowired
@@ -445,7 +401,7 @@ public class CartController {
 
 	@RequestMapping(value = { "change_password" }, method = RequestMethod.GET)
 	public String change_password() {
-		return "page/change_password";
+		return "cart/change_password";
 	}
 
 	@RequestMapping(value = { "change_password" }, method = RequestMethod.POST)
@@ -497,7 +453,7 @@ public class CartController {
 			}
 
 		}
-		return "page/change_password";
+		return "cart/change_password";
 
 	}
 
@@ -507,7 +463,7 @@ public class CartController {
 		Account user = (Account) httpSession.getAttribute("user");
 		httpSession.setAttribute("user", user);
 		model.addAttribute("user", user);
-		return "page/info_user";
+		return "cart/info_user";
 	}
 
 	@RequestMapping(value = { "info_user" }, method = RequestMethod.POST)
@@ -569,7 +525,7 @@ public class CartController {
 					String dateFormat = simpleDateFormat.format(date);
 
 					String imagePath = context
-							.getRealPath("resources/page/images/" + dateFormat + image.getOriginalFilename());
+							.getRealPath("resources/cart/images/" + dateFormat + image.getOriginalFilename());
 					image.transferTo(new File(imagePath));
 
 					user.setImage(dateFormat + image.getOriginalFilename());
@@ -589,7 +545,7 @@ public class CartController {
 					String dateFormat = simpleDateFormat.format(date);
 
 					String imagePath = context
-							.getRealPath("resources/page/images/" + dateFormat + image.getOriginalFilename());
+							.getRealPath("resources/cart/images/" + dateFormat + image.getOriginalFilename());
 					image.transferTo(new File(imagePath));
 
 					user.setImage(dateFormat + image.getOriginalFilename());
@@ -602,7 +558,7 @@ public class CartController {
 
 		if (errorss) {
 			model.addAttribute("message", "YÃªu cáº§u nháº­p Ä‘áº§y Ä‘á»§ thÃ´ng tin !");
-			return "page/info_user";
+			return "cart/info_user";
 		}
 
 		try
@@ -624,7 +580,7 @@ public class CartController {
 		}
 
 		request.setAttribute("user", user);
-		return "page/info_user";
+		return "cart/info_user";
 
 	}
 
@@ -633,7 +589,7 @@ public class CartController {
 		Session session = factory.openSession();
 		Product prod = (Product) session.get(Product.class, id_product);
 		model.addAttribute("detailProd", prod);
-		return "page/detail_product";
+		return "cart/detail_product";
 	}
 
 	@RequestMapping(value = "checkQuantityFromDetailProduct/{id_product}", params = "Quantity")
@@ -674,7 +630,7 @@ public class CartController {
 			session.close();
 		}
 
-		return "redirect:/page/cart.htm";
+		return "redirect:/cart/cart.htm";
 	}
 
 	@RequestMapping(value = "detail_order/{id_order}")
@@ -692,7 +648,7 @@ public class CartController {
 
 		model.addAttribute("sum", sum);
 
-		return "page/detail_order";
+		return "cart/detail_order";
 	}
 
 	@RequestMapping(value = "purchase/{phone}")
@@ -702,17 +658,17 @@ public class CartController {
 		Query query = session.createQuery(hql);
 		List<Order> listOrder = query.list();
 		model.addAttribute("Orders", listOrder);
-		return "page/purchase";
+		return "cart/purchase";
 	}
 
 	@RequestMapping(value = "news", method = RequestMethod.GET)
 	public String news(ModelMap model) {
-		return "page/news";
+		return "cart/news";
 	}
 
 	@RequestMapping(value = "voucher", method = RequestMethod.GET)
 	public String voucher(ModelMap model) {
-		return "page/voucher";
+		return "cart/voucher";
 	}
 
 }

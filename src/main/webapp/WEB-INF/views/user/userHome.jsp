@@ -11,26 +11,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riode - User home</title>
+    <base href="${pageContext.servletContext.contextPath}/">
     <link rel="icon" type="image/png" href="https://d-themes.com/html/riode/images/icons/favicon.png">
 
-    <link rel="stylesheet" href="./dist/css/reset.css">
-    <link rel="stylesheet" href="./dist/css/userHome.css">
+    <link href="<c:url value='/resources/home/dist/css/reset.css' />" rel="stylesheet">
+    <link href="<c:url value='/resources/home/dist/css/userHome.css' />" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
 <body>
     
     <aside class="aside">
-        <a href="userHome.html" class="admin">
+        <a href="user/userHome.htm" class="admin">
             <div class="logo">
                 <i class="fa-solid fa-t"></i>
             </div>
-            Ho Duc Trung
+            ${acc.getFullname() }
         </a>
 
         <ul class="functions">
             <li class="function">
-                <a href="userHome.html" class=" active">
+                <a href="user/userHome.htm" class=" active">
                     <div class="icon">
                         <i class="fa-solid fa-user"></i>
                     </div>
@@ -39,7 +40,7 @@
             </li>
 
             <li class="function">
-                <a href="userChangePass.html" class="">
+                <a href="user/changepassword/{username}.htm" class="">
                     <div class="icon">
                         <i class="fa-solid fa-key"></i>
                     </div>
@@ -62,18 +63,18 @@
             
         </ul>
 
-        <button class="btn-log-out">Log out</button>
+        <button class="btn-log-out" name="logout"><a href="home/index.htm">Log out</a></button>
     </aside>
 
     <!-- Main -->
     <main class="main">
         <div class="main-header">
-            <h2>Welcome Admin!</h2>
+            <h2>Welcome our customer!</h2>
 
             <div class="map">
-                <a href="home.html">Home</a>
+                <a href="home/index.htm">Home</a>
                 /
-                <a href="userHome.html">Ho Duc Trung</a>
+                <a href="user/userHome.htm">${acc.getFullname() }</a>
             </div>
         </div>
 
@@ -88,9 +89,9 @@
                 
                 <div class="col-4">
                     
-                    <input type="text" placeholder="Username" readonly>
-                    <input type="text" placeholder="Full Name" readonly>
-                    <input type="email" placeholder="Gmail" readonly>
+                    <input type="text" placeholder= "Username" value="${acc.getUser_name() }" readonly>
+                    <input type="text" placeholder="FullName" value= "${acc.getFullname() }" readonly>
+                    <input type="email" placeholder="Email" value= "${acc.getEmail() }" readonly>
                     
                     <!-- <select name="" id="" reaonly>
                         <option value="">Male</option>
@@ -102,9 +103,9 @@
                 </div>
                 
                 <div class="col-4">
-                    <input type="date" placeholder="Birthday" value="11122001" readonly>
-                    <input type="number" placeholder="Phone Number" readonly>
-                    <input type="text" placeholder="Address" readonly>
+                    <input type="date" placeholder="Birthday" value="${acc.getBirthday() }" readonly>
+                    <input type="number" placeholder="PhoneNumber" value= "${acc.getPhone() }" readonly>
+                    <input type="text" placeholder="Address" value= "${acc.getAddress() }" readonly>
                 </div>
             </div>
 
@@ -118,6 +119,6 @@
 </body>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
-    <script src="./dist/js/owl.carousel.js"></script>
-    <script src="./dist/js/home.js"></script>
+    <script src="<c:url value='/resources/home/dist/js/owl.carousel.js' />"></script>
+	<script src="<c:url value='/resources/home/dist/js/home.js' />"></script>
 </html>

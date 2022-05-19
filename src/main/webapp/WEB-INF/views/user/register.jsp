@@ -27,6 +27,7 @@
 <link
 	href="<c:url value='/resources/home/dist/css/owl.theme.default.css' />"
 	rel="stylesheet">
+	<link rel="icon" type="image/png" href="https://d-themes.com/html/riode/images/icons/favicon.png">
 </head>
 <body>
 
@@ -66,8 +67,8 @@
 						<form:errors path="user_name"></form:errors>
 						<form:input type="password" path="password" placeholder="Password"></form:input>
 						<form:errors path="password"></form:errors>
-						<form:input type="password" path="password" placeholder="Password again"></form:input>
-						<form:errors path="password"></form:errors>
+<%-- 						<form:input type="password" path="password" placeholder="Password again"></form:input> --%>
+<%-- 						<form:errors path="password"></form:errors> --%>
 
 						<p>
 							<a href="user/login.htm">You already have an account?</a>
@@ -89,6 +90,7 @@
 						<form:input type="text" path="address" placeholder="Address"></form:input>
 						<form:errors path="address"></form:errors>
 						
+						${messageRegister }
 						<button>REGISTER</button>
 					</div>
 				</div>

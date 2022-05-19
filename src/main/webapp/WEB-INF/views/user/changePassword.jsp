@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="https://d-themes.com/html/riode/images/icons/favicon.png">
     <title>Riode - Changing Password</title>
+    <base href="${pageContext.servletContext.contextPath}/">
 
     <link href="<c:url value='/resources/home/dist/css/reset.css' />" rel="stylesheet">
     <link href="<c:url value='/resources/home/dist/css/userChangePass.css' />" rel="stylesheet">
@@ -20,16 +21,16 @@
 </head>
 <body>
     <aside class="aside">
-        <a href="userHome.html" class="admin">
+        <a href="user/userHome.htm" class="admin">
             <div class="logo">
                 <i class="fa-solid fa-t"></i>
             </div>
-            Ho Duc Trung
+            ${acc.getFullname() }
         </a>
 
         <ul class="functions">
             <li class="function">
-                <a href="userHome.html" class="">
+                <a href="user/userHome.htm" class="">
                     <div class="icon">
                         <i class="fa-solid fa-user"></i>
                     </div>
@@ -38,7 +39,7 @@
             </li>
 
             <li class="function">
-                <a href="userChangePass.html" class="active">
+                <a href="user/changeassword.htm" class="active">
                     <div class="icon">
                         <i class="fa-solid fa-key"></i>
                     </div>
@@ -70,11 +71,11 @@
             <h2>Welcome Admin!</h2>
 
             <div class="map">
-                <a href="home.html">Home</a>
+                <a href="home/index.htm">Home</a>
                 /
-                <a href="userHome.html">Ho Duc Trung</a>
+                <a href="user/userHome.htm">${acc.getFullname() }</a>
                 /
-                <a href="userChangePass.html">Change Password   </a>
+                <a href="user/changepassword.htm">Change Password   </a>
             </div>
         </div>
 

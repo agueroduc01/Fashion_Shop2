@@ -57,63 +57,60 @@ public class UserController {
 		Transaction t = session.beginTransaction();
 		List<Account> l = getLUser();
 		if (user.getUser_name().trim().length() == 0) {
+			System.out.println("check 1");
 			errors.rejectValue("user_name", "user", "Yêu cầu nhập không để trống tài khoản");
 		} else {
 			for (Account a : l) {
 				if (a.getUser_name().equalsIgnoreCase(user.getUser_name())) {
+					System.out.println("check 2");
 					errors.rejectValue("user_name", "user", "Tên tài khoản đã tồn tại!");
 				}
 			}
 		}
 
 		if (user.getPassword().trim().length() == 0) {
+			System.out.println("check 3");
 			errors.rejectValue("password", "user", "Yêu cầu không để trống mật khẩu");
 		} else {
 			if (!user.getPassword().matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$")) {
+				System.out.println("check 4");
 				errors.rejectValue("password", "user",
-						"Nhập trên 8 kí tự trong đó có chữ hoa thường và kí tự đặc biệt.");
+						"Nhập trên 8 kí tự trong đó có chữ hoa, thường và kí tự đặc biệt.");
 			}
 		}
 
 		if (user.getFullname().trim().length() == 0) {
+			System.out.println("check 5");
 			errors.rejectValue("fullname", "user", "Yêu cầu không để trống họ tên");
 		}
 
 		String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 		Pattern pattern = Pattern.compile(regex);
 		if (user.getEmail().trim().length() == 0) {
+			System.out.println("check 6");
 			errors.rejectValue("email", "user", "Email không được bỏ trống.");
 		} else {
 			Matcher matcher = pattern.matcher(user.getEmail().trim());
 			if (!matcher.matches()) {
+				System.out.println("check 7");
 				errors.rejectValue("email", "user", "Email không đúng định dạng");
-			} else {
-				for (Account a : l) {
-					if (a.getEmail() == null) {
-						System.out.println("null");
-					}
-					if (a.getEmail().equalsIgnoreCase(user.getEmail())) {
-						errors.rejectValue("email", "user", "Tên email đã tồn tại");
-					}
-				}
 			}
 		}
-
+		
+		System.out.println("check 8");
 		// String regexNumber = "/^0[0-9]{8}$/";
 		String regexNumber = "0\\d{9}";
 		Pattern patternNumber = Pattern.compile(regexNumber);
 
 		if (user.getPhone().trim().length() == 0) {
+			System.out.println("check 9");
 			errors.rejectValue("phone", "user", "Số điện thoại không được bỏ trống.");
 		} else {
 			Matcher matcher1 = patternNumber.matcher(user.getPhone().trim());
 			if (!matcher1.matches())
-				errors.rejectValue("phone", "user", "Yêu cầu nhập đúng số điện thoại");
+				errors.rejectValue("phone", "user", "Yêu cầu nhập đúng định dạng số điện thoại");
 		}
 
-		if (user.getGender() == false) {
-			errors.rejectValue("gender", "user", "Yêu cầu nhập đúng giới tính");
-		}
 		Role r = (Role) session.get(Role.class, 2);
 		user.setrole(r);
 
@@ -144,11 +141,14 @@ public class UserController {
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public String login(ModelMap model, HttpSession httpSession, @ModelAttribute("user") Account user,
 			BindingResult errors) throws InterruptedException {
-		Account acc = null;
+		Account temp = new Account();
+		Account acc = new Account();
 		List<Account> listUser = getLUser();
-		for (Account Account : listUser) {
-			if (Account.getUser_name().equals(user.getUser_name())) {
-				acc = Account;
+		for (int i = 0; i < listUser.size(); i++) {
+			if (listUser.get(i).getUser_name().equals(user.getUser_name())) {
+				acc = new Account();
+				acc = listUser.get(i);
+				temp = listUser.get(i);
 				break;
 			}
 		}
@@ -160,18 +160,25 @@ public class UserController {
 		if (user.getPassword().trim().length() == 0) {
 			errors.rejectValue("password", "user", "Yêu cầu không để trống mật khẩu");
 		}
-
-		if (acc == null) {
+		
+//		test tên tài khoản đã tồn tại trong db chưa nhờ vào hashcode
+//		System.out.println(acc.hashCode());
+//		System.out.println(temp.hashCode());
+//		System.out.println(user.hashCode());
+		
+		System.out.println(acc.getPassword());
+		if (acc.hashCode() != temp.hashCode()) {
 			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
 		} else if (user.getPassword().equals(acc.getPassword())) {
 			Thread.sleep(1000);
-			httpSession.setAttribute("user", acc);
+			// chưa vào được admin (getrole đang là role)
 			boolean isAdmin = (boolean) acc.getrole().equals((Object) 1);
+			httpSession.setAttribute("acc", acc);
 			if (isAdmin == true) {
-				return "redirect:/admin/adminHome.html";
+				return "redirect:/admin/adminHome.htm";
 			} else {
 //				session để lưu user là customer và quay lại home
-				model.addAttribute("session", 1);
+				model.addAttribute("session", httpSession.getAttribute("acc"));
 				return "redirect:/home/index.htm";
 			}
 		} else
@@ -251,7 +258,6 @@ public class UserController {
 			errors.rejectValue("user_name", "user", "Yêu cầu không để trống tài khoản");
 			return "user/forgotPassword";
 		}
-		
 		
 		Account acc = new Account();
 		List<Account> listUser = getLUser();
@@ -349,7 +355,7 @@ public class UserController {
 			session.update(acc);
 			t.commit();
 			model.addAttribute("message", "Chỉnh sửa thành công");
-			return "redirect:/user/dashboard.htm";
+			return "redirect:/user/userHome.htm";
 
 		} catch (Exception e) {
 			model.addAttribute("message", "Chỉnh sửa thất bại !");
@@ -362,4 +368,17 @@ public class UserController {
 			httpSession.setAttribute("user", user);
 		return "user/changePassword";
 	}
+	
+	//View của user home
+	@RequestMapping(value = { "userHome" }, method = RequestMethod.GET)
+	public String viewUserHome(ModelMap model) {
+		model.addAttribute("user", new Account());
+		return "user/userHome";
+	}
+	
+	@RequestMapping(value = { "userHome" }, method = RequestMethod.POST)
+	public String viewUserHome(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors) {
+		return "user/userHome";
+	}
+	
 }
