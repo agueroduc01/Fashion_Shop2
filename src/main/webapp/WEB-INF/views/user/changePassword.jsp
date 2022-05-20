@@ -80,15 +80,19 @@
         </div>
 
         <div class="main-content">
-            <form action="">
+            <form action="user/changepassword.htm">
                 <h2>Change password</h2>
 
-                <input type="password" placeholder="Old Password">
-                <input type="password" placeholder="New Password">
-                <input type="password" placeholder="New Password Again">
+                <input type="password" name = "oldPassword" placeholder="Old Password"/>
+                <p>${message1 }</p>
+                <input type="password" name = "newPassword" placeholder="New Password"/>
+                <p>${message2 }</p>
+                <input type="password" name = "newPasswordAgain" placeholder="New Password Again"/>
+                <p>${message3 }</p>
                 
 
                 <button>Change</button>
+                <h2>${message }</h2>
             </form>
 
         </div>

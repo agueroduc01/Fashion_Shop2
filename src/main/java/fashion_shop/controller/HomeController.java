@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import fashion_shop.entity.Account;
@@ -57,4 +58,12 @@ public class HomeController {
 //	public Account getUser() {
 //		return user;
 //	}
+	
+	@RequestMapping(value = "detail_product/{id_product}")
+	public String detail_product(ModelMap model, @PathVariable("id_product") int id_product) {
+		Session session = factory.openSession();
+		Product prod = (Product) session.get(Product.class, id_product);
+		model.addAttribute("detailProd", prod);
+		return "home/detail";
+	}
 }

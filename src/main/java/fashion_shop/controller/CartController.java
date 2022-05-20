@@ -376,7 +376,7 @@ public class CartController {
 		httpSession.setAttribute("totalQuantity", this.totalQuantity(cartItem));
 		httpSession.setAttribute("cartItem", cartItem);
 
-		return "cart/cart";
+		return "cart/checkOut";
 	}
 
 	@Autowired
@@ -399,198 +399,6 @@ public class CartController {
 		return listUser;
 	}
 
-	@RequestMapping(value = { "change_password" }, method = RequestMethod.GET)
-	public String change_password() {
-		return "cart/change_password";
-	}
-
-	@RequestMapping(value = { "change_password" }, method = RequestMethod.POST)
-	public String change_password(ModelMap model, HttpServletRequest request,
-			@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword,
-			@RequestParam("newPasswordAgian") String newPasswordAgian) {
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		HttpSession httpSession = request.getSession();
-		Account user = (Account) httpSession.getAttribute("user");
-
-		if (!user.getPassword().equals(oldPassword)) {
-			model.addAttribute("message1", "Máº­t kháº©u cÅ© khÃ´ng chÃ­nh xÃ¡c!");
-		}
-		if (oldPassword.length() == 0)
-			model.addAttribute("message1", "Máº­t kháº©u khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ rá»—ng");
-		if (newPassword.length() == 0)
-			model.addAttribute("message2", "Máº­t kháº©u khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ rá»—ng");
-		if (newPasswordAgian.length() == 0)
-			model.addAttribute("message3", "Máº­t kháº©u khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ rá»—ng");
-		else if (!newPassword.matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$")
-				|| !newPasswordAgian.matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$"))
-			model.addAttribute("message", "Nháº­p trÃªn 8 kÃ­ tá»± trong Ä‘Ã³ cÃ³ chá»¯ Hoa thÆ°á»�ng vÃ  kÃ½ tá»± Ä‘áº·c biá»‡t");
-		else if (!newPassword.equals(newPasswordAgian)) {
-			model.addAttribute("message", "Máº­t kháº©u má»›i khÃ´ng trÃ¹ng nhau !");
-		} else if (newPassword.equals(oldPassword)) {
-			model.addAttribute("message", "Máº­t kháº©u má»›i khÃ´ng Ä‘Æ°á»£c trÃ¹ng vá»›i máº­t kháº©u cÅ© !");
-		}
-
-		else {
-
-			try
-
-			{
-				user.setPassword(newPassword);
-				session.update(user);
-				t.commit();
-				model.addAttribute("message", "Thay Ä‘á»•i máº­t kháº©u thÃ nh cÃ´ng");
-				httpSession.setAttribute("user", user);
-			} catch (
-
-			Exception e) {
-				model.addAttribute("message", "Thay Ä‘á»•i máº­t kháº©u tháº¥t báº¡i !");
-				t.rollback();
-			} finally
-
-			{
-				session.close();
-			}
-
-		}
-		return "cart/change_password";
-
-	}
-
-	@RequestMapping(value = { "info_user" }, method = RequestMethod.GET)
-	public String info_user(ModelMap model, HttpServletRequest request) {
-		HttpSession httpSession = request.getSession();
-		Account user = (Account) httpSession.getAttribute("user");
-		httpSession.setAttribute("user", user);
-		model.addAttribute("user", user);
-		return "cart/info_user";
-	}
-
-	@RequestMapping(value = { "info_user" }, method = RequestMethod.POST)
-	public String info_user(ModelMap model, HttpServletRequest request, @ModelAttribute("user") Account user,
-			BindingResult errors, @RequestParam("image") MultipartFile image) {
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		boolean errorss = false;
-		HttpSession httpSession = request.getSession();
-		List<Account> listUser = getLUser();
-		if (user.getFullname().trim().length() == 0) {
-			errors.rejectValue("fullname", "user", "TÃªn khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng!");
-			errorss = true;
-		}
-
-		if (user.getAddress().trim().length() == 0) {
-			errors.rejectValue("Address", "user", "Ä�á»‹a chá»‰ khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng!");
-			errorss = true;
-		}
-
-		// String regexNumber = "/^0[0-9]{8}$/";
-		String regexNumber = "0\\d{9}";
-		Pattern patternNumber = Pattern.compile(regexNumber);
-
-		if (user.getPhone().trim().length() == 0) {
-			errors.rejectValue("phone", "user", "Sá»‘ Ä‘iá»‡n thoáº¡i khÃ´ng Ä‘Æ°á»£c bá»� trá»‘ng.");
-			errorss = true;
-		} else {
-			Matcher matcher1 = patternNumber.matcher(user.getPhone().trim());
-			if (!matcher1.matches()) {
-				errors.rejectValue("phone", "user", "YÃªu cáº§u nháº­p Ä‘Ãºng Sá»‘ Ä‘iá»‡n thoáº¡i");
-				errorss = true;
-			}
-			if (listUser.size() == 1) {
-			} else {
-				for (Account a : listUser) {
-					if (a.getPhone().equalsIgnoreCase(user.getPhone())
-							&& !a.getUser_name().equals(user.getUser_name())) {
-						errors.rejectValue("phone", "user", "Sá»‘ Ä‘iá»‡n thoáº¡i nÃ y Ä‘Ã£ Ä‘Æ°á»£c sá»­ dá»¥ng");
-						errorss = true;
-					}
-				}
-			}
-		}
-
-		if (user.getGender() == null) {
-			errors.rejectValue("gender", "user", "YÃªu cáº§u nháº­p Ä‘Ãºng gender");
-			errorss = true;
-		}
-
-		if (user.getImage() != null && !image.isEmpty()) {
-			if (!FindFileByExtension(image.getOriginalFilename())) {
-				errors.rejectValue("image", "user", "Vui lÃ²ng chá»�n file theo Ä‘Ãºng Ä‘á»‹nh dáº¡ng!");
-				errorss = true;
-			} else {
-				try {
-					Date date = new Date();
-					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyyHHmmss_");
-					String dateFormat = simpleDateFormat.format(date);
-
-					String imagePath = context
-							.getRealPath("resources/cart/images/" + dateFormat + image.getOriginalFilename());
-					image.transferTo(new File(imagePath));
-
-					user.setImage(dateFormat + image.getOriginalFilename());
-				} catch (Exception e) {
-					errors.rejectValue("image", "user", "Vui lÃ²ng chá»�n file theo Ä‘Ãºng Ä‘á»‹nh dáº¡ng!");
-					errorss = true;
-				}
-			}
-		} else if (user.getImage() == null && !image.isEmpty()) {
-			if (!FindFileByExtension(image.getOriginalFilename())) {
-				errors.rejectValue("image", "user", "Vui lÃ²ng chá»�n file theo Ä‘Ãºng Ä‘á»‹nh dáº¡ng!");
-				errorss = true;
-			} else {
-				try {
-					Date date = new Date();
-					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyyHHmmss_");
-					String dateFormat = simpleDateFormat.format(date);
-
-					String imagePath = context
-							.getRealPath("resources/cart/images/" + dateFormat + image.getOriginalFilename());
-					image.transferTo(new File(imagePath));
-
-					user.setImage(dateFormat + image.getOriginalFilename());
-				} catch (Exception e) {
-					errors.rejectValue("image", "user", "Vui lÃ²ng chá»�n file theo Ä‘Ãºng Ä‘á»‹nh dáº¡ng!");
-					errorss = true;
-				}
-			}
-		}
-
-		if (errorss) {
-			model.addAttribute("message", "YÃªu cáº§u nháº­p Ä‘áº§y Ä‘á»§ thÃ´ng tin !");
-			return "cart/info_user";
-		}
-
-		try
-
-		{
-			session.update(user);
-			t.commit();
-			model.addAttribute("message", "Sá»­a ThÃ´ng tin khÃ¡ch hÃ ng thÃ nh cÃ´ng");
-			httpSession.setAttribute("user", user);
-		} catch (
-
-		Exception e) {
-			model.addAttribute("message", "Sá»­a tháº¥t báº¡i !");
-			t.rollback();
-		} finally
-
-		{
-			session.close();
-		}
-
-		request.setAttribute("user", user);
-		return "cart/info_user";
-
-	}
-
-	@RequestMapping(value = "detail_product/{id_product}")
-	public String detail_product(ModelMap model, @PathVariable("id_product") int id_product) {
-		Session session = factory.openSession();
-		Product prod = (Product) session.get(Product.class, id_product);
-		model.addAttribute("detailProd", prod);
-		return "cart/detail_product";
-	}
 
 	@RequestMapping(value = "checkQuantityFromDetailProduct/{id_product}", params = "Quantity")
 	public String checkQuantityFromDetailProduct(ModelMap model, @PathVariable("id_product") int id_product,
@@ -630,7 +438,7 @@ public class CartController {
 			session.close();
 		}
 
-		return "redirect:/cart/cart.htm";
+		return "redirect:/cart/checkOut.htm";
 	}
 
 	@RequestMapping(value = "detail_order/{id_order}")
@@ -648,27 +456,16 @@ public class CartController {
 
 		model.addAttribute("sum", sum);
 
-		return "cart/detail_order";
+		return "cart/checkOut";
 	}
 
-	@RequestMapping(value = "purchase/{phone}")
-	public String purchase(ModelMap model, @PathVariable("phone") String phone) {
-		Session session = factory.openSession();
-		String hql = "FROM Order o  where o.emails.phone = " + phone.substring(1) + "order by o.id_order ";
-		Query query = session.createQuery(hql);
-		List<Order> listOrder = query.list();
-		model.addAttribute("Orders", listOrder);
-		return "cart/purchase";
-	}
-
-	@RequestMapping(value = "news", method = RequestMethod.GET)
-	public String news(ModelMap model) {
-		return "cart/news";
-	}
-
-	@RequestMapping(value = "voucher", method = RequestMethod.GET)
-	public String voucher(ModelMap model) {
-		return "cart/voucher";
-	}
-
+//	@RequestMapping(value = "purchase/{phone}")
+//	public String purchase(ModelMap model, @PathVariable("phone") String phone) {
+//		Session session = factory.openSession();
+//		String hql = "FROM Order o  where o.emails.phone = " + phone.substring(1) + "order by o.id_order ";
+//		Query query = session.createQuery(hql);
+//		List<Order> listOrder = query.list();
+//		model.addAttribute("Orders", listOrder);
+//		return "cart/purchase";
+//	}
 }

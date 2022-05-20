@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import fashion_shop.entity.Account;
 import fashion_shop.entity.Role;
@@ -52,35 +54,37 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "register", method = RequestMethod.POST)
-	public String register(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors) {
+	public String register(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors
+//			,@RequestParam("passwordagain") String passwordagain
+			) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		List<Account> l = getLUser();
 		if (user.getUser_name().trim().length() == 0) {
-			System.out.println("check 1");
 			errors.rejectValue("user_name", "user", "Yêu cầu nhập không để trống tài khoản");
 		} else {
 			for (Account a : l) {
 				if (a.getUser_name().equalsIgnoreCase(user.getUser_name())) {
-					System.out.println("check 2");
 					errors.rejectValue("user_name", "user", "Tên tài khoản đã tồn tại!");
 				}
 			}
 		}
+		
+//		Chưa kiểm tra password again
+//		if (passwordagain.trim().length() == 0) {
+//			errors.rejectValue("passwordagain", "Yêu cầu không để trống mật khẩu");
+//		}
 
 		if (user.getPassword().trim().length() == 0) {
-			System.out.println("check 3");
 			errors.rejectValue("password", "user", "Yêu cầu không để trống mật khẩu");
 		} else {
 			if (!user.getPassword().matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$")) {
-				System.out.println("check 4");
 				errors.rejectValue("password", "user",
 						"Nhập trên 8 kí tự trong đó có chữ hoa, thường và kí tự đặc biệt.");
 			}
 		}
 
 		if (user.getFullname().trim().length() == 0) {
-			System.out.println("check 5");
 			errors.rejectValue("fullname", "user", "Yêu cầu không để trống họ tên");
 		}
 
@@ -320,59 +324,115 @@ public class UserController {
 		return "user/changePassword";
 	}
 
-	@RequestMapping(value = "changepassword/{username}", method = RequestMethod.POST)
-	public String changepassword(ModelMap model, @ModelAttribute("user") Account user, HttpSession httpSession,
-			BindingResult errors) {
+//	@RequestMapping(value = "changepassword/{username}", method = RequestMethod.POST)
+//	public String changepassword(ModelMap model, @ModelAttribute("user") Account user, HttpSession httpSession,
+//			BindingResult errors) {
+//		Session session = factory.openSession();
+//		Transaction t = session.beginTransaction();
+//
+//		Account acc = null;
+//		List<Account> listUser = getLUser();
+//		for (Account Account : listUser) {
+//			if (Account.getUser_name().equals(user.getUser_name()) && (Account.getrole() == user.getrole())) {
+//				acc = Account;
+//				break;
+//			}
+//		}
+//
+//		if (user.getUser_name().trim().length() == 0) {
+//			errors.rejectValue("user_name", "user", "Yêu cầu không để trống tên tài khoản");
+//		}
+//		if (user.getPassword().trim().length() == 0) {
+//			errors.rejectValue("password", "user", "Yêu cầu không để trống mật khẩu");
+//		}
+//		if (acc == null) {
+//			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
+//		} else if (user.getPassword().equals(acc.getPassword())) {
+//			if (!user.getPassword().matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$")) {
+//				errors.rejectValue("password", "user",
+//						"Nhập trên 8 kí tự trong đó có chữ hoa thường và kí tự đặc biệt.");
+//			}
+//		} else
+//			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
+//
+//		try {
+//			session.update(acc);
+//			t.commit();
+//			model.addAttribute("message", "Chỉnh sửa thành công");
+//			return "redirect:/user/userHome.htm";
+//
+//		} catch (Exception e) {
+//			model.addAttribute("message", "Chỉnh sửa thất bại !");
+//			t.rollback();
+//		} finally {
+//			session.close();
+//		}
+//		Account user1 = (Account) httpSession.getAttribute("admin");
+//		if (user1.getUser_name().equals(user.getUser_name()))
+//			httpSession.setAttribute("user", user);
+//		return "user/changePassword";
+//	}
+	
+	@RequestMapping(value = { "changepassword/{username}" }, method = RequestMethod.POST)
+	public String change_password(ModelMap model, HttpServletRequest request,
+			@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword,
+			@RequestParam("newPasswordAgain") String newPasswordAgain) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
+		HttpSession httpSession = request.getSession();
+		Account user = (Account) httpSession.getAttribute("user");
 
-		Account acc = null;
-		List<Account> listUser = getLUser();
-		for (Account Account : listUser) {
-			if (Account.getUser_name().equals(user.getUser_name()) && (Account.getrole() == user.getrole())) {
-				acc = Account;
-				break;
+		if (!user.getPassword().equals(oldPassword)) {
+			model.addAttribute("message1", "Mật khẩu cũ không chính xác!");
+		}
+		if (oldPassword.length() == 0)
+			model.addAttribute("message1", "Mật khẩu không được để trống");
+		if (newPassword.length() == 0)
+			model.addAttribute("message2", "Mật khẩu không được để trống");
+		if (newPasswordAgain.length() == 0)
+			model.addAttribute("message3", "Mật khẩu không được để trống");
+		else if (!newPassword.matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$")
+				|| !newPasswordAgain.matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$"))
+			model.addAttribute("message", "Nhập trên 8 kí tự trong đó có chữ Hoa thường và ký tự đặc biệt");
+		else if (!newPassword.equals(newPasswordAgain)) {
+			model.addAttribute("message", "Mật khẩu mới không trùng nhau !");
+		} else if (newPassword.equals(oldPassword)) {
+			model.addAttribute("message", "Mật khẩu mới không được trùng với mật khẩu cũ !");
+		}
+
+		else {
+
+			try
+
+			{
+				user.setPassword(newPassword);
+				session.update(user);
+				t.commit();
+				model.addAttribute("message", "Thay đổi mật khẩu thành công!");
+				httpSession.setAttribute("user", user);
+			} catch (
+
+			Exception e) {
+				model.addAttribute("message", "Thay đổi mật khẩu thất bại!");
+				t.rollback();
+			} finally
+
+			{
+				session.close();
 			}
-		}
 
-		if (user.getUser_name().trim().length() == 0) {
-			errors.rejectValue("user_name", "user", "Yêu cầu không để trống tên tài khoản");
 		}
-		if (user.getPassword().trim().length() == 0) {
-			errors.rejectValue("password", "user", "Yêu cầu không để trống mật khẩu");
-		}
-		if (acc == null) {
-			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
-		} else if (user.getPassword().equals(acc.getPassword())) {
-			if (!user.getPassword().matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$")) {
-				errors.rejectValue("password", "user",
-						"Nhập trên 8 kí tự trong đó có chữ hoa thường và kí tự đặc biệt.");
-			}
-		} else
-			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
-
-		try {
-			session.update(acc);
-			t.commit();
-			model.addAttribute("message", "Chỉnh sửa thành công");
-			return "redirect:/user/userHome.htm";
-
-		} catch (Exception e) {
-			model.addAttribute("message", "Chỉnh sửa thất bại !");
-			t.rollback();
-		} finally {
-			session.close();
-		}
-		Account user1 = (Account) httpSession.getAttribute("admin");
-		if (user1.getUser_name().equals(user.getUser_name()))
-			httpSession.setAttribute("user", user);
 		return "user/changePassword";
+
 	}
 	
 	//View của user home
 	@RequestMapping(value = { "userHome" }, method = RequestMethod.GET)
-	public String viewUserHome(ModelMap model) {
-		model.addAttribute("user", new Account());
+	public String viewUserHome(ModelMap model, HttpServletRequest request) {
+		HttpSession httpSession = request.getSession();
+		Account user = (Account) httpSession.getAttribute("user");
+		httpSession.setAttribute("user", user);
+		model.addAttribute("user", user);
 		return "user/userHome";
 	}
 	

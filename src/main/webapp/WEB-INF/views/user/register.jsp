@@ -67,7 +67,7 @@
 						<form:errors path="user_name"></form:errors>
 						<form:input type="password" path="password" placeholder="Password"></form:input>
 						<form:errors path="password"></form:errors>
-<%-- 						<form:input type="password" path="password" placeholder="Password again"></form:input> --%>
+<!-- 						<input type="password" name="passwordagain" placeholder="Password again"></input> -->
 <%-- 						<form:errors path="password"></form:errors> --%>
 
 						<p>
