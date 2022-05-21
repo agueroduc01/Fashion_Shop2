@@ -189,16 +189,16 @@
 				<div class="owl-carousel owl-theme">
 
 					<!-- A product  -->
-					<c:forEach var="p" items="${prods}" begin="0" end="8" step="1">
+					<c:forEach var="p" items="${prods}" begin="10" end="15" step="1">
 						<div class="col-4 product">
 							<div class="product-image">
 								<img
-									src="https://d-themes.com/html/riode/images/demos/demo4/products/1.jpg"
+									src="${p.image }"
 									alt="">
 
 								<div class="new">NEW</div>
 
-								<a href="home/detail.htm" class="btn-view">VIEW DETAILS</a> <a
+								<a href="home/detail/${p.idProduct}.htm" class="btn-view">VIEW DETAILS</a> <a
 									href="" class="btn-add"> <i
 									class="fa-solid fa-bag-shopping"></i>
 								</a>
@@ -209,10 +209,10 @@
 									class="product-category hover-p-color">${p.getProductCategory().nameCategory }</a>
 
 								<h2>
-									<a href="home/detail.htm" class="product-name hover-p-color">${p.name }</a>
+									<a href="home/detail/${p.idProduct}.htm" class="product-name hover-p-color">${p.name }</a>
 								</h2>
 
-								<p class="product-price">${p.price }</p>
+								<p class="product-price">$${p.price }</p>
 
 								<div class="review">
 									<ul class="list-stars">
@@ -293,16 +293,16 @@
 				<div class="owl-carousel owl-theme">
 
 					<!-- A product  -->
-					<c:forEach var="p" items="${prods}" begin="0" end="8" step="1">
+					<c:forEach var="p" items="${prods}" begin="5" end="10" step="1">
 						<div class="col-4 product">
 							<div class="product-image">
 								<img
-									src="https://d-themes.com/html/riode/images/demos/demo4/products/2.jpg"
+									src="${p.image }"
 									alt="">
 
 								<div class="new">NEW</div>
 
-								<a href="home/detail.htm" class="btn-view">VIEW DETAILS</a> <a
+								<a href="home/detail/${p.idProduct}.htm" class="btn-view">VIEW DETAILS</a> <a
 									href="" class="btn-add"> <i
 									class="fa-solid fa-bag-shopping"></i>
 								</a>
@@ -312,7 +312,7 @@
 								<a href="" class="product-category hover-p-color">${p.getProductCategory().nameCategory }</a>
 
 								<h2>
-									<a href="home/detail.htm" class="product-name hover-p-color">${p.name }</a>
+									<a href="home/detail/${p.idProduct}.htm" class="product-name hover-p-color">${p.name }</a>
 								</h2>
 
 								<p class="product-price">${p.price }</p>

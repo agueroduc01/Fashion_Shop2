@@ -31,7 +31,7 @@
             <div class="product">
                 <div class="row">
                     <div class="col-5 product-image">
-                        <img src="https://d-themes.com/html/riode/images/demos/demo4/product/product-1-580x652.jpg" alt="">
+                        <img src="${product[0].image }" alt="">
                     </div>
                     <div class="col-7 product-detail">
                         <div class="product-navigation">
@@ -42,10 +42,10 @@
                             Detail
                         </div>
 
-                        <h2 class="product-name">Beyond React Blue Sneaker</h2>
+                        <h2 class="product-name">${product[0].name }</h2>
                         <div class="product-meta">
                             <div class="product-sku">
-                                SKU: 123456789
+                                SKU: ${product[0].idProduct }
                             </div>
 
                             <div class="product-brand">
@@ -53,7 +53,7 @@
                             </div>
                         </div>
 
-                        <div class="product-price">$139.00</div>
+                        <div class="product-price">$${product[0].price }</div>
 
                         <div class="product-rating">
                             <ul class="list-stars">
@@ -77,6 +77,7 @@
                                 <option value="blue">Blue</option>
                                 <option value="green">Green</option>
                                 <option value="yellow">Yellow</option>
+                   
                             </select>
                         </div>
 
@@ -198,154 +199,48 @@
                     <!-- List Product Show -->
                     <div class="owl-carousel owl-theme">
     
-                        <!-- A product  -->
-                        <div class="product">
-                            <div class="product-image">
-                                <img src="https://d-themes.com/html/riode/images/demos/demo4/products/5.jpg" alt="">
-    
-                                <div class="new">NEW</div>
-    
-                                <a href="home/detail.htm" class="btn-view">VIEW DETAILS</a>
-    
-                                <a href="" class="btn-add">
-                                    <i class="fa-solid fa-bag-shopping"></i>
-                                </a>
-                            </div>
-    
-                            <div class="product-content">
-                                <a href="" class="product-category hover-p-color">WATCHES</a>
-    
-                                <h2><a href="" class="product-name hover-p-color">Fashion Men’s Watches</a></h2>
-    
-                                <p class="product-price">$230.99</p>
-    
-                                <div class="review">
-                                    <ul class="list-stars">
-                                        <li class="active"><i class="fa-solid fa-star"></i></li>
-                                        <li class="active"><i class="fa-solid fa-star"></i></li>
-                                        <li class="active"><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                    </ul>
-    
-                                    ( 6 Reviews )
-                                </div>
-                            </div>
-                            
-    
-                        </div>
-    
-                      
                          <!-- A product  -->
-                         <div class="product">
-                            <div class="product-image">
-                                <img src="https://d-themes.com/html/riode/images/demos/demo4/products/6.jpg" alt="">
+					<c:forEach var="p" items="${prods}" begin="0" end="15" step="3">
+						<div class="col-4 product">
+							<div class="product-image">
+								<img
+									src="${p.image }"
+									alt="">
+
+								<div class="new">NEW</div>
+
+								<a href="home/detail/${p.idProduct}.htm" class="btn-view">VIEW DETAILS</a> <a
+									href="" class="btn-add"> <i
+									class="fa-solid fa-bag-shopping"></i>
+								</a>
+							</div>
+
+							<div class="product-content">
+								<a href="" class="product-category hover-p-color">${p.getProductCategory().nameCategory }</a>
+
+								<h2>
+									<a href="home/detail/${p.idProduct}.htm" class="product-name hover-p-color">${p.name }</a>
+								</h2>
+
+								<p class="product-price">${p.price }</p>
+
+								<div class="review">
+									<ul class="list-stars">
+										<li class="active"><i class="fa-solid fa-star"></i></li>
+										<li class="active"><i class="fa-solid fa-star"></i></li>
+										<li class="active"><i class="fa-solid fa-star"></i></li>
+										<li><i class="fa-solid fa-star"></i></li>
+										<li><i class="fa-solid fa-star"></i></li>
+									</ul>
+
+									( 6 Reviews )
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+     
     
-                                <div class="new">NEW</div>
-    
-                                <a href="home/detail.htm" class="btn-view">VIEW DETAILS</a>
-    
-                                <a href="" class="btn-add">
-                                    <i class="fa-solid fa-bag-shopping"></i>
-                                </a>
-                            </div>
-    
-                            <div class="product-content">
-                                <a href="" class="product-category hover-p-color">WATCHES</a>
-    
-                                <h2><a href="" class="product-name hover-p-color">Fashion Men’s Watches</a></h2>
-    
-                                <p class="product-price">$230.99</p>
-    
-                                <div class="review">
-                                    <ul class="list-stars">
-                                        <li class="active"><i class="fa-solid fa-star"></i></li>
-                                        <li class="active"><i class="fa-solid fa-star"></i></li>
-                                        <li class="active"><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                    </ul>
-    
-                                    ( 6 Reviews )
-                                </div>
-                            </div>
-                            
-    
-                        </div>
-    
-                         <!-- A product  -->
-                         <div class="product">
-                            <div class="product-image">
-                                <img src="https://d-themes.com/html/riode/images/demos/demo4/products/7.jpg" alt="">
-    
-                                <div class="new">NEW</div>
-    
-                                <a href="home/detail.htm" class="btn-view">VIEW DETAILS</a>
-    
-                                <a href="" class="btn-add">
-                                    <i class="fa-solid fa-bag-shopping"></i>
-                                </a>
-                            </div>
-    
-                            <div class="product-content">
-                                <a href="" class="product-category hover-p-color">WATCHES</a>
-    
-                                <h2><a href="" class="product-name hover-p-color">Fashion Men’s Watches</a></h2>
-    
-                                <p class="product-price">$230.99</p>
-    
-                                <div class="review">
-                                    <ul class="list-stars">
-                                        <li class="active"><i class="fa-solid fa-star"></i></li>
-                                        <li class="active"><i class="fa-solid fa-star"></i></li>
-                                        <li class="active"><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                    </ul>
-    
-                                    ( 6 Reviews )
-                                </div>
-                            </div>
-                            
-    
-                        </div>
-    
-                         <!-- A product  -->
-                         <div class="product">
-                            <div class="product-image">
-                                <img src="https://d-themes.com/html/riode/images/demos/demo4/products/8.jpg" alt="">
-    
-                                <div class="new">NEW</div>
-    
-                                <a href="home/detail.htm" class="btn-view">VIEW DETAILS</a>
-    
-                                <a href="" class="btn-add">
-                                    <i class="fa-solid fa-bag-shopping"></i>
-                                </a>
-                            </div>
-    
-                            <div class="product-content">
-                                <a href="" class="product-category hover-p-color">WATCHES</a>
-    
-                                <h2><a href="" class="product-name hover-p-color">Fashion Men’s Watches</a></h2>
-    
-                                <p class="product-price">$230.99</p>
-    
-                                <div class="review">
-                                    <ul class="list-stars">
-                                        <li class="active"><i class="fa-solid fa-star"></i></li>
-                                        <li class="active"><i class="fa-solid fa-star"></i></li>
-                                        <li class="active"><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                        <li><i class="fa-solid fa-star"></i></li>
-                                    </ul>
-    
-                                    ( 6 Reviews )
-                                </div>
-                            </div>
-                            
-    
-                        </div>
+                        
                        
                     </div>
                 </div>
