@@ -33,7 +33,7 @@ public class HomeController {
 		return listProd;
 	}
 	
-	@RequestMapping("index")
+	@RequestMapping("index")	
 	public String index(ModelMap model) {
 		model.addAttribute("prods", getLProd());
 		return "home/index";
@@ -47,8 +47,14 @@ public class HomeController {
 	}
 
 	// view product_detail
-	@RequestMapping(value = { "detail" })
-	public String view_product_detail(ModelMap model) {
+	@RequestMapping(value = { "detail/{idProduct}" })
+	public String view_product_detail(ModelMap model, @PathVariable("idProduct") String idProduct) {
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Product where idProduct = " + idProduct;
+		List<Product> list = session.createQuery(hql).list();
+
+		model.addAttribute("product", list);
+		model.addAttribute("prods", getLProd());
 		return "home/detail";
 	}
 
