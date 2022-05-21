@@ -115,40 +115,43 @@
                         <div class="list-products">
                             <div class="row">
                                 <!-- A product  -->
-                                <c:forEach var="p" items="${prods}" begin="0" end="8" step="1">
+                                <c:forEach var="p" items="${prods}" begin="0" end="${prodsSize}" step="1">
 	                                <div class="col-4 product">
-	                                    <div class="product-image">
-	                                        <img src="https://d-themes.com/html/riode/images/demos/demo4/products/4.jpg" alt="">
-	
-	                                        <div class="new">NEW</div>
-	
-	                                        <a href="home/detail.htm" class="btn-view" >VIEW DETAILS</a>
-	
-	                                        <a href="" class="btn-add">
-	                                            <i class="fa-solid fa-bag-shopping"></i>
-	                                        </a>
-	                                    </div>
-	
-	                                    <div class="product-content">
-	                                        <a href="" class="product-category hover-p-color">${p.getProductCategory().nameCategory }</a>
-	
-	                                        <h2><a href="home/detail.htm" class="product-name hover-p-color">${p.name }</a></h2>
-	
-	                                        <p class="product-price">${p.price }</p>
-	
-	                                        <div class="review">
-	                                            <ul class="list-stars">
-	                                                <li class="active"><i class="fa-solid fa-star"></i></li>
-	                                                <li class="active"><i class="fa-solid fa-star"></i></li>
-	                                                <li class="active"><i class="fa-solid fa-star"></i></li>
-	                                                <li><i class="fa-solid fa-star"></i></li>
-	                                                <li><i class="fa-solid fa-star"></i></li>
-	                                            </ul>
-	
-	                                            ( 6 Reviews )
-	                                        </div>
-	                                    </div>
-	                                </div>
+							<div class="product-image">
+								<img
+									src="${p.image }"
+									alt="">
+
+								<div class="new">NEW</div>
+
+								<a href="home/detail/${p.idProduct}.htm" class="btn-view">VIEW DETAILS</a> <a
+									href="" class="btn-add"> <i
+									class="fa-solid fa-bag-shopping"></i>
+								</a>
+							</div>
+
+							<div class="product-content">
+								<a href="" class="product-category hover-p-color">${p.getProductCategory().nameCategory }</a>
+
+								<h2>
+									<a href="home/detail/${p.idProduct}.htm" class="product-name hover-p-color">${p.name }</a>
+								</h2>
+
+								<p class="product-price">${p.price }</p>
+
+								<div class="review">
+									<ul class="list-stars">
+										<li class="active"><i class="fa-solid fa-star"></i></li>
+										<li class="active"><i class="fa-solid fa-star"></i></li>
+										<li class="active"><i class="fa-solid fa-star"></i></li>
+										<li><i class="fa-solid fa-star"></i></li>
+										<li><i class="fa-solid fa-star"></i></li>
+									</ul>
+
+									( 6 Reviews )
+								</div>
+							</div>
+						</div>
                                 </c:forEach>
                                 
                             </div>
