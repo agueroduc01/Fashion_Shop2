@@ -39,10 +39,11 @@ public class HomeController {
 		return "home/index";
 	}
 	
-	// view product
+	// view products
 	@RequestMapping(value = { "products" })
 	public String view_product(ModelMap model) {
 		model.addAttribute("prods", getLProd());
+		model.addAttribute("prodsSize", getLProd().size());
 		return "home/products";
 	}
 
