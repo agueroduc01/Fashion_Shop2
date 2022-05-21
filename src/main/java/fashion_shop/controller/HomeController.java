@@ -66,4 +66,14 @@ public class HomeController {
 		model.addAttribute("detailProd", prod);
 		return "home/detail";
 	}
+	
+	public Product Product(Integer id) {
+		Session session = factory.getCurrentSession();
+		String hql = "FROM ProductEntity where id = :id";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		Product pd = (Product) query.list().get(0);
+
+		return pd;
+	}
 }
