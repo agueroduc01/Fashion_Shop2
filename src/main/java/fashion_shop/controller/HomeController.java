@@ -51,13 +51,6 @@ public class HomeController {
 	public String view_product_detail(ModelMap model) {
 		return "home/detail";
 	}
-
-//	@Autowired
-//	Account user;
-//	@ModelAttribute("user")
-//	public Account getUser() {
-//		return user;
-//	}
 	
 	@RequestMapping(value = "detail_product/{id_product}")
 	public String detail_product(ModelMap model, @PathVariable("id_product") int id_product) {

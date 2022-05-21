@@ -67,8 +67,8 @@
 						<form:errors path="user_name"></form:errors>
 						<form:input type="password" path="password" placeholder="Password"></form:input>
 						<form:errors path="password"></form:errors>
-<!-- 						<input type="password" name="passwordagain" placeholder="Password again"></input> -->
-<%-- 						<form:errors path="password"></form:errors> --%>
+						<input type="password" name="passwordagain" placeholder="Password again"></input>
+						<p>${passwordagain }</p>
 
 						<p>
 							<a href="user/login.htm">You already have an account?</a>

@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import fashion_shop.entity.Account;
 import fashion_shop.entity.Role;
-//import fashion_shop.mailer.Mailer;
 
 @Transactional
 @Controller
@@ -55,7 +54,7 @@ public class UserController {
 
 	@RequestMapping(value = "register", method = RequestMethod.POST)
 	public String register(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors
-//			,@RequestParam("passwordagain") String passwordagain
+			,@RequestParam("passwordagain") String passwordagain
 			) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
@@ -70,11 +69,6 @@ public class UserController {
 			}
 		}
 		
-//		Chưa kiểm tra password again
-//		if (passwordagain.trim().length() == 0) {
-//			errors.rejectValue("passwordagain", "Yêu cầu không để trống mật khẩu");
-//		}
-
 		if (user.getPassword().trim().length() == 0) {
 			errors.rejectValue("password", "user", "Yêu cầu không để trống mật khẩu");
 		} else {
@@ -91,28 +85,34 @@ public class UserController {
 		String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 		Pattern pattern = Pattern.compile(regex);
 		if (user.getEmail().trim().length() == 0) {
-			System.out.println("check 6");
 			errors.rejectValue("email", "user", "Email không được bỏ trống.");
 		} else {
 			Matcher matcher = pattern.matcher(user.getEmail().trim());
 			if (!matcher.matches()) {
-				System.out.println("check 7");
 				errors.rejectValue("email", "user", "Email không đúng định dạng");
 			}
 		}
 		
-		System.out.println("check 8");
 		// String regexNumber = "/^0[0-9]{8}$/";
 		String regexNumber = "0\\d{9}";
 		Pattern patternNumber = Pattern.compile(regexNumber);
 
 		if (user.getPhone().trim().length() == 0) {
-			System.out.println("check 9");
 			errors.rejectValue("phone", "user", "Số điện thoại không được bỏ trống.");
 		} else {
 			Matcher matcher1 = patternNumber.matcher(user.getPhone().trim());
 			if (!matcher1.matches())
 				errors.rejectValue("phone", "user", "Yêu cầu nhập đúng định dạng số điện thoại");
+		}
+		
+
+		if (passwordagain.trim().length() == 0) {
+			model.addAttribute("passwordagain", "Vui lòng không để trống mật khẩu");
+			return "user/register";
+		}
+		if (!passwordagain.equals(user.getPassword())) {
+			model.addAttribute("passwordagain", "Vui lòng nhập trùng với mật khẩu");
+			return "user/register";
 		}
 
 		Role r = (Role) session.get(Role.class, 2);
@@ -166,9 +166,6 @@ public class UserController {
 		}
 		
 //		test tên tài khoản đã tồn tại trong db chưa nhờ vào hashcode
-//		System.out.println(acc.hashCode());
-//		System.out.println(temp.hashCode());
-//		System.out.println(user.hashCode());
 		
 		System.out.println(acc.getPassword());
 		if (acc.hashCode() != temp.hashCode()) {
@@ -201,62 +198,9 @@ public class UserController {
 	}
 
 	// Gửi mail để lấy lại mật khẩu
-//	@RequestMapping(value = "forgotpassword", method = RequestMethod.POST)
-//	public String forgotpassword(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors) {
-//		if (user.getUser_name().trim().length() == 0) {
-//			errors.rejectValue("user_name", "user", "Yêu cầu không để trống tài khoản");
-//			return "user/forgotPassword";
-//		}
-//		
-//		Account acc = new Account();
-//		List<Account> listUser = getLUser();
-//		for (int i = 0; i < listUser.size(); i++) {
-//			if (listUser.get(i).getUser_name().equals(user.getUser_name())) {
-//				acc = listUser.get(i);
-//				break;
-//			}
-//		}
-//		
-//		if (acc.getUser_name() == null) {
-//			errors.rejectValue("user_name", "user", "Tên tài khoản không đúng!");
-//			return "user/forgotPassword";
-//		}
-//
-//		Session session = factory.openSession();
-//		Transaction t = session.beginTransaction();
-//		Random rand = new Random();
-//		int rand_int1 = rand.nextInt(100000);
-//
-//		String newPassword = Integer.toString(rand_int1);
-//		try {
-//			acc.setPassword(newPassword);
-//			String from = "n19dccn039@student.ptithcm.edu.vn";
-//			String to = acc.getEmail();
-//			String body = "Đây là mật khẩu mới của bạn: " + newPassword;
-//			String subject = "Quên mật khẩu";
-//			MimeMessage mail = mailer.createMimeMessage();
-//			MimeMessageHelper helper = new MimeMessageHelper(mail);
-//			helper.setFrom(from, from);
-//			helper.setTo(to);
-//			helper.setReplyTo(from, from);
-//			helper.setSubject(subject);
-//			helper.setText(body, true);
-//			mailer.send(mail);
-//			session.update(acc);
-//			t.commit();
-//			model.addAttribute("message", "Mật khẩu mới sẽ được gửi về mail của bạn!");
-//
-//		} catch (Exception e) {
-//			model.addAttribute("message", "Không tìm thấy tài khoản nào với email này!");
-//			t.rollback();
-//		} finally {
-//			session.close();
-//		}
-//		return "user/forgotPassword";
-//	}
-	
 	@RequestMapping(value = "forgotpassword", method = RequestMethod.POST)
-	public String forgotpassword(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors) {
+	public String forgotpassword(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors,
+			@RequestParam("user_name") String user_name) {
 
 		if (user.getUser_name().trim().length() == 0) {
 			errors.rejectValue("user_name", "user", "Yêu cầu không để trống tài khoản");
@@ -294,7 +238,7 @@ public class UserController {
 				MimeMessageHelper heper= new MimeMessageHelper(mail,true,"UTF-8");
 				heper.setFrom(from, from);
 				heper.setTo(to);
-				heper.setReplyTo(from,from);
+				heper.setReplyTo(from);
 				heper.setSubject(subject);
 				heper.setText(body,true);
 				mailer.send(mail);
@@ -302,7 +246,6 @@ public class UserController {
 				throw new RuntimeException(ex);
 			}
            model.addAttribute("message", "Gửi email thành công !");
-           session.update(acc);
            t.commit();
 		} catch (Exception e) {
 			model.addAttribute("message", "Gửi email thất bại !");
@@ -323,73 +266,25 @@ public class UserController {
 		httpSession.setAttribute("user", user);
 		return "user/changePassword";
 	}
-
-//	@RequestMapping(value = "changepassword/{username}", method = RequestMethod.POST)
-//	public String changepassword(ModelMap model, @ModelAttribute("user") Account user, HttpSession httpSession,
-//			BindingResult errors) {
-//		Session session = factory.openSession();
-//		Transaction t = session.beginTransaction();
-//
-//		Account acc = null;
-//		List<Account> listUser = getLUser();
-//		for (Account Account : listUser) {
-//			if (Account.getUser_name().equals(user.getUser_name()) && (Account.getrole() == user.getrole())) {
-//				acc = Account;
-//				break;
-//			}
-//		}
-//
-//		if (user.getUser_name().trim().length() == 0) {
-//			errors.rejectValue("user_name", "user", "Yêu cầu không để trống tên tài khoản");
-//		}
-//		if (user.getPassword().trim().length() == 0) {
-//			errors.rejectValue("password", "user", "Yêu cầu không để trống mật khẩu");
-//		}
-//		if (acc == null) {
-//			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
-//		} else if (user.getPassword().equals(acc.getPassword())) {
-//			if (!user.getPassword().matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$")) {
-//				errors.rejectValue("password", "user",
-//						"Nhập trên 8 kí tự trong đó có chữ hoa thường và kí tự đặc biệt.");
-//			}
-//		} else
-//			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
-//
-//		try {
-//			session.update(acc);
-//			t.commit();
-//			model.addAttribute("message", "Chỉnh sửa thành công");
-//			return "redirect:/user/userHome.htm";
-//
-//		} catch (Exception e) {
-//			model.addAttribute("message", "Chỉnh sửa thất bại !");
-//			t.rollback();
-//		} finally {
-//			session.close();
-//		}
-//		Account user1 = (Account) httpSession.getAttribute("admin");
-//		if (user1.getUser_name().equals(user.getUser_name()))
-//			httpSession.setAttribute("user", user);
-//		return "user/changePassword";
-//	}
 	
-	@RequestMapping(value = { "changepassword/{username}" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "changepassword/{acc}" }, method = RequestMethod.POST)
 	public String change_password(ModelMap model, HttpServletRequest request,
 			@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword,
 			@RequestParam("newPasswordAgain") String newPasswordAgain) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		HttpSession httpSession = request.getSession();
-		Account user = (Account) httpSession.getAttribute("user");
+		Account user = (Account) httpSession.getAttribute("acc");
 
 		if (!user.getPassword().equals(oldPassword)) {
 			model.addAttribute("message1", "Mật khẩu cũ không chính xác!");
+			return "redicrect:/user/changepassword/{acc}.htm";
 		}
 		if (oldPassword.length() == 0)
 			model.addAttribute("message1", "Mật khẩu không được để trống");
-		if (newPassword.length() == 0)
+		if (newPassword == null)
 			model.addAttribute("message2", "Mật khẩu không được để trống");
-		if (newPasswordAgain.length() == 0)
+		if (newPasswordAgain == null)
 			model.addAttribute("message3", "Mật khẩu không được để trống");
 		else if (!newPassword.matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$")
 				|| !newPasswordAgain.matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$"))
@@ -401,9 +296,7 @@ public class UserController {
 		}
 
 		else {
-
 			try
-
 			{
 				user.setPassword(newPassword);
 				session.update(user);
@@ -415,15 +308,11 @@ public class UserController {
 			Exception e) {
 				model.addAttribute("message", "Thay đổi mật khẩu thất bại!");
 				t.rollback();
-			} finally
-
-			{
+			} finally {
 				session.close();
 			}
-
 		}
 		return "user/changePassword";
-
 	}
 	
 	//View của user home
@@ -438,7 +327,15 @@ public class UserController {
 	
 	@RequestMapping(value = { "userHome" }, method = RequestMethod.POST)
 	public String viewUserHome(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors) {
+		
 		return "user/userHome";
+	}
+	
+	@RequestMapping(value="logout") 
+	public String logOut(HttpServletRequest req) {
+		HttpSession s = req.getSession();
+		s.removeAttribute("acc");
+		return "redirect:/home/index.htm";
 	}
 	
 }

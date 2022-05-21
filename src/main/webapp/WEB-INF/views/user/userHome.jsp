@@ -40,7 +40,7 @@
             </li>
 
             <li class="function">
-                <a href="user/changepassword/{username}.htm" class="">
+                <a href="user/changepassword/{acc}.htm" class="">
                     <div class="icon">
                         <i class="fa-solid fa-key"></i>
                     </div>
@@ -63,7 +63,9 @@
             
         </ul>
 
-        <button class="btn-log-out" name="logout"><a href="home/index.htm">Log out</a></button>
+        <form>
+        	<button class="btn-log-out"><a href="user/logout.htm">Log out</a></button>
+        </form>
     </aside>
 
     <!-- Main -->

@@ -50,29 +50,27 @@ public class CartController {
 		return cartItem;
 	}
 
-	@RequestMapping({ "home" })
-	public String index(HttpSession httpSession) {
-		httpSession.setAttribute("cartItem", cartItem);
-		httpSession.setAttribute("totalQuantity", this.totalQuantity(cartItem));
-		return "cart/home";
+//	@RequestMapping({ "home" })
+//	public String index(HttpSession httpSession) {
+//		httpSession.setAttribute("cartItem", cartItem);
+//		httpSession.setAttribute("totalQuantity", this.totalQuantity(cartItem));
+//		return "cart/home";
+//	}
+
+	public float totalPrice(List<Cart> list) {
+		float totalprice = 0;
+		for (Cart item1 : list) {
+			totalprice = totalprice + item1.getQuantity() * item1.getPriceItem();
+		}
+		return totalprice;
 	}
 
-	@RequestMapping(value = "logoff")
-	public String logoff(ModelMap model, HttpSession httpSession) {
-
-		if (cartItem != null) {
-
-			for (Cart c : cartItem) {
-				restoreQuantityProduct(c.getIdItem(), c.getQuantity());
-			}
-			httpSession.removeAttribute("cartItem");
-			httpSession.removeAttribute("totalprice");
-			httpSession.removeAttribute("totalQuantity");
-			cartItem.clear();
+	public int totalQuantity(List<Cart> list) {
+		int totalQuantity = 0;
+		for (Cart item1 : list) {
+			totalQuantity += item1.getQuantity();
 		}
-		httpSession.setAttribute("user", null);
-		httpSession.removeAttribute("user");
-		return "redirect:/";
+		return totalQuantity;
 	}
 
 	public void restoreQuantityProduct(int id_product, int Quantity) {
@@ -89,21 +87,23 @@ public class CartController {
 			session.close();
 		}
 	}
+	
+	@RequestMapping(value = "logoff")
+	public String logoff(ModelMap model, HttpSession httpSession) {
 
-	public float totalPrice(List<Cart> list) {
-		float totalprice = 0;
-		for (Cart item1 : list) {
-			totalprice = totalprice + item1.getQuantity() * item1.getPriceItem();
-		}
-		return totalprice;
-	}
+		if (cartItem != null) {
 
-	public int totalQuantity(List<Cart> list) {
-		int totalQuantity = 0;
-		for (Cart item1 : list) {
-			totalQuantity += item1.getQuantity();
+			for (Cart c : cartItem) {
+				restoreQuantityProduct(c.getIdItem(), c.getQuantity());
+			}
+			httpSession.removeAttribute("cartItem");
+			httpSession.removeAttribute("totalprice");
+			httpSession.removeAttribute("totalQuantity");
+			cartItem.clear();
 		}
-		return totalQuantity;
+		httpSession.setAttribute("user", null);
+		httpSession.removeAttribute("user");
+		return "redirect:/home/index.htm";
 	}
 	
 	@RequestMapping("orderComplete")

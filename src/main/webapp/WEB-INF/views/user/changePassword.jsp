@@ -39,7 +39,7 @@
             </li>
 
             <li class="function">
-                <a href="user/changeassword.htm" class="active">
+                <a href="user/changepassword/{acc}.htm" class="active">
                     <div class="icon">
                         <i class="fa-solid fa-key"></i>
                     </div>
@@ -75,12 +75,12 @@
                 /
                 <a href="user/userHome.htm">${acc.getFullname() }</a>
                 /
-                <a href="user/changepassword.htm">Change Password   </a>
+                <a href="user/changepassword/{acc}.htm">Change Password   </a>
             </div>
         </div>
 
         <div class="main-content">
-            <form action="user/changepassword.htm">
+            <form action="user/changepassword/{acc}.htm">
                 <h2>Change password</h2>
 
                 <input type="password" name = "oldPassword" placeholder="Old Password"/>
