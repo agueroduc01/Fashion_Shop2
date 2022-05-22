@@ -50,13 +50,6 @@ public class CartController {
 		return cartItem;
 	}
 
-//	@RequestMapping({ "home" })
-//	public String index(HttpSession httpSession) {
-//		httpSession.setAttribute("cartItem", cartItem);
-//		httpSession.setAttribute("totalQuantity", this.totalQuantity(cartItem));
-//		return "cart/home";
-//	}
-
 	public float totalPrice(List<Cart> list) {
 		float totalprice = 0;
 		for (Cart item1 : list) {
@@ -73,7 +66,7 @@ public class CartController {
 		return totalQuantity;
 	}
 
-	public void restoreQuantityProduct(int id_product, int Quantity) {
+	public void restoreQuantityProduct(String id_product, int Quantity) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		Product prod = (Product) session.get(Product.class, id_product);
@@ -110,18 +103,51 @@ public class CartController {
 	public String orderComplete(Model model) {
 		return "cart/orderComplete";
 	}
+	
+	public List<Product> getLProd() {
+		Session session = factory.getCurrentSession();
+		String hql = "from Product";
+		Query query = session.createQuery(hql);
+		List<Product> listProd = query.list();
+		return listProd;
+	}
 
 	// into cart
-	@RequestMapping("cart")
-	public String cart(Model model, HttpSession httpSession) {
-		httpSession.setAttribute("cartItem", cartItem);
-		httpSession.setAttribute("totalprice", this.totalPrice(cartItem));
-		httpSession.setAttribute("totalQuantity", this.totalQuantity(cartItem));
-		return "cart/cart";
+	@RequestMapping("cart/{idProduct}")
+	public String cart(Model model, @PathVariable("idProduct") String idProduct) {
+		Cart itemCart = null;
+		List<Product> list = getLProd();
+		for (int i = 0; i < list.size(); i++) {
+			if (idProduct.equals(list.get(i))) {
+				if (list.get(i).getQuantity() == 0) {
+					model.addAttribute("messageSoldout", "Đã bán hết sản phẩm");
+				} else {
+					itemCart = new Cart();
+					itemCart.setIdItem(list.get(i).getIdProduct());
+					itemCart.setImage(list.get(i).getImage());
+					itemCart.setNameItem(list.get(i).getIdProduct());
+					itemCart.setPriceItem(list.get(i).getPrice());
+					itemCart.setQuantity(1);
+					break;
+				}
+			}
+		}
+		cartItem.add(itemCart);
+		return "redirect:/cart/checkout.htm";
+	}
+	
+	@RequestMapping(value = { "detail/{idProduct}" })
+	public String view_product_detail(ModelMap model, @PathVariable("idProduct") String idProduct) {
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Product where idProduct = " + idProduct;
+		List<Product> list = session.createQuery(hql).list();
+		model.addAttribute("product", list);
+		model.addAttribute("prods", getLProd());
+		return "home/detail";
 	}
 
 	@RequestMapping(value = "minusQuantity/{id_product}")
-	public String minusQuantity(ModelMap model, HttpSession httpSession, @PathVariable("id_product") int id_product) {
+	public String minusQuantity(ModelMap model, HttpSession httpSession, @PathVariable("id_product") String id_product) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 
@@ -151,11 +177,11 @@ public class CartController {
 		httpSession.setAttribute("totalprice", this.totalPrice(cartItem));
 		httpSession.setAttribute("totalQuantity", this.totalQuantity(cartItem));
 
-		return "cart/cart";
+		return "redirect:/cart/checkout.htm";
 	}
 
 	@RequestMapping(value = "plusQuantity/{id_product}")
-	public String plusQuantity(ModelMap model, HttpSession httpSession, @PathVariable("id_product") int id_product) {
+	public String plusQuantity(ModelMap model, HttpSession httpSession, @PathVariable("id_product") String id_product) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		Product prod = (Product) session.get(Product.class, id_product);
@@ -195,7 +221,7 @@ public class CartController {
 		httpSession.setAttribute("cartItem", cartItem);
 		httpSession.setAttribute("totalprice", this.totalPrice(cartItem));
 		httpSession.setAttribute("totalQuantity", this.totalQuantity(cartItem));
-		return "cart/cart";
+		return "redirect:/cart/checkout.htm";
 	}
 
 	@Autowired
@@ -301,7 +327,7 @@ public class CartController {
 
 	// buy something
 	@RequestMapping("buyItem")
-	public String buyItem(Model model, @RequestParam("idItem") int idItem, HttpSession httpSession) {
+	public String buyItem(Model model, @RequestParam("idItem") String idItem, HttpSession httpSession) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		Product prod = (Product) session.get(Product.class, idItem);
@@ -346,12 +372,12 @@ public class CartController {
 		Account cus = (Account) session.get(Account.class, user.getEmail());
 		httpSession.setAttribute("user", cus);
 		session.close();
-		return "redirect:/cart/home.htm";
+		return "redirect:/cart/orderComplete.htm";
 	}
 
 	// delete product
 	@RequestMapping("deleteCartItem")
-	public String deleteGh(Model model, HttpSession httpSession, @RequestParam("idItem") int idItem) {
+	public String deleteGh(Model model, HttpSession httpSession, @RequestParam("idItem") String idItem) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		int index = 0;
@@ -401,7 +427,7 @@ public class CartController {
 
 
 	@RequestMapping(value = "checkQuantityFromDetailProduct/{id_product}", params = "Quantity")
-	public String checkQuantityFromDetailProduct(ModelMap model, @PathVariable("id_product") int id_product,
+	public String checkQuantityFromDetailProduct(ModelMap model, @PathVariable("id_product") String id_product,
 			@RequestParam("Quantity") int Quantity) {
 
 		Session session = factory.openSession();
@@ -456,16 +482,6 @@ public class CartController {
 
 		model.addAttribute("sum", sum);
 
-		return "cart/checkOut";
+		return "redirect:/cart/checkOut.htm";
 	}
-
-//	@RequestMapping(value = "purchase/{phone}")
-//	public String purchase(ModelMap model, @PathVariable("phone") String phone) {
-//		Session session = factory.openSession();
-//		String hql = "FROM Order o  where o.emails.phone = " + phone.substring(1) + "order by o.id_order ";
-//		Query query = session.createQuery(hql);
-//		List<Order> listOrder = query.list();
-//		model.addAttribute("Orders", listOrder);
-//		return "cart/purchase";
-//	}
 }

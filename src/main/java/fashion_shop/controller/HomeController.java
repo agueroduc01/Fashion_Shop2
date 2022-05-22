@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import fashion_shop.entity.Account;
 import fashion_shop.entity.Product;
+import fashion_shop.entity.ProductCategory;
 
 @Transactional
 @Controller
@@ -39,12 +39,35 @@ public class HomeController {
 		return "home/index";
 	}
 	
-	// view product
+	// view products
 	@RequestMapping(value = { "products" })
 	public String view_product(ModelMap model) {
 		model.addAttribute("prods", getLProd());
+		model.addAttribute("prodsSize", getLProd().size());
 		return "home/products";
 	}
+	
+	@ModelAttribute("listCat")
+	public List<ProductCategory> getLCat() {
+		Session session = factory.getCurrentSession();
+		String hql = "from ProductCategory";
+		Query query = session.createQuery(hql);
+		List<ProductCategory> listCat = query.list();
+		return listCat;
+	}
+	
+	// view products by cat
+	@RequestMapping(value = { "products/{idCategory}" })
+	public String view_product(ModelMap model, @PathVariable("idCategory") String idCategory) {
+		model.addAttribute("prods", getLProd());
+		model.addAttribute("prodsSize", getLProd().size());
+		model.addAttribute("listCat", getLCat());
+		
+		model.addAttribute("catON", "true");
+		model.addAttribute("catID", idCategory);
+		return "home/products";
+	}
+
 
 	// view product_detail
 	@RequestMapping(value = { "detail/{idProduct}" })
@@ -52,7 +75,6 @@ public class HomeController {
 		Session session = factory.getCurrentSession();
 		String hql = "FROM Product where idProduct = " + idProduct;
 		List<Product> list = session.createQuery(hql).list();
-
 		model.addAttribute("product", list);
 		model.addAttribute("prods", getLProd());
 		return "home/detail";
@@ -66,13 +88,12 @@ public class HomeController {
 		return "home/detail";
 	}
 	
-	public Product Product(Integer id) {
+	public Product Product(String idProduct) {
 		Session session = factory.getCurrentSession();
-		String hql = "FROM ProductEntity where id = :id";
+		String hql = "FROM Product where id = 'idProduct'";
 		Query query = session.createQuery(hql);
-		query.setParameter("id", id);
+		query.setParameter("id", idProduct);
 		Product pd = (Product) query.list().get(0);
-
 		return pd;
 	}
 }

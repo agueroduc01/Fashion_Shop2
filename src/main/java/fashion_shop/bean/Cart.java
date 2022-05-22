@@ -1,17 +1,17 @@
 package fashion_shop.bean;
 
 public class Cart {
-	private int idItem;
+	private String idItem;
 	private String nameItem;
 	private float priceItem;
 	private int Quantity;
 	private String image;
 
-	public int getIdItem() {
+	public String getIdItem() {
 		return idItem;
 	}
 
-	public void setIdItem(int idItem) {
+	public void setIdItem(String idItem) {
 		this.idItem = idItem;
 	}
 
