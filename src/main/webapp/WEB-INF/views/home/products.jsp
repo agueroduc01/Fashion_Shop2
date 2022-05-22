@@ -142,7 +142,7 @@
 													<a href="home/detail/${p.idProduct}.htm" class="product-name hover-p-color">${p.name }</a>
 												</h2>
 				
-												<p class="product-price">${p.price }</p>
+												<p class="product-price">$${p.price }</p>
 				
 												<div class="review">
 													<ul class="list-stars">

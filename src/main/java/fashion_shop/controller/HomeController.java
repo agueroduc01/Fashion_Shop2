@@ -44,6 +44,7 @@ public class HomeController {
 	public String view_product(ModelMap model) {
 		model.addAttribute("prods", getLProd());
 		model.addAttribute("prodsSize", getLProd().size());
+		model.addAttribute("catON", "false");
 		return "home/products";
 	}
 	
@@ -66,22 +67,7 @@ public class HomeController {
 		model.addAttribute("catON", "true");
 		model.addAttribute("catID", idCategory);
 		return "home/products";
-	}
-
-
-	
-	// view products by cat
-		@RequestMapping(value = { "products/{idCategory}" })
-		public String view_product(ModelMap model, @PathVariable("idCategory") String idCategory) {
-			model.addAttribute("prods", getLProd());
-			model.addAttribute("prodsSize", getLProd().size());
-			model.addAttribute("listCat", getLCat());
-			
-			model.addAttribute("catON", "true");
-			model.addAttribute("catID", idCategory);
-			return "home/products";
-		}
-	
+	}	
 	
 	// view product_detail
 	@RequestMapping(value = { "detail/{idProduct}" })
