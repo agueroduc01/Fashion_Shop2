@@ -82,7 +82,7 @@
             </div>
 
             <div class="header-right">
-                
+                <a href="adminAddProd.html" class="btn-add-prod"><i class="fa-solid fa-plus"></i>Add product</a>        
             </div>
         </div>
 
@@ -96,7 +96,11 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Price</th>
+                        <th>Color</th>
+                        <th>Size</th>
                         <th>Quantity</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
     
                     <div class="scroll">
@@ -104,7 +108,11 @@
                             <td>124</td>
                             <td>A foking good T-shirt</td>
                             <td>$30.00</td>
+                            <td>Black</td>
+                            <td>Small</td>
                             <td>1</td>
+                            <td><a href="adminEditProd.html" class="icon"><i class="fa-solid fa-pen"></i></a></td>
+                            <td><a href="" class="icon"><i class="fa-solid fa-trash"></i></a></td>
                         </tr>
 
                     
