@@ -321,9 +321,20 @@ body {
   font-size: 14px;
 }
 
-.main-header .header-right .btn-filter {
+.main-header .header-right button,
+.main-header .header-right .btn-add-prod {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  min-width: 120px;
   height: 48px;
-  width: 120px;
+  padding: 8px 16px;
   font-size: 15px;
   color: white;
   background-color: #3498db;
@@ -333,11 +344,13 @@ body {
   transition: 0.3s;
 }
 
-.main-header .header-right .btn-filter i {
-  margin-left: 8px;
+.main-header .header-right button i,
+.main-header .header-right .btn-add-prod i {
+  margin: 0 8px;
 }
 
-.main-header .header-right .btn-filter:hover {
+.main-header .header-right button:hover,
+.main-header .header-right .btn-add-prod:hover {
   opacity: 0.9;
 }
 
