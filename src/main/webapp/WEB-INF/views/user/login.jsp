@@ -39,17 +39,18 @@
                                     <h2>Login</h2>
 
                                     <form:input type="text" path="user_name" placeholder="Username" />
-                                    <form:errors path="user_name"></form:errors>
+                                    <h5><form:errors path="user_name"></form:errors></h5>
                                     <!-- <span class="errors">Have to type account</span> -->
                                     <form:input type="password" path="password" placeholder="Password" />
-                                    <form:errors path="password"></form:errors>
+                                    <h5><form:errors path="password"></form:errors></h5>
                                     <!-- <span class="errors">Wrong password</span> -->
 
                                     <div class="link">
                                         <a href="user/register.htm">I don't have account</a>
                                         <a href="user/forgotpassword.htm">Lost your password?</a>
                                     </div>
-                                  	${message }
+                                  	
+                                  	<h5 style="margin: 12px;">${message }</h5>
                                     <!-- <br> -->
                                     <form:button>Login</form:button>
                                 </form:form>

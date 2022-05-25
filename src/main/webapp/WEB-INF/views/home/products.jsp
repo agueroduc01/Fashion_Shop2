@@ -14,6 +14,8 @@
     <title>Riode - Show products</title>
     <base href="${pageContext.servletContext.contextPath}/">
 
+	<link rel="icon" type="image/png"
+	href="https://d-themes.com/html/riode/images/icons/favicon.png">
     <link href="<c:url value='/resources/home/dist/css/reset.css' />"
 	rel="stylesheet">
 	<link href="<c:url value='/resources/home/dist/css/products.css' />" rel="stylesheet">
@@ -186,7 +188,7 @@
 													<a href="home/detail/${p.idProduct}.htm" class="product-name hover-p-color">${p.name }</a>
 												</h2>
 				
-												<p class="product-price">${p.price }</p>
+												<p class="product-price">$${p.price }</p>
 				
 												<div class="review">
 													<ul class="list-stars">
