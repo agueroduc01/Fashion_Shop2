@@ -202,9 +202,14 @@ public class UserController {
 			if (isAdmin == true) {
 				return "redirect:/admin/adminHome.htm";
 			} else {
-//				session để lưu user là customer và quay lại home
+				String fromPage = (String) httpSession.getAttribute("fromPage");
+				// session để lưu user là customer và quay lại home
 				model.addAttribute("session", httpSession.getAttribute("acc"));
-				return "redirect:/home/index.htm";
+				if (fromPage == "cart") {
+					return "redirect:/cart/checkout.htm";
+				} else {					
+					return "redirect:/home/index.htm";
+				}
 			}
 		} else
 			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");

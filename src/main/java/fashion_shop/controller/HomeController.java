@@ -2,6 +2,7 @@ package fashion_shop.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import org.hibernate.Query;
@@ -14,13 +15,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import fashion_shop.entity.Account;
 import fashion_shop.entity.Product;
 import fashion_shop.entity.ProductCategory;
+import fashion_shop.service.DBService;
 import fashion_shop.DAO.productDAO;
+import fashion_shop.bean.CartItem;
 
 @Controller
 @RequestMapping(value = { "/home/", "/" })
 public class HomeController {
+	
+	@Autowired
+	SessionFactory factory;
 	
 	@Autowired
 	productDAO productDAO1;
@@ -70,9 +77,23 @@ public class HomeController {
 	
 	// view product_detail
 	@RequestMapping(value = { "detail/{idProduct}" })
-	public String view_product_detail(ModelMap model, @PathVariable("idProduct") String idProduct) {
-		model.addAttribute("product", productDAO1.Product(idProduct));
-		model.addAttribute("prods", productDAO1.getLProd());
+	public String view_product_detail(ModelMap model, @PathVariable("idProduct") String id, HttpSession session) {
+		DBService db = new DBService(factory);
+		Product product = db.getProductById(id);
+		Account account = (Account) session.getAttribute("acc");
+
+		CartItem cartItem = new CartItem();
+		cartItem.setUserPhone(account.getPhone());
+		cartItem.setIdProduct(product.getIdProduct());
+		cartItem.setName(product.getName());
+		cartItem.setColor(product.getColor());
+		cartItem.setSize(product.getSize());
+		cartItem.setPrice(product.getPrice());
+		cartItem.setQuantity(product.getQuantity());
+		cartItem.setImage(product.getImage());
+
+
+		model.addAttribute("cartItem", cartItem);
 		return "home/detail";
 	}
 	

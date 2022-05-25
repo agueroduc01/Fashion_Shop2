@@ -45,6 +45,9 @@ public class Product {
 	@OneToMany(mappedBy = "idProduct", fetch = FetchType.EAGER)
 	private Collection<Color> colors;
 	
+	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+	private Collection<Cart> carts;
+	
 	@ManyToOne 
 	@JoinColumn(name = "IDCategory")
 	private ProductCategory ProdCategory;

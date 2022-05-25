@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +19,11 @@
     <link href="<c:url value='/resources/home/dist/css/checkOut.css' />" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+	<style type="text/css">
+		#product-quantity {
+			width: 70px;
+		}
+	</style>
 </head>
 <body>
      
@@ -38,118 +44,110 @@
 
             </div>
 
-            <div class="container">
-                <div class="row">
-                    <div class="col-8">
-                        <table class="shop-table">
-                            <thead>
-                                <tr>
-                                    <th><span>PRODUCT</span></th>
-                                    <th></th>
-                                    <th><span>PRICE</span></th>
-                                    <th><span>QUANTITY</span></th>
-                                    <th><span>SUBTOTAL</span></th>
-    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="product">
-                                    <td class="product-thumbnail">
-                                        <img src="https://d-themes.com/html/riode/images/products/product4.jpg" alt="">
-                                    </td>
-                                    <td class="product-name">Converse Training Shoes</td>
-                                    <td class="product-subtotal">$129.99</td>
-                                    <td class="product-quantity">
-                                        <div class="form-control">
-                                            <button class="quantity-minus"><i class="fa-solid fa-minus"></i></button>
-                                            <input type="number" value="1" min="1" max="100">
-                                            <button class="quantity-plus"><i class="fa-solid fa-plus"></i></button>
-                                        </div>
-                                    </td>
-                                    <td class="product-price">$129.99</td>
-                                    <td class="product-close">
-                                        <span class="btn-remove"><i class="fa-solid fa-xmark"></i></span>
-                                    </td>
-                                </tr>
+            <c:choose>
+			    <c:when test="${emptyCart eq 1}">
+			        <h2>Your cart is empty</h2>
+			    </c:when>    
+			    <c:otherwise>
 
-                                <tr class="product">
-                                    <td class="product-thumbnail">
-                                        <img src="https://d-themes.com/html/riode/images/products/product19.jpg" alt="">
-                                    </td>
-                                    <td class="product-name">Women Beautiful Headgear</td>
-                                    <td class="product-subtotal">$98.00</td>
-                                    <td class="product-quantity">
-                                        <div class="form-control">
-                                            <button class="quantity-minus"><i class="fa-solid fa-minus"></i></button>
-                                            <input type="number" value="1" min="1" max="100">
-                                            <button class="quantity-plus"><i class="fa-solid fa-plus"></i></button>
-                                        </div>
-                                    </td>
-                                    <td class="product-price">$98.00</td>
-                                    <td class="product-close">
-                                        <span class="btn-remove"><i class="fa-solid fa-xmark"></i></span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-    
-                        <div class="cart-action">
-                            <a href="home/products.htm" class="btn-back-home"><i class="fa-solid fa-arrow-left"></i>CONTINUE SHOPPING</a>
-                        </div>
-                    </div>
-    
-                    <div class="col-4">
-                        <div class="sidebar">
-                            <h3 class="title">Cart Totals</h3>
-                            
-                            <div class="shipping useless">
-                                <h3>Calculate Shipping</h3>
-                                <ul>
-                                    <li>
-                                        <input name="ship" type="radio" id="rate"> 
-                                        <label for="rate">Flat rate</label>
-                                    </li>
-                                   
-                                    <li>
-                                        <input name="ship" type="radio" id="free"> 
-                                        <label for="free">Free shipping</label>
-                                    </li>
+			        <div class="container">
+		                <div class="row">
+		                    <div class="col-8">
+		                        <table class="shop-table">
+		                            <thead>
+		                                <tr>
+		                                    <th><span>PRODUCT</span></th>
+		                                    <th></th>
+		                                    <th><span>PRICE</span></th>
+		                                    <th><span>QUANTITY</span></th>
+		                                    <th><span>SUBTOTAL</span></th>
 
-                                    <li>
-                                        <input name="ship" type="radio" id="local"> 
-                                        <label for="local">Local pickup</label>
-                                    </li>
-                                </ul>
-                            </div>
+		                                </tr>
+		                            </thead>
+		                            <tbody>
+		                            	<c:forEach var="pd" items="${products}">
+		                            		<tr class="product">
+			                                    <td class="product-thumbnail">
+			                                        <img src="${pd.image}" alt="">
+			                                    </td>
+			                                    <td class="product-name">${pd.name}</td>
+			                                    <td class="product-subtotal">
+			                                    	<fmt:formatNumber type="currency" currencySymbol="$ " value="${pd.price}" />
+			                                    </td>
+			                                    <td class="product-quantity">
+			                                        <div class="form-control">
+			                                            <button class="quantity-minus"><i class="fa-solid fa-minus"></i></button>
+			                                            <input id="product-quantity" type="number" value="${pd.quantity}">
+			                                            <button class="quantity-plus"><i class="fa-solid fa-plus"></i></button>
+			                                        </div>
+			                                    </td>
+			                                    <td class="product-price"><fmt:formatNumber value="${pd.price * pd.quantity}" pattern="0.00"/></td>
+			                                    <td class="product-close">
+			                                        <span class="btn-remove"><i class="fa-solid fa-xmark"></i></span>
+			                                    </td>
+			                                </tr>
+		                            	</c:forEach>		                                		                               
+		                            </tbody>
+		                        </table>
 
-                            <div class="total">
-                                <label for="">Total</label>
-                                <span class="price">$426.99</span>
-                            </div>
-                            
-                            <div class="payment useless">
-                                <h3>Payment Methods</h3>
-                                <ul>
-                                    <li>
-                                        <input type="radio" name="payment" id="check">
-                                        <label for="check">Check payments</label>
-                                        
-                                    </li>
-                                    
-                                    <li> 
-                                        <input type="radio" name="payment" id="cash"> 
-                                        <label for="cash">Cash on delivery</label>
-                                    </li>
-                                </ul>
-                            </div>
+		                        <div class="cart-action">
+		                            <a href="home/products.htm" class="btn-back-home"><i class="fa-solid fa-arrow-left"></i>CONTINUE SHOPPING</a>
+		                        </div>
+		                    </div>
 
-                            <a href="cart/orderComplete.htm" class="btn-check-out">PLACE ORDER</a>
-                        </div>
-                    </div>
-                </div>
+		                    <div class="col-4">
+		                        <div class="sidebar">
+		                            <h3 class="title">Cart Totals</h3>
 
-                
-            </div>
+		                            <div class="shipping useless">
+		                                <h3>Calculate Shipping</h3>
+		                                <ul>
+		                                    <li>
+		                                        <input name="ship" type="radio" id="rate"> 
+		                                        <label for="rate">Flat rate</label>
+		                                    </li>
+
+		                                    <li>
+		                                        <input name="ship" type="radio" id="free"> 
+		                                        <label for="free">Free shipping</label>
+		                                    </li>
+
+		                                    <li>
+		                                        <input name="ship" type="radio" id="local"> 
+		                                        <label for="local">Local pickup</label>
+		                                    </li>
+		                                </ul>
+		                            </div>
+
+		                            <div class="total">
+		                                <label for="">Total</label>
+		                                <span class="price">$426.99</span>
+		                            </div>
+
+		                            <div class="payment useless">
+		                                <h3>Payment Methods</h3>
+		                                <ul>
+		                                    <li>
+		                                        <input type="radio" name="payment" id="check">
+		                                        <label for="check">Check payments</label>
+
+		                                    </li>
+
+		                                    <li> 
+		                                        <input type="radio" name="payment" id="cash"> 
+		                                        <label for="cash">Cash on delivery</label>
+		                                    </li>
+		                                </ul>
+		                            </div>
+
+		                            <a href="cart/orderComplete.htm" class="btn-check-out">PLACE ORDER</a>
+		                        </div>
+		                    </div>
+		                </div>                
+		            </div>
+
+			    </c:otherwise>
+			</c:choose>
         </div>
     </main>
 
