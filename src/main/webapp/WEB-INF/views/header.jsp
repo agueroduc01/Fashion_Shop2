@@ -47,7 +47,9 @@
 						<li><a href="user/userHome.htm " class="user-area"> <span
 								class="user-name">${acc.getFullname() }</span>
 								<div class="user-thumbnail">
-									<img src="" alt="">
+									<c:if test="${!acc.getImage().toString().equals(null)}">
+										<img src="${acc.getImage() }" alt="">
+									</c:if>
 								</div>
 						</a></li>
 						

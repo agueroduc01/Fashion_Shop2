@@ -1,15 +1,18 @@
 package fashion_shop.controller;
 
+import java.io.File;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import org.apache.jasper.tagplugins.jstl.core.If;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import fashion_shop.entity.Account;
 import fashion_shop.entity.Role;
@@ -51,11 +55,14 @@ public class UserController {
 		model.addAttribute("user", new Account());
 		return "user/register";
 	}
-
+	
+	@Autowired
+	ServletContext context;
+	
 	@RequestMapping(value = "register", method = RequestMethod.POST)
 	public String register(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors
-			,@RequestParam("passwordagain") String passwordagain
-			) {
+			,@RequestParam("passwordagain") String passwordagain,
+			@RequestParam("photo")MultipartFile photo) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		List<Account> l = getLUser();
@@ -66,6 +73,24 @@ public class UserController {
 				if (a.getUser_name().equalsIgnoreCase(user.getUser_name())) {
 					errors.rejectValue("user_name", "user", "Tên tài khoản đã tồn tại!");
 				}
+			}
+		}
+		
+//		if (photo.isEmpty()) {
+//			errors.rejectValue("photo", "Không để file trống!");
+//		}
+//		else {
+		if (!photo.isEmpty()) {
+			try {
+				String photoPath = context.getRealPath("/files/" + photo.getOriginalFilename());
+				photo.transferTo(new File(photoPath));
+				user.setImage(photoPath);
+//				model.addAttribute("photo", photoPath);
+//				System.out.println(photo.getOriginalFilename());
+			}
+			catch (Exception e) {
+				// TODO: handle exception
+				errors.rejectValue("photo", "Lỗi lưu file!");
 			}
 		}
 		

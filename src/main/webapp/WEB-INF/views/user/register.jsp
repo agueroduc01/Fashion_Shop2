@@ -40,7 +40,7 @@
 	<main class="main login-container">
 		<div class="container">
 
-			<form:form class="register-form" action="user/register.htm" modelAttribute="user">
+			<form:form class="register-form" action="user/register.htm" modelAttribute="user" enctype="multipart/form-data">
 				<h2>Register</h2>
 
 				<div class="row">
@@ -77,7 +77,7 @@
 
 					<div class="col-4 ">
 						<div class="input-group">
-							<label for="">Image file upload</label> <input type="file">
+							<label for="">Image file upload</label> <input type="file" name="photo">
 
 						</div>
 
