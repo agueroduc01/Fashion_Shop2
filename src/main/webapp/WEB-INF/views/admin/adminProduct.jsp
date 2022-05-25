@@ -78,7 +78,7 @@
                                 <div class="map">
                                     <a href="home/index.htm">Home</a> /
                                     <a href="admin/adminHome.htm">Admin</a> /
-                                    <a href="admind/adminProducts.htm">Products</a>
+                                    <a href="admin/adminProducts.htm">Products</a>
                                 </div>
                             </div>
 

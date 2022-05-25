@@ -81,6 +81,11 @@ public class AdminController {
 		return "admin/adminBillInfo";
 	}
 	
+	@RequestMapping("adminAddProd")
+	public String viewAdminAddProd() {
+		return "admin/adminAddProd";
+	}
+	
 //	@ModelAttribute("listCus")
 //	public List<Account> getLcus() {
 //		Session session = factory.getCurrentSession();
