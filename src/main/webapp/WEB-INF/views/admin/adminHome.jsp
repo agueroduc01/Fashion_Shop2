@@ -61,7 +61,7 @@
             
         </ul>
 
-        <button class="btn-log-out">Log out</button>
+        <button class="btn-log-out"><a href="user/logout.htm">Log out</a></button>
     </aside>
 
     <!-- Main -->

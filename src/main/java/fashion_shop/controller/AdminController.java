@@ -41,6 +41,7 @@ import fashion_shop.entity.Order;
 import fashion_shop.entity.OrderDetail;
 import fashion_shop.entity.Product;
 import fashion_shop.entity.Role;
+import fashion_shop.DAO.adminDAO;
 
 @Transactional
 @Controller
@@ -85,42 +86,15 @@ public class AdminController {
 	public String viewAdminAddProd() {
 		return "admin/adminAddProd";
 	}
-	
-//	@ModelAttribute("listCus")
-//	public List<Account> getLcus() {
-//		Session session = factory.getCurrentSession();
-//		String hql = "from Account where Role = 2";
-//		Query query = session.createQuery(hql);
-//		List<Account> listcus = query.list();
-//		return listcus;
-//	}
-//
-//	@ModelAttribute("listAdmin")
-//	public List<Account> getLAdmin() {
-//		Session session = factory.getCurrentSession();
-//		String hql = "from Account where Role = 1";
-//		Query query = session.createQuery(hql);
-//		List<Account> listAdmin = query.list();
-//		return listAdmin;
-//	}
-//
-//	@ModelAttribute("listUser")
-//	public List<Account> getLUser() {
-//		Session session = factory.getCurrentSession();
-//		String hql = "from Account";
-//		Query query = session.createQuery(hql);
-//		List<Account> listUser = query.list();
-//		return listUser;
-//	}
 
-//	@ModelAttribute("listOrder")
-//	public List<Order> getLOrder() {
-//		Session session = factory.getCurrentSession();
-//		String hql = "FROM  Order order by id_order desc";
-//		Query query = session.createQuery(hql);
-//		List<Order> listOrder = query.list();
-//		return listOrder;
-//	}
+	@ModelAttribute("listUser")
+	public List<Account> getLUser() {
+		Session session = factory.getCurrentSession();
+		String hql = "from Account";
+		Query query = session.createQuery(hql);
+		List<Account> listUser = query.list();
+		return listUser;
+	}
 
 ////	@RequestMapping(value = { "adminHome" }, method = RequestMethod.GET)
 ////	public String adminHome(HttpServletRequest request, ModelMap model) {

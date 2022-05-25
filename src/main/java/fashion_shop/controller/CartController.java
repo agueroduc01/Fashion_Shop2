@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import fashion_shop.DAO.productDAO;
 import fashion_shop.bean.Cart;
 import fashion_shop.entity.Account;
 import fashion_shop.entity.Order;
@@ -43,6 +44,7 @@ import fashion_shop.entity.Product;
 public class CartController {
 	@Autowired
 	SessionFactory factory;
+	productDAO productDAO;
 
 	List<Cart> cartItem = new ArrayList<Cart>();
 
@@ -103,20 +105,12 @@ public class CartController {
 	public String orderComplete(Model model) {
 		return "cart/orderComplete";
 	}
-	
-	public List<Product> getLProd() {
-		Session session = factory.getCurrentSession();
-		String hql = "from Product";
-		Query query = session.createQuery(hql);
-		List<Product> listProd = query.list();
-		return listProd;
-	}
 
 	// into cart
 	@RequestMapping("cart/{idProduct}")
 	public String cart(Model model, @PathVariable("idProduct") String idProduct) {
 		Cart itemCart = null;
-		List<Product> list = getLProd();
+		List<Product> list = productDAO.getLProd();
 		for (int i = 0; i < list.size(); i++) {
 			if (idProduct.equals(list.get(i))) {
 				if (list.get(i).getQuantity() == 0) {
@@ -142,7 +136,7 @@ public class CartController {
 		String hql = "FROM Product where idProduct = " + idProduct;
 		List<Product> list = session.createQuery(hql).list();
 		model.addAttribute("product", list);
-		model.addAttribute("prods", getLProd());
+		model.addAttribute("prods", productDAO.getLProd());
 		return "home/detail";
 	}
 

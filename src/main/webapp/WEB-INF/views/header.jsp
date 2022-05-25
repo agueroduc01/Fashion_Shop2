@@ -42,17 +42,27 @@
 
 				<ul class="header-right  d-flex jc-space-between ai-center">
 		<!-- getSession -->
-<!-- 					<c:set var="session" scope="session" value="1" /> -->
 					<c:if test="${acc != null}">
-						<li><a href="user/userHome.htm " class="user-area"> <span
-								class="user-name">${acc.getFullname() }</span>
-								<div class="user-thumbnail">
-									<c:if test="${!acc.getImage().toString().equals(null)}">
-										<img src="${acc.getImage() }" alt="">
-									</c:if>
-								</div>
-						</a></li>
-						
+						<c:if test="${acc.getrole().getIdRole() == 2}">
+							<li><a href="user/userHome.htm " class="user-area"> <span
+									class="user-name">${acc.getFullname() }</span>
+									<div class="user-thumbnail">
+										<c:if test="${!acc.getImage().toString().equals(null)}">
+											<img src="${acc.getImage() }" alt="">
+										</c:if>
+									</div>
+							</a></li>
+						</c:if>
+						<c:if test="${acc.getrole().getIdRole() == 1}">
+							<li><a href="admin/adminHome.htm " class="user-area"> <span
+									class="user-name">${acc.getFullname() }</span>
+									<div class="user-thumbnail">
+										<c:if test="${!acc.getImage().toString().equals(null)}">
+											<img src="${acc.getImage() }" alt="">
+										</c:if>
+									</div>
+							</a></li>
+						</c:if>
 					</c:if>
 
 					<c:if test="${acc == null}">
