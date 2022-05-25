@@ -14,15 +14,15 @@
     <base href="${pageContext.servletContext.contextPath}/">
     <link rel="icon" type="image/png" href="https://d-themes.com/html/riode/images/icons/favicon.png">
 
-    <link rel="stylesheet" href="./dist/css/reset.css">
-    <link rel="stylesheet" href="./dist/css/adminAccount.css">
+    <link href="<c:url value='/resources/home/dist/css/reset.css' />" rel="stylesheet">
+	<link href="<c:url value='/resources/home/dist/css/adminAccount.css' />" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
 <body>
     
     <aside class="aside">
-        <a href="adminHome.html" class="admin">
+        <a href="admin/adminHome.htm" class="admin">
             <div class="logo">
                 <i class="fa-solid fa-a"></i>
             </div>
@@ -31,7 +31,7 @@
 
         <ul class="functions">
             <li class="function">
-                <a href="adminAccount.html">
+                <a href="admin/adminAccount.htm">
                     <div class="icon">
                         <i class="fa-solid fa-users"></i>
                     </div>
@@ -40,7 +40,7 @@
             </li>
 
             <li class="function">
-                <a href="adminBill.html" >
+                <a href="admin/adminBill.htm" >
                     <div class="icon">
                         <i class="fa-solid fa-receipt"></i>
 
@@ -50,7 +50,7 @@
             </li>
 
             <li class="function">
-                <a href="adminProduct.html"  class="active">
+                <a href="admin/adminProduct.htm"  class="active">
                     <div class="icon">
                         <i class="fa-solid fa-shirt"></i>
                     </div>
@@ -73,11 +73,11 @@
                 <h2>Manage Products</h2>
 
                 <div class="map">
-                    <a href="home.html">Home</a>
+                    <a href="home/index.htm">Home</a>
                     /
-                    <a href="adminHome.html">Admin</a>
+                    <a href="admin/adminHome.htm">Admin</a>
                     /
-                    <a href="adminProduct.html">Products</a>
+                    <a href="admind/adminProducts.htm">Products</a>
                 </div>
             </div>
 
@@ -122,6 +122,6 @@
 </body>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
-    <script src="./dist/js/owl.carousel.js"></script>
-    <script src="./dist/js/home.js"></script>
+    <script src="<c:url value='/resources/home/dist/js/owl.carousel.js' />"></script>
+	<script src="<c:url value='/resources/home/dist/js/home.js' />"></script>
 </html>

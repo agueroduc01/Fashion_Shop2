@@ -167,13 +167,12 @@ public class UserController {
 		
 //		test tên tài khoản đã tồn tại trong db chưa nhờ vào hashcode
 		
-		System.out.println(acc.getPassword());
-		if (acc.hashCode() != temp.hashCode()) {
+		if (acc.getUser_name() != temp.getUser_name()) {
 			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
 		} else if (user.getPassword().equals(acc.getPassword())) {
 			Thread.sleep(1000);
 			// chưa vào được admin (getrole đang là role)
-			boolean isAdmin = (boolean) acc.getrole().equals((Object) 1);
+			boolean isAdmin = (boolean) acc.getrole().getIdRole().equals((Object) 1);
 			httpSession.setAttribute("acc", acc);
 			if (isAdmin == true) {
 				return "redirect:/admin/adminHome.htm";
@@ -267,18 +266,18 @@ public class UserController {
 		return "user/changePassword";
 	}
 	
-	@RequestMapping(value = { "changepassword/{acc}" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "changepassword/{user}" }, method = RequestMethod.POST)
 	public String change_password(ModelMap model, HttpServletRequest request,
 			@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword,
 			@RequestParam("newPasswordAgain") String newPasswordAgain) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		HttpSession httpSession = request.getSession();
-		Account user = (Account) httpSession.getAttribute("acc");
+		Account user = (Account) httpSession.getAttribute("user");
 
 		if (!user.getPassword().equals(oldPassword)) {
 			model.addAttribute("message1", "Mật khẩu cũ không chính xác!");
-			return "redicrect:/user/changepassword/{acc}.htm";
+			return "redicrect:/user/changepassword/{user}.htm";
 		}
 		if (oldPassword.length() == 0)
 			model.addAttribute("message1", "Mật khẩu không được để trống");
