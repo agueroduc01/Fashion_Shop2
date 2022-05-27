@@ -77,7 +77,7 @@
                     /
                     <a href="admin/adminHome.htm">Admin</a>
                     /
-                    <a href="admin/dminBill.htm">Bill</a>
+                    <a href="admin/adminBill.htm">Bill</a>
                 </div>
             </div>
 

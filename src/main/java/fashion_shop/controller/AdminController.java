@@ -87,15 +87,6 @@ public class AdminController {
 		return "admin/adminAddProd";
 	}
 
-	@ModelAttribute("listUser")
-	public List<Account> getLUser() {
-		Session session = factory.getCurrentSession();
-		String hql = "from Account";
-		Query query = session.createQuery(hql);
-		List<Account> listUser = query.list();
-		return listUser;
-	}
-
 ////	@RequestMapping(value = { "adminHome" }, method = RequestMethod.GET)
 ////	public String adminHome(HttpServletRequest request, ModelMap model) {
 //////		List<Order> listOrder = getLOrder();

@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import fashion_shop.entity.Account;
 import fashion_shop.entity.Role;
+import fashion_shop.DAO.accountDAO;
 
 @Transactional
 @Controller
@@ -40,15 +41,9 @@ public class UserController {
 	@Autowired
 	SessionFactory factory;
 
-	@ModelAttribute("listUser")
-	public List<Account> getLUser() {
-		Session session = factory.getCurrentSession();
-		String hql = "From Account";
-		Query query = session.createQuery(hql);
-		List<Account> listUser = query.list();
-		return listUser;
-	}
-
+	@Autowired
+	accountDAO accountDAO;
+	
 	// Đăng Ký
 	@RequestMapping(value = "register", method = RequestMethod.GET)
 	public String register(ModelMap model) {
@@ -65,7 +60,7 @@ public class UserController {
 			@RequestParam("photo")MultipartFile photo) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
-		List<Account> l = getLUser();
+		List<Account> l = accountDAO.getLUser();
 		if (user.getUser_name().trim().length() == 0) {
 			errors.rejectValue("user_name", "user", "Yêu cầu nhập không để trống tài khoản");
 		} else {
@@ -172,7 +167,7 @@ public class UserController {
 			BindingResult errors) throws InterruptedException {
 		Account temp = new Account();
 		Account acc = new Account();
-		List<Account> listUser = getLUser();
+		List<Account> listUser = accountDAO.getLUser();
 		for (int i = 0; i < listUser.size(); i++) {
 			if (listUser.get(i).getUser_name().equals(user.getUser_name())) {
 				acc = new Account();
@@ -237,7 +232,7 @@ public class UserController {
 		}
 		
 		Account acc = new Account();
-		List<Account> listUser = getLUser();
+		List<Account> listUser = accountDAO.getLUser();
 		for (int i = 0; i < listUser.size(); i++) {
 			if (listUser.get(i).getUser_name().equals(user.getUser_name())) {
 				acc = listUser.get(i);
@@ -287,27 +282,25 @@ public class UserController {
 	}
 
 	// Đổi mật khẩu
-	@RequestMapping(value = "changepassword/{username}", method = RequestMethod.GET)
-	public String changepassword(ModelMap model, @PathVariable("username") String username, HttpSession httpSession) {
-		Session session = factory.getCurrentSession();
-		Account user = (Account) session.get(Account.class, username);
-		model.addAttribute("user", user);
-		httpSession.setAttribute("user", user);
+	@RequestMapping(value = "changepassword", method = RequestMethod.GET)
+	public String changepassword() {
 		return "user/changePassword";
 	}
 	
-	@RequestMapping(value = { "changepassword/{user}" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "changepassword" }, params = "changePass",method = RequestMethod.POST)
 	public String change_password(ModelMap model, HttpServletRequest request,
 			@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword,
 			@RequestParam("newPasswordAgain") String newPasswordAgain) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		HttpSession httpSession = request.getSession();
-		Account user = (Account) httpSession.getAttribute("user");
+		Account user = (Account) httpSession.getAttribute("acc");
 
+		System.out.println("1");
 		if (!user.getPassword().equals(oldPassword)) {
+			System.out.println("2");
 			model.addAttribute("message1", "Mật khẩu cũ không chính xác!");
-			return "redicrect:/user/changepassword/{user}.htm";
+			return "redicrect:/user/changepassword/${acc }.htm?changePass";
 		}
 		if (oldPassword.length() == 0)
 			model.addAttribute("message1", "Mật khẩu không được để trống");
@@ -319,14 +312,18 @@ public class UserController {
 				|| !newPasswordAgain.matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$"))
 			model.addAttribute("message", "Nhập trên 8 kí tự trong đó có chữ Hoa thường và ký tự đặc biệt");
 		else if (!newPassword.equals(newPasswordAgain)) {
+			System.out.println("2");
 			model.addAttribute("message", "Mật khẩu mới không trùng nhau !");
 		} else if (newPassword.equals(oldPassword)) {
+			System.out.println("3");
 			model.addAttribute("message", "Mật khẩu mới không được trùng với mật khẩu cũ !");
 		}
-
+		
 		else {
+			System.out.println("4");
 			try
 			{
+				System.out.println("5");
 				user.setPassword(newPassword);
 				session.update(user);
 				t.commit();

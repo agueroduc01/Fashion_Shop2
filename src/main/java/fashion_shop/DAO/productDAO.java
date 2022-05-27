@@ -37,9 +37,9 @@ public class productDAO {
 	
 	public Product Product(String idProduct) {
 		Session session = factory.getCurrentSession();
-		String hql = "FROM Product where id = 'idProduct'";
+		String hql = "FROM Product where idProduct = " + idProduct;
 		Query query = session.createQuery(hql);
-		query.setParameter("id", idProduct);
+//		query.setParameter("id", idProduct);
 		Product pd = (Product) query.list().get(0);
 		return pd;
 	}

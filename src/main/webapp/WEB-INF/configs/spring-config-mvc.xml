@@ -25,6 +25,6 @@
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver"/>
    	
    	<!-- Cấu hình package chứa các controller -->
-	<context:component-scan base-package="fashion_shop.controller,fashion_shop.mailer,fashion_shop.DAO"/>
+	<context:component-scan base-package="fashion_shop.controller,fashion_shop.mailer,fashion_shop.DAO,fashion_shop.service"/>
 
 </beans>

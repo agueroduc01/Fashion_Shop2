@@ -46,7 +46,7 @@
 
             <c:choose>
 			    <c:when test="${emptyCart eq 1}">
-			        <h2>Your cart is empty</h2>
+			        <h2 style="justify-content: center;">Your cart is empty</h2>
 			    </c:when>    
 			    <c:otherwise>
 

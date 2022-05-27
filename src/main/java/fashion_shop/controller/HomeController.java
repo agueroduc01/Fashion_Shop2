@@ -14,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import fashion_shop.entity.Account;
 import fashion_shop.entity.Product;
@@ -22,6 +23,7 @@ import fashion_shop.service.DBService;
 import fashion_shop.DAO.productDAO;
 import fashion_shop.bean.CartItem;
 
+@Transactional
 @Controller
 @RequestMapping(value = { "/home/", "/" })
 public class HomeController {
@@ -32,22 +34,6 @@ public class HomeController {
 	@Autowired
 	productDAO productDAO1;
 	
-//	public List<Product> getLProd() {
-//		Session session = factory.getCurrentSession();
-//		String hql = "from Product";
-//		Query query = session.createQuery(hql);
-//		List<Product> listProd = query.list();
-//		return listProd;
-//	}
-//	
-//	public List<ProductCategory> getLCat() {
-//		Session session = factory.getCurrentSession();
-//		String hql = "from ProductCategory";
-//		Query query = session.createQuery(hql);
-//		List<ProductCategory> listCat = query.list();
-//		return listCat;
-//	}
-	
 	@RequestMapping("index")	
 	public String index(ModelMap model) {
 		model.addAttribute("prods", productDAO1.getLProd());
@@ -57,8 +43,12 @@ public class HomeController {
 	// view products
 	@RequestMapping(value = { "products" })
 	public String view_product(ModelMap model) {
-		model.addAttribute("prods", productDAO1.getLProd());
-		model.addAttribute("prodsSize", productDAO1.getLProd().size());
+		List<Product> list = productDAO1.getLProd();
+		int size = productDAO1.getLProd().size();
+		List<ProductCategory> listCate = productDAO1.getLCat();
+		model.addAttribute("listCat", listCate);
+		model.addAttribute("prods", list);
+		model.addAttribute("prodsSize", size);
 		model.addAttribute("catON", "false");
 		return "home/products";
 	}
@@ -66,21 +56,34 @@ public class HomeController {
 	// view products by cat
 	@RequestMapping(value = { "products/{idCategory}" })
 	public String view_product(ModelMap model, @PathVariable("idCategory") String idCategory) {
-		model.addAttribute("prods", productDAO1.getLProd());
-		model.addAttribute("prodsSize",productDAO1.getLProd().size());
-		model.addAttribute("listCat", productDAO1.getLCat());
+		List<Product> list = productDAO1.getLProd();
+		int size = productDAO1.getLProd().size();
+		List<ProductCategory> listCate = productDAO1.getLCat();
+		model.addAttribute("prods", list);
+		model.addAttribute("prodsSize", size);
+		model.addAttribute("listCat", listCate);
 		
 		model.addAttribute("catON", "true");
 		model.addAttribute("catID", idCategory);
 		return "home/products";
 	}	
+		
+//	@RequestMapping(value = { "detail/{idProduct}" }, method = RequestMethod.GET)
+//	public String view_product_detail(ModelMap model, @PathVariable("idProduct") String id) {
+//		model.addAttribute("product", productDAO1.Product(id));
+//		model.addAttribute("prods", productDAO1.getLProd());
+//		return "home/detail";
+//	}
 	
 	// view product_detail
-	@RequestMapping(value = { "detail/{idProduct}" })
+	@RequestMapping(value = { "detail/{idProduct}" },method = RequestMethod.GET)
 	public String view_product_detail(ModelMap model, @PathVariable("idProduct") String id, HttpSession session) {
 		DBService db = new DBService(factory);
 		Product product = db.getProductById(id);
 		Account account = (Account) session.getAttribute("acc");
+		if (account == null) {
+			return "home/detail";
+		}
 
 		CartItem cartItem = new CartItem();
 		cartItem.setUserPhone(account.getPhone());
@@ -91,16 +94,19 @@ public class HomeController {
 		cartItem.setPrice(product.getPrice());
 		cartItem.setQuantity(product.getQuantity());
 		cartItem.setImage(product.getImage());
+		
+		List<Product> list = productDAO1.getLProd();
+		int size = productDAO1.getLProd().size();
+		List<ProductCategory> listCate = productDAO1.getLCat();
+		model.addAttribute("prods", list); 
+		model.addAttribute("prodsSize", size);
+		model.addAttribute("listCat", listCate);
+		
+//		model.addAttribute("catON", "true");
+//		model.addAttribute("catID", idCategory);
 
 
 		model.addAttribute("cartItem", cartItem);
-		return "home/detail";
-	}
-	
-	@RequestMapping(value = "detail_product/{id_product}")
-	public String detail_product(ModelMap model, @PathVariable("id_product") String id_product) {
-		Product prod = productDAO1.Product(id_product);
-		model.addAttribute("detailProd", prod);
 		return "home/detail";
 	}
 	

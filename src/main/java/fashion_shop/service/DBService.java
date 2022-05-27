@@ -2,17 +2,23 @@ package fashion_shop.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import fashion_shop.entity.Cart;
 import fashion_shop.entity.Product;
 
-
+@Transactional
+@Repository
 public class DBService {
-	private SessionFactory factory;
+	@Autowired
+	SessionFactory factory;
 
 	public DBService() {
 		super();

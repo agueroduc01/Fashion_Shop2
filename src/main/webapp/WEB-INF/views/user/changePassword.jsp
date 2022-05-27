@@ -75,12 +75,12 @@
                 /
                 <a href="user/userHome.htm">${acc.getFullname() }</a>
                 /
-                <a href="user/changepassword/{acc}.htm">Change Password   </a>
+                <a href="user/changepassword.htm">Change Password   </a>
             </div>
         </div>
 
         <div class="main-content">
-            <form action="user/changepassword/{acc}.htm">
+            <form:form action="changepassword.htm">
                 <h2>Change password</h2>
 
                 <input type="password" name = "oldPassword" placeholder="Old Password"/>
@@ -90,10 +90,12 @@
                 <input type="password" name = "newPasswordAgain" placeholder="New Password Again"/>
                 <p>${message3 }</p>
                 
-
-                <button>Change</button>
+				<a href = "changepassword/${acc}.htm?changePass" >
+					<button>Change</button>
+				</a>
+                
                 <h2>${message }</h2>
-            </form>
+            </form:form>
 
         </div>
     </main>

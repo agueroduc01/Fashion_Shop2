@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html> -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,6 +13,8 @@
     <title>Riode - Show products</title>
     <base href="${pageContext.servletContext.contextPath}/">
 
+	<link rel="icon" type="image/png"
+	href="https://d-themes.com/html/riode/images/icons/favicon.png">
     <link href="<c:url value='/resources/home/dist/css/reset.css' />"
 	rel="stylesheet">
 	<link href="<c:url value='/resources/home/dist/css/detail.css' />" rel="stylesheet">
@@ -25,7 +27,7 @@
      
      <%@include file="/WEB-INF/views/header.jsp"%>
      
-    <!-- Main -->
+    Main
     <main class="main">
         <div class="container">
             <div class="product">
@@ -33,7 +35,7 @@
                 <form:form action="cart/add.htm" method="post" modelAttribute="cartItem" class="flex-col">
                 	<div class="row">
 	                    <div class="col-5 product-image">
-	                        <img src="${cartItem.image }" alt="">
+	                        <img src="${cartItem.getImage() }" alt="">
 	                    </div>
 	                    <div class="col-7 product-detail">
 	                        <div class="product-navigation">
@@ -69,7 +71,7 @@
 	                            ( 6 Reviews )
 	                        </div>
 
-	                        <!-- <div class="product-short-desc">Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus liberpuro ate vol faucibus adipiscing.</div> -->
+	                        <div class="product-short-desc">Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus liberpuro ate vol faucibus adipiscing.</div>
 	                        <div class="product-short-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo architecto quo sed assumenda similique sequi iusto accusantium optio quisquam officia ipsam, nobis sint commodi saepe, deleniti modi ullam ab cum.</div>
 
 	                        <div class="product-form">
@@ -203,16 +205,16 @@
             <section class="show-products" style="padding-bottom: 50px;">
                 <div class="container">
     
-                    <!-- Title  -->
+                    Title 
                     <h4 class="title">
                         Related Products
                         <a href="home/products.htm" class="more hover-p-color">VIEW MORE <i class="fa-solid fa-arrow-right"></i></a>
                     </h4>
     
-                    <!-- List Product Show -->
+                    List Product Show
                     <div class="owl-carousel owl-theme">
     
-                         <!-- A product  -->
+                         A product 
 					<c:forEach var="p" items="${prods}" begin="0" end="15" step="3">
 						<div class="col-4 product">
 							<div class="product-image">
@@ -263,7 +265,7 @@
 
     
 
-    <!-- Footer  -->
+    Footer 
      <%@include file="/WEB-INF/views/footer.jsp"%>
 
 </body>
