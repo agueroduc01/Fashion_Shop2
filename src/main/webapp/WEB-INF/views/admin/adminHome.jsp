@@ -26,7 +26,7 @@
             <div class="logo">
                 <i class="fa-solid fa-a"></i>
             </div>
-            Admin
+            ${acc.getrole().getNameRole() }${acc.getFullname() }
         </a>
 
         <ul class="functions">

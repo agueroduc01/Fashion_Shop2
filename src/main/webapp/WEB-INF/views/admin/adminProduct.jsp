@@ -103,7 +103,7 @@
 					<div class="scroll">
 						<tr>
 							<td>124</td>
-							<td>A foking good T-shirt</td>
+							<td>A good T-shirt</td>
 							<td>$30.00</td>
 							<td>Black</td>
 							<td>Small</td>

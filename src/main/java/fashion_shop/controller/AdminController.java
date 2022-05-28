@@ -102,89 +102,90 @@ public class AdminController {
 	
 
 //	// insert product
-//	@Autowired
-//	ServletContext context;
+	@Autowired
+	ServletContext context;
+
+	public boolean FindFileByExtension(String fileName) {
+
+		String path = fileName.substring(fileName.lastIndexOf(".") + 1);
+		if (path.equalsIgnoreCase("jpg") || path.equalsIgnoreCase("png") || path.equalsIgnoreCase("jpeg"))
+			return true;
+		return false;
+	}
 //
-//	public boolean FindFileByExtension(String fileName) {
-//
-//		String path = fileName.substring(fileName.lastIndexOf(".") + 1);
-//		if (path.equalsIgnoreCase("jpg") || path.equalsIgnoreCase("png") || path.equalsIgnoreCase("jpeg"))
-//			return true;
-//		return false;
-//	}
-//
-//	@RequestMapping(value = { "insert_product" }, method = RequestMethod.GET)
-//	public String insert_product(ModelMap model, HttpSession httpSession) {
-////		model.addAttribute("sizes", getSize());
-//		httpSession.removeAttribute("p");
-//		model.addAttribute("p", new Product());
-//		return "admin/insert_product";
-//	}
-//
-//	@RequestMapping(value = "insert_product", method = RequestMethod.POST)
-//	public String insert_product(ModelMap model, @ModelAttribute("p") Product prod, BindingResult errors,
-//			@RequestParam("image") MultipartFile image) {
-//		Session session = factory.openSession();
-//		Transaction t = session.beginTransaction();
-//		boolean errorss = false;
-//		if (prod.getName().trim().length() == 0) {
-//			errors.rejectValue("name", "p", "Tên không được để trống!");
-//			errorss = true;
-//		}
-//
-//		if (prod.getPrice() <= 0) {
-//			errors.rejectValue("price", "p", "Giá phải lớn hơn 0!");
-//			errorss = true;
-//		}
-//
-//		if (prod.getQuantity() <= 0) {
-//			errors.rejectValue("quantity", "p", "Số lượng phải lớn hơn 0!");
-//			errorss = true;
-//		}
-//
-//		if (image.isEmpty()) {
-//			errors.rejectValue("image", "p", "Hình ảnh không được để trống!");
-//			errorss = true;
-//		} else if (!FindFileByExtension(image.getOriginalFilename())) {
-//			errors.rejectValue("image", "p", "Vui lòng chọn file theo đúng định dạng!");
-//			errorss = true;
-//		} else {
-//			try {
-//				Date date = new Date();
-//				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyyHHmmss_");
-//				String dateFormat = simpleDateFormat.format(date);
-//				String imagePath = context
-//						.getRealPath("resources/page/images/" + dateFormat + image.getOriginalFilename());
-//				image.transferTo(new File(imagePath));
-//				prod.setImage(dateFormat + image.getOriginalFilename());
-//			} catch (Exception e) {
-//				errors.rejectValue("image", "p", "Vui lòng chọn file theo đúng định dạng!");
-//				errorss = true;
-//			}
-//		}
-//
-//		if (!errorss)
-//			model.addAttribute("message", "Nhập chính xác");
-//		else {
-//			model.addAttribute("message", "Yêu cầu nhập đầy đủ thông tin !");
-//			return "admin/insert_product";
-//		}
-//
-//		try {
-////			prod.setStatus(true);
-//			session.save(prod);
-//			t.commit();
-//			model.addAttribute("message", "Thêm  thành công");
-//			return "redirect:/admin/view_product.htm";
-//
-//		} catch (Exception e) {
-//			model.addAttribute("message", "Thêm thất bại !");
-//			t.rollback();
-//		} finally {
-//			session.close();
-//		}
-//		return "admin/insert_product";
-//	}
+	@RequestMapping(value = { "insert_product" }, method = RequestMethod.GET)
+	public String insert_product(ModelMap model) {
+		model.addAttribute("p", new Product());
+		return "admin/insert_product";
+	}
+
+	@RequestMapping(value = "insert_product", method = RequestMethod.POST)
+	public String insert_product(ModelMap model, @ModelAttribute("p") Product prod, BindingResult errors,
+			@RequestParam("image") MultipartFile image) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+		boolean errorss = false;
+		
+		if (prod.getIdProduct().trim().length() == 0) {
+			errors.rejectValue("idProduct", "p", "Tên không được để trống!");
+		}
+		if (prod.getName().trim().length() == 0) {
+			errors.rejectValue("name", "p", "Tên không được để trống!");
+			errorss = true;
+		}
+
+		if (prod.getPrice() <= 0) {
+			errors.rejectValue("price", "p", "Giá phải lớn hơn 0!");
+			errorss = true;
+		}
+
+		if (prod.getQuantity() <= 0) {
+			errors.rejectValue("quantity", "p", "Số lượng phải lớn hơn 0!");
+			errorss = true;
+		}
+
+		if (image.isEmpty()) {
+			errors.rejectValue("image", "p", "Hình ảnh không được để trống!");
+			errorss = true;
+		} else if (!FindFileByExtension(image.getOriginalFilename())) {
+			errors.rejectValue("image", "p", "Vui lòng chọn file theo đúng định dạng!");
+			errorss = true;
+		} else {
+			try {
+				Date date = new Date();
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyyHHmmss_");
+				String dateFormat = simpleDateFormat.format(date);
+				String imagePath = context.getRealPath("resources/products/images/" + dateFormat + image.getOriginalFilename());
+				image.transferTo(new File(imagePath));
+				prod.setImage(dateFormat + image.getOriginalFilename());
+			} catch (Exception e) {
+				errors.rejectValue("image", "p", "Vui lòng chọn file theo đúng định dạng!");
+				errorss = true;
+			}
+		}
+
+		if (!errorss)
+			model.addAttribute("message", "Nhập chính xác");
+		else {
+			model.addAttribute("message", "Yêu cầu nhập đầy đủ thông tin !");
+			return "admin/insert_product";
+		}
+
+		try {
+//			prod.setStatus(true);
+			session.save(prod);
+			t.commit();
+			model.addAttribute("message", "Thêm  thành công");
+			return "redirect:/admin/view_product.htm";
+
+		} catch (Exception e) {
+			model.addAttribute("message", "Thêm thất bại !");
+			t.rollback();
+		} finally {
+			session.close();
+		}
+		return "admin/insert_product";
+	}
 //
 //	// edit product
 //

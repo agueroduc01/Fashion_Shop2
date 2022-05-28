@@ -62,7 +62,7 @@ public class CartController {
 			product.setColor(cartItem.getColor());
 			product.setSize(cartItem.getSize());
 			product.setPrice(cartItem.getPrice());
-			product.setQuantity(cartItem.getQuantity());
+			product.setQuantity(1);
 			product.setImage(cartItem.getImage());
 
 			Cart cart = new Cart();
