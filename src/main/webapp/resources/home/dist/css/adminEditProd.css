@@ -177,6 +177,12 @@
   background-color: #1e90ff;
   margin-right: 12px;
   color: white;
+  overflow: hidden;
+  position: relative;
+}
+
+.aside .admin .logo img {
+  position: absolute;
 }
 
 .aside .functions .function a {
@@ -281,6 +287,26 @@ body {
   color: #1e90ff;
 }
 
+.main .cloth-temp {
+  height: 90%;
+  width: 100%;
+  background-color: #ccc;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.main .cloth-temp i {
+  font-size: 100px;
+  color: #eee;
+}
+
 .main .field {
   margin-bottom: 10px;
 }
@@ -352,7 +378,7 @@ body {
   border-radius: 0  3px 3px 0;
 }
 
-.main .btn-save {
+.main .btn {
   background-color: #1e90ff;
   padding: 12px 20px;
   color: white;
@@ -368,10 +394,10 @@ body {
   cursor: pointer;
   position: absolute;
   right: 80px;
-  bottom: 40px;
+  bottom: 20px;
 }
 
-.main .btn-save:hover {
+.main .btn:hover {
   opacity: 0.9;
 }
 

@@ -40,8 +40,13 @@ import fashion_shop.entity.Account;
 import fashion_shop.entity.Order;
 import fashion_shop.entity.OrderDetail;
 import fashion_shop.entity.Product;
+import fashion_shop.entity.ProductCategory;
 import fashion_shop.entity.Role;
+import fashion_shop.entity.SizeAndColor;
+import fashion_shop.entity.SizeAndColor.PK;
+import fashion_shop.DAO.accountDAO;
 import fashion_shop.DAO.adminDAO;
+import fashion_shop.DAO.productDAO;
 
 @Transactional
 @Controller
@@ -50,142 +55,401 @@ import fashion_shop.DAO.adminDAO;
 public class AdminController {
 	@Autowired
 	SessionFactory factory;
-
-	@RequestMapping("adminHome")
-	public String viewAdmin() {
+	
+	@Autowired
+	accountDAO accountDAL;
+	
+	@Autowired
+	productDAO productDAL;
+	
+	
+	
+	// HOME
+	@RequestMapping(value = { "adminHome" }, method = RequestMethod.GET)
+	public String adminHome() {
 		return "admin/adminHome";
 	}
 	
-	// view product
+	
+	
+	///////////////////////////////////  Accounts /////////////////////////////////// 
+	@RequestMapping(value = { "adminAccount" }, method = RequestMethod.GET)
+	public String showAccount(ModelMap model) {
+		List<Account> listAcc = accountDAL.getLUser();
+			
+		model.addAttribute("listAccounts", listAcc);
+		model.addAttribute("size", listAcc.size());
+		return "admin/adminAccount";
+	}	
+	
+	
+	
+	///////////////////////////////////  Bill - Order  /////////////////////////////////// 
+	
+	
+	
+	///////////////////////////////////  PRODUCT  /////////////////////////////////// 
+	
+	// Show List Products
 	@RequestMapping(value = { "adminProducts" }, method = RequestMethod.GET)
-	public String adminProducts(ModelMap model) {
-		model.addAttribute("pros");
+	public String adminListProducts(ModelMap model) {
+		
+		model.addAttribute("listProducts", productDAL.getLProd());
+		model.addAttribute("size", productDAL.getLProd().size());
+		
 		return "admin/adminProduct";
 	}
 	
-	@RequestMapping(value = { "adminAccount" }, method = RequestMethod.GET)
-	public String Customers(ModelMap model) {
-//		List<Account> listcus = getLcus();
-//		model.addAttribute("listCus", listcus);
-		return "admin/adminAccount";
-	}
+
+	// Show  Product's Details
+//	@RequestMapping(value = { "adminProd/{prodID}" }, method = RequestMethod.GET)
+//	public String showProductDetail(ModelMap model, @PathVariable("prodID") String prodID) {
+//		Product prod = productDAL.getProduct(prodID);
+//		model.addAttribute("p", prod); 
+//		
+//		return "admin/adminViewProd";
+//	}
 	
-	@RequestMapping(value = { "adminBill" }, method = RequestMethod.GET)
-	public String adminBill(ModelMap model) {
-//		List<Order> listOrders = getLOrder();
-//		model.addAttribute("orders", listOrders);
-		return "admin/adminBill";
-	}
-	
-	@RequestMapping(value = { "adminBillInfo" }, method = RequestMethod.GET)
-	public String adminBillInfo(ModelMap model) {
-		return "admin/adminBillInfo";
-	}
-	
-	@RequestMapping("adminAddProd")
-	public String viewAdminAddProd() {
+	// ADD product
+	@RequestMapping(value="adminAddProd", method=RequestMethod.GET)
+	public String viewAdminAddProd( ModelMap model) {
+		model.addAttribute("listCats", productDAL.getLCat());
 		return "admin/adminAddProd";
 	}
+	// ADD product
+	@RequestMapping(value="adminAddProd", method=RequestMethod.POST)
+	public String viewAdminAddProd( ModelMap model,
+			@RequestParam("ID") String id,
+			@RequestParam("cat") String cat,
+			@RequestParam("name") String name,
+			@RequestParam("price") Float price, 
+			@RequestParam("image") String image) {
+		
+		Product prod = new Product();
+		prod.setIdProduct(id);
+		prod.setProductCategory(productDAL.getCat(cat));
+		prod.setName(name);
+		prod.setPrice(price);
+		prod.setImage(image);
+		
+		if(!productDAL.saveProduct(prod)) {
+			return "admin/adminAddProd";
+		}
+		
+		return "redirect:/admin/adminProducts.htm";
+	}
+	
+	
+	//DELETE PRoduct
+	@RequestMapping(value="deleteProduct/{id}", method=RequestMethod.GET)
+	public String DeleteProd( ModelMap model, @PathVariable("id") String id) {
+		System.out.println(id);
+		System.out.println(productDAL.deleteProduct(id));
+		return "redirect:/admin/adminProducts.htm";
+	}
+	
+	
+	
+	/////////////Manage MIX PRODUCT
+	@RequestMapping(value="adminProd/{idProduct}", method=RequestMethod.GET)
+	public String showColorSize( ModelMap model, @PathVariable("idProduct") String id) {
+		model.addAttribute("p", productDAL.getProduct(id));
+		model.addAttribute("listC", productDAL.getLCS(id));
+		model.addAttribute("size", productDAL.getLCS(id).size());
+		
+		return "admin/viewColorSize";
+	}
+	
+	@RequestMapping(value="addCS/{idProduct}", method=RequestMethod.GET)
+	public String addColorSize( ModelMap model, @PathVariable("idProduct") String id) {
+		model.addAttribute("p", productDAL.getProduct(id));
+		
+		
+		return "admin/addCS";
+	}
+	
+	@RequestMapping(value="addCS/{idProduct}", method=RequestMethod.POST)
+	public String addColorSize( ModelMap model, @PathVariable("idProduct") String id,
+			@RequestParam("color") String color,
+			@RequestParam("size") String size,
+			@RequestParam("quantity") Integer quantity) {
+		
+		model.addAttribute("p", productDAL.getProduct(id));
+	
+		SizeAndColor.PK pk = new SizeAndColor.PK();
+		pk.setColor(color);
+		pk.setProductID(id);
+		pk.setSize(size);
+		
+		
+		SizeAndColor cs = new SizeAndColor();
+		cs.setPk(pk);
+		cs.setQuantity(quantity);
+		
+		if(!productDAL.saveCS(cs)) {
+			model.addAttribute("color", color);
+			model.addAttribute("size", size);
+			model.addAttribute("quantity", quantity);
+			
+			return "redirect:/admin/addCS/" + id + ".htm";
+		}
+		
+		return "redirect:/admin/adminProd/" + id + ".htm";
+	}
+	
+	
+	@RequestMapping(value="deleteCS/{idProduct}_{color}_{size}", method=RequestMethod.GET)
+	public String deleteColorSize( ModelMap model, 
+			@PathVariable("idProduct") String id,
+			@PathVariable("color") String color,
+			@PathVariable("size") String size) {
+		
+		System.out.println(id);
+		System.out.println(color);
+		System.out.println(size);
+		
+		productDAL.deleteCS(id, color, size);
+		return "redirect:/admin/adminProd/" + id + ".htm";
+	}
+	
+	@RequestMapping(value="editCS/{idProduct}_{color}_{size}", method=RequestMethod.GET)
+	public String editColorSize( ModelMap model, 
+			@PathVariable("idProduct") String id,
+			@PathVariable("color") String color,
+			@PathVariable("size") String size) {
+		
+		model.addAttribute("p", productDAL.getProduct(id));
+		model.addAttribute("c", productDAL.getCS(id, color, size));
+		 
+		return "admin/editCS";
+	}
+	
+	@RequestMapping(value="editCS/{idProduct}_{color}_{size}", method=RequestMethod.POST)
+	public String editColorSize( ModelMap model, 
+			@PathVariable("idProduct") String id,
+			@PathVariable("color") String color,
+			@PathVariable("size") String size,
+			@RequestParam("quantity") Integer quantity) {
+		
+		productDAL.updateCS(id, color, size, quantity);
+		 
+		model.addAttribute("p", productDAL.getProduct(id));
+		model.addAttribute("listC", productDAL.getLCS(id));
+		model.addAttribute("size", productDAL.getLCS(id).size());
+		
+		return "admin/viewColorSize";
+	} 
+	
+	
+	// Edit Product
+	@RequestMapping(value = { "editProd/{prodID}" }, method = RequestMethod.POST)
+	public String adminProduct(ModelMap model, @PathVariable("prodID") String prodID,
+			@RequestParam("cat") String cat,
+			@RequestParam("name") String name,
+			@RequestParam("price") Float price, 
+			@RequestParam("image") String image) {
 
-////	@RequestMapping(value = { "adminHome" }, method = RequestMethod.GET)
-////	public String adminHome(HttpServletRequest request, ModelMap model) {
-//////		List<Order> listOrder = getLOrder();
-//////		model.addAttribute("listOrder", listOrder);
-//////		HttpSession httpSession = request.getSession();
-//////		Account admin = (Account) httpSession.getAttribute("admin");
-//////		httpSession.setAttribute("admin", admin);
-//////		httpSession.setAttribute("totalCus", getLcus().size());
-//////		httpSession.setAttribute("totalAd", getLAdmin().size());
-//////		httpSession.setAttribute("totalOrder", getLOrder().size());
-////		return "admin/adminHome";
-////	}
+		
+		if(productDAL.updateProduct(prodID, cat, name, price, image)) {
+			return "redirect:/admin/adminProd/" + prodID +  ".htm";
+		}
+		
+		model.addAttribute("message", "Update failed!");
+		model.addAttribute("p", productDAL.getProduct(prodID));
+		model.addAttribute("listCats", productDAL.getLCat());
+		return "admin/adminEditProd";
+	}
+	
+	// Save edit product 
+	@RequestMapping(value = { "editProd/{prodID}" }, method = RequestMethod.GET)
+	public String adminProduct(ModelMap model, @PathVariable("prodID") String prodID) {
+		Product prod = productDAL.getProduct(prodID);
+		model.addAttribute("p", prod); 
+		model.addAttribute("listCats", productDAL.getLCat());
+		
+		return "admin/adminEditProd";
+	}
+	
+	
+//	// Save  Product's Details
+//		@RequestMapping(value = { "adminProducts" }, method = RequestMethod.POST)
+//		public String adminSaveProduct(ModelMap model, 
+//				@RequestParam("name") String name,
+//				@RequestParam("price") Float price,
+//				@RequestParam("color") String color,
+//				@RequestParam("size") String size,
+//				@RequestParam("quantity") Integer quantity,
+//				@RequestParam("id") String id
+//				) {
+//			
+//			Session session = factory.openSession();
+//			Transaction t = session.beginTransaction();
+//			
+//			Product prod = (Product) session.get( Product.class, id);
+//			
+//			prod.setName(name);
+//			prod.setPrice(price);
+//			
+//			
+//			try {
+//				session.update(prod);
+//				t.commit();
+//				
+//			} catch( Exception e ) {
+//				t.rollback();
+//			} finally {
+//				session.close();
+//			}
+//			
+//			return "redirect:/admin/adminProducts.htm";
+//		}
+//	
+//		
+	
+	
+//		
+//		
+//		
+//		
+//		
+//	// Show Accounts' information
+//	@RequestMapping(value = { "adminAccount" }, method = RequestMethod.GET)
+//	public String Customers(ModelMap model) {
+//		List<Account> listAcc = getListAccount();
+//		
+//		model.addAttribute("listAccounts", listAcc);
+//		model.addAttribute("size", listAcc.size());
+//		return "admin/adminAccount";
+//	}
+//	
+//	
+//	
+//	
+//	
+//	
+//	// Show Orders' Details
+//	@RequestMapping(value = { "adminBill" }, method = RequestMethod.GET)
+//	public String adminBill(ModelMap model) {
+////		List<Order> listOrders = getLOrder();
+////		model.addAttribute("orders", listOrders);
+//		return "admin/adminBill";
+//	}
+//	
+//	@RequestMapping(value = { "adminBillInfo" }, method = RequestMethod.GET)
+//	public String adminBillInfo(ModelMap model) {
+//		return "admin/adminBillInfo";
+//	}
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+//	@RequestMapping(value = { "adminHome" }, method = RequestMethod.GET)
+//	public String adminHome(HttpServletRequest request, ModelMap model) {
+//		List<Order> listOrder = getLOrder();
+//		model.addAttribute("listOrder", listOrder);
+//		HttpSession httpSession = request.getSession();
+//		Account admin = (Account) httpSession.getAttribute("admin");
+//		httpSession.setAttribute("admin", admin);
+//		httpSession.setAttribute("totalCus", getLcus().size());
+//		httpSession.setAttribute("totalAd", getLAdmin().size());
+//		httpSession.setAttribute("totalOrder", getLOrder().size());
+//		return "admin/adminHome";
+//	}
 	
 
 //	// insert product
-	@Autowired
-	ServletContext context;
-
-	public boolean FindFileByExtension(String fileName) {
-
-		String path = fileName.substring(fileName.lastIndexOf(".") + 1);
-		if (path.equalsIgnoreCase("jpg") || path.equalsIgnoreCase("png") || path.equalsIgnoreCase("jpeg"))
-			return true;
-		return false;
-	}
+//	@Autowired
+//	ServletContext context;
 //
-	@RequestMapping(value = { "insert_product" }, method = RequestMethod.GET)
-	public String insert_product(ModelMap model) {
-		model.addAttribute("p", new Product());
-		return "admin/insert_product";
-	}
-
-	@RequestMapping(value = "insert_product", method = RequestMethod.POST)
-	public String insert_product(ModelMap model, @ModelAttribute("p") Product prod, BindingResult errors,
-			@RequestParam("image") MultipartFile image) {
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		boolean errorss = false;
-		
-		if (prod.getIdProduct().trim().length() == 0) {
-			errors.rejectValue("idProduct", "p", "Tên không được để trống!");
-		}
-		if (prod.getName().trim().length() == 0) {
-			errors.rejectValue("name", "p", "Tên không được để trống!");
-			errorss = true;
-		}
-
-		if (prod.getPrice() <= 0) {
-			errors.rejectValue("price", "p", "Giá phải lớn hơn 0!");
-			errorss = true;
-		}
-
-		if (prod.getQuantity() <= 0) {
-			errors.rejectValue("quantity", "p", "Số lượng phải lớn hơn 0!");
-			errorss = true;
-		}
-
-		if (image.isEmpty()) {
-			errors.rejectValue("image", "p", "Hình ảnh không được để trống!");
-			errorss = true;
-		} else if (!FindFileByExtension(image.getOriginalFilename())) {
-			errors.rejectValue("image", "p", "Vui lòng chọn file theo đúng định dạng!");
-			errorss = true;
-		} else {
-			try {
-				Date date = new Date();
-				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyyHHmmss_");
-				String dateFormat = simpleDateFormat.format(date);
-				String imagePath = context.getRealPath("resources/products/images/" + dateFormat + image.getOriginalFilename());
-				image.transferTo(new File(imagePath));
-				prod.setImage(dateFormat + image.getOriginalFilename());
-			} catch (Exception e) {
-				errors.rejectValue("image", "p", "Vui lòng chọn file theo đúng định dạng!");
-				errorss = true;
-			}
-		}
-
-		if (!errorss)
-			model.addAttribute("message", "Nhập chính xác");
-		else {
-			model.addAttribute("message", "Yêu cầu nhập đầy đủ thông tin !");
-			return "admin/insert_product";
-		}
-
-		try {
-//			prod.setStatus(true);
-			session.save(prod);
-			t.commit();
-			model.addAttribute("message", "Thêm  thành công");
-			return "redirect:/admin/view_product.htm";
-
-		} catch (Exception e) {
-			model.addAttribute("message", "Thêm thất bại !");
-			t.rollback();
-		} finally {
-			session.close();
-		}
-		return "admin/insert_product";
-	}
+//	public boolean FindFileByExtension(String fileName) {
+//
+//		String path = fileName.substring(fileName.lastIndexOf(".") + 1);
+//		if (path.equalsIgnoreCase("jpg") || path.equalsIgnoreCase("png") || path.equalsIgnoreCase("jpeg"))
+//			return true;
+//		return false;
+//	}
+//
+//	@RequestMapping(value = { "insert_product" }, method = RequestMethod.GET)
+//	public String insert_product(ModelMap model, HttpSession httpSession) {
+////		model.addAttribute("sizes", getSize());
+//		httpSession.removeAttribute("p");
+//		model.addAttribute("p", new Product());
+//		return "admin/insert_product";
+//	}
+//
+//	@RequestMapping(value = "insert_product", method = RequestMethod.POST)
+//	public String insert_product(ModelMap model, @ModelAttribute("p") Product prod, BindingResult errors,
+//			@RequestParam("image") MultipartFile image) {
+//		Session session = factory.openSession();
+//		Transaction t = session.beginTransaction();
+//		boolean errorss = false;
+//		if (prod.getName().trim().length() == 0) {
+//			errors.rejectValue("name", "p", "Tên không được để trống!");
+//			errorss = true;
+//		}
+//
+//		if (prod.getPrice() <= 0) {
+//			errors.rejectValue("price", "p", "Giá phải lớn hơn 0!");
+//			errorss = true;
+//		}
+//
+//		if (prod.getQuantity() <= 0) {
+//			errors.rejectValue("quantity", "p", "Số lượng phải lớn hơn 0!");
+//			errorss = true;
+//		}
+//
+//		if (image.isEmpty()) {
+//			errors.rejectValue("image", "p", "Hình ảnh không được để trống!");
+//			errorss = true;
+//		} else if (!FindFileByExtension(image.getOriginalFilename())) {
+//			errors.rejectValue("image", "p", "Vui lòng chọn file theo đúng định dạng!");
+//			errorss = true;
+//		} else {
+//			try {
+//				Date date = new Date();
+//				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyyHHmmss_");
+//				String dateFormat = simpleDateFormat.format(date);
+//				String imagePath = context
+//						.getRealPath("resources/page/images/" + dateFormat + image.getOriginalFilename());
+//				image.transferTo(new File(imagePath));
+//				prod.setImage(dateFormat + image.getOriginalFilename());
+//			} catch (Exception e) {
+//				errors.rejectValue("image", "p", "Vui lòng chọn file theo đúng định dạng!");
+//				errorss = true;
+//			}
+//		}
+//
+//		if (!errorss)
+//			model.addAttribute("message", "Nhập chính xác");
+//		else {
+//			model.addAttribute("message", "Yêu cầu nhập đầy đủ thông tin !");
+//			return "admin/insert_product";
+//		}
+//
+//		try {
+////			prod.setStatus(true);
+//			session.save(prod);
+//			t.commit();
+//			model.addAttribute("message", "Thêm  thành công");
+//			return "redirect:/admin/view_product.htm";
+//
+//		} catch (Exception e) {
+//			model.addAttribute("message", "Thêm thất bại !");
+//			t.rollback();
+//		} finally {
+//			session.close();
+//		}
+//		return "admin/insert_product";
+//	}
 //
 //	// edit product
 //

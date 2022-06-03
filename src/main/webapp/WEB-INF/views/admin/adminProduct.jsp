@@ -91,29 +91,30 @@
 				<table>
 					<tr>
 						<th>ID</th>
+						<th>Image</th>
+						<th>Category</th>
 						<th>Name</th>
 						<th>Price</th>
-						<th>Color</th>
-						<th>Size</th>
-						<th>Quantity</th>
-						<th>Edit</th>
-						<th>Delete</th>
+						<th>View</th>
 					</tr>
 
 					<div class="scroll">
-						<tr>
-							<td>124</td>
-							<td>A good T-shirt</td>
-							<td>$30.00</td>
-							<td>Black</td>
-							<td>Small</td>
-							<td>1</td>
-							<td><a href="admin/adminEditProd.htm" class="icon"><i
-									class="fa-solid fa-pen"></i></a></td>
-							<td><a href="" class="icon"><i class="fa-solid fa-trash"></i></a></td>
-						</tr>
-
-
+						
+						
+    					
+    					<c:forEach var="p" items="${listProducts }" begin="0" end="${size }">
+    	 
+    							<tr>
+		                            <td>${p.idProduct }</td>
+		                            <td><img style="width: 120px; margin: 0 auto;" src="${p.image }"  ></td>
+		                            <td>${p.getProductCategory().nameCategory }</td>
+		                            <td>${p.name }</td>
+		                            <td>$${p.price }</td>
+		                            <td><a href="admin/adminProd/${p.idProduct }.htm" style="color:#333;" class="icon"><i
+									class="fa-solid fa-circle-info"></i></a></td>
+							
+		                        </tr> 
+    					</c:forEach>
 					</div>
 
 				</table>

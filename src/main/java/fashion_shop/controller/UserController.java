@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
-import org.apache.jasper.tagplugins.jstl.core.If;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -44,16 +43,19 @@ public class UserController {
 	@Autowired
 	accountDAO accountDAO;
 	
-	// Đăng Ký
+	@Autowired
+	ServletContext context;
+	
+	
+	
+	// Register GET
 	@RequestMapping(value = "register", method = RequestMethod.GET)
 	public String register(ModelMap model) {
 		model.addAttribute("user", new Account());
 		return "user/register";
 	}
 	
-	@Autowired
-	ServletContext context;
-	
+	// Register POST
 	@RequestMapping(value = "register", method = RequestMethod.POST)
 	public String register(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors
 			,@RequestParam("passwordagain") String passwordagain,
@@ -155,7 +157,10 @@ public class UserController {
 		return "user/register";
 	}
 
-	// Đăng Nhập
+	
+	
+	
+	// Login
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public String login(ModelMap model) {
 		model.addAttribute("user", new Account());
@@ -185,13 +190,10 @@ public class UserController {
 			errors.rejectValue("password", "user", "Yêu cầu không để trống mật khẩu");
 		}
 		
-//		test tên tài khoản đã tồn tại trong db chưa nhờ vào hashcode
-		
 		if (acc.getUser_name() != temp.getUser_name()) {
 			model.addAttribute("message", "Tên tài khoản hoặc mật khẩu không đúng!");
 		} else if (user.getPassword().equals(acc.getPassword())) {
 			Thread.sleep(1000);
-			// chưa vào được admin (getrole đang là role)
 			boolean isAdmin = (boolean) acc.getrole().getIdRole().equals((Object) 1);
 			httpSession.setAttribute("acc", acc);
 			if (isAdmin == true) {
